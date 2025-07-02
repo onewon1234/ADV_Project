@@ -1,9 +1,9 @@
-<!-- templates/index.html -->
+<!-- templates/hashtag_input.html -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>✨ 지금 뜨는 감성 숙소 기획전 모음</title>
+  <title>Fitbnb: 취향에 딱 맞는 에어비앤비 큐레이션 프로젝트</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -12,34 +12,48 @@
     }
     h1 {
       text-align: center;
+      margin-bottom: 10px;
+    }
+    h2 {
+      text-align: center;
+      font-weight: normal;
+      color: #666;
       margin-bottom: 30px;
     }
-    ul {
-      list-style: none;
-      padding-left: 0;
+    form {
+      text-align: center;
       max-width: 600px;
       margin: auto;
     }
-    li {
-      margin: 16px 0;
-      font-size: 18px;
-      text-align: center;
+    select, button {
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 10px;
     }
-    a {
-      text-decoration: none;
-      color: #0077cc;
+    button {
+      background-color: #0077cc;
+      color: white;
+      border: none;
+      cursor: pointer;
     }
-    a:hover {
-      text-decoration: underline;
+    button:hover {
+      background-color: #005fa3;
     }
   </style>
 </head>
 <body>
   <h1>✨ 지금 뜨는 감성 숙소 기획전 모음</h1>
-  <ul>
-    {% for item in items %}
-      <li><a href="/cluster/{{ item.cluster_id }}">{{ item.title }}</a></li>
-    {% endfor %}
-  </ul>
+  <h2>🏡 Airbnb 해시태그 기반 이미지 추천기</h2>
+
+  <form action="/recommend" method="post">
+    <label>해시태그 선택:</label><br><br>
+    <select name="tag">
+        {% for tag in tags %}
+            <option value="{{ tag }}">{{ tag }}</option>
+        {% endfor %}
+    </select>
+    <br><br>
+    <button type="submit">추천 이미지 보기</button>
+  </form>
 </body>
 </html>
