@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>{{ title }}</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background-color: #f8f8f8;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      justify-items: center;
+    }
+
+    .card {
+      width: 400px; /* ✅ 카드 너비 고정 */
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card img {
+      width: 400px;  /* ✅ 이미지 너비 고정 */
+      height: auto;  /* 비율 유지 */
+      object-fit: cover;
+      background-color: #eee;
+    }
+
+    .card p {
+      padding: 12px;
+      font-size: 14px;
+      color: #333;
+      line-height: 1.4;
+    }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 30px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .back-link:hover {
+      color: #0077cc;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>{{ title }}</h1>
+
+  <div class="card-grid">
+    {% for item in items %}
+      <div class="card">
+        {% set image = item.picture_url.strip() if item.picture_url else "" %}
+        <img src="{{ image }}" alt="숙소 이미지"
+             onerror="this.onerror=null;this.src='https://via.placeholder.com/400x250?text=No+Image';">
+        <p>{{ item.description }}</p>
+      </div>
+    {% endfor %}
+  </div>
+
+  <a href="/" class="back-link">← 기획전 목록으로 돌아가기</a>
+
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>✨ 지금 뜨는 감성 숙소 기획전 모음</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background-color: #f9f9f9;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    ul {
+      list-style: none;
+      padding-left: 0;
+      max-width: 600px;
+      margin: auto;
+    }
+    li {
+      margin: 16px 0;
+      font-size: 18px;
+      text-align: center;
+    }
+    a {
+      text-decoration: none;
+      color: #0077cc;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>✨ 지금 뜨는 감성 숙소 기획전 모음</h1>
+  <ul>
+    {% for item in items %}
+      <li><a href="/cluster/{{ item.cluster_id }}">{{ item.title }}</a></li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
