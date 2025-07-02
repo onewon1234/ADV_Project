@@ -4,9 +4,9 @@ from utils import get_top_images_by_tag
 
 app = Flask(__name__)
 
-# 1. 숙소 기획전용 데이터 로딩
-df_clustered = pd.read_csv("clustered_marketing_texts.csv")  # cluster_id, marketing_text
-df_data = pd.read_csv("기획전_최종선택클러스터_숙소.csv")         # cluster_id, description, picture_url 등 포함
+# 데이터 로딩
+df_clustered = pd.read_csv("clustered_marketing_texts.csv")
+df_data = pd.read_csv("기획전_최종선택클러스터_숙소.csv")
 
 cluster_title_map = {
     5:  "🏙️ 도심 한복판, 현지 감성 그대로 머물기",
@@ -22,7 +22,7 @@ marketing_map = dict(zip(df_clustered["cluster_id"], df_clustered["marketing_tex
 def suggest_campaign_title(cluster_id):
     return cluster_title_map.get(cluster_id, f"🏙️ 기획전 #{cluster_id}")
 
-# 2. 해시태그 리스트
+# 해시태그 리스트
 hashtags = [
     "a cozy bedroom", "a stylish living room", "a modern kitchen", "a clean bathroom",
     "a balcony with a view", "a relaxing rooftop", "a small studio apartment",
@@ -42,25 +42,23 @@ hashtags = [
     "a Scandinavian-style home", "a Japanese-style room"
 ]
 
-# 3. 기존 기획전 홈 (루트 페이지는 이걸 유지)
+# ✅ 메인 페이지: 기획전 리스트 + 해시태그 추천 폼 포함
 @app.route("/")
-def campaign_index():
-    items = []
+def index():
     valid_ids = set(df_data["cluster_id"].unique())
 
+    campaign_items = []
     for cid in cluster_title_map:
         if cid not in valid_ids:
             continue
-
-        title = suggest_campaign_title(cid)
-        items.append({
+        campaign_items.append({
             "cluster_id": cid,
-            "title": title
+            "title": suggest_campaign_title(cid)
         })
 
-    return render_template("index.html", items=items)
+    return render_template("index.html", items=campaign_items, tags=hashtags)
 
-# 4. 클러스터별 상세 보기
+# 클러스터별 상세 보기
 @app.route("/cluster/<int:cluster_id>")
 def show_cluster(cluster_id):
     title = suggest_campaign_title(cluster_id)
@@ -73,20 +71,17 @@ def show_cluster(cluster_id):
         }
         for _, row in filtered.iterrows()
     ]
-
     return render_template("cluster.html", title=title, items=items)
 
-# 5. 해시태그 추천 기능은 /hashtags 경로로 분리
-@app.route("/hashtags")
-def show_hashtag_input():
-    return render_template("hashtag_input.html", tags=hashtags)
-
+# 해시태그 이미지 추천
 @app.route("/recommend", methods=["POST"])
 def recommend():
-    selected_tag = request.form["tag"]
-    images = get_top_images_by_tag(selected_tag)  # utils.py의 함수
+    selected_tag = request.form.get("tag")
+    if not selected_tag:
+        return "❌ 태그가 선택되지 않았습니다.", 400
+
+    images = get_top_images_by_tag(selected_tag)
     return render_template("result.html", tag=selected_tag, images=images)
 
-# 6. 실행
 if __name__ == "__main__":
     app.run(debug=True)
