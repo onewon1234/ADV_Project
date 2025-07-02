@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Airbnb Tag Recommender</title>
+</head>
+<body>
+    <h1>🏡 Airbnb 해시태그 기반 이미지 추천기</h1>
+    <form action="/recommend" method="post">
+        <label>해시태그 선택:</label>
+        <select name="tag">
+            {% for tag in tags %}
+                <option value="{{ tag }}">{{ tag }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">추천 이미지 보기</button>
+    </form>
+</body>
+</html>
+
+</html>
