@@ -81,6 +81,9 @@ def recommend():
         return "❌ 태그가 선택되지 않았습니다.", 400
 
     images = get_top_images_by_tag(selected_tag)
+    if not images:
+        return f"❌ 추천 이미지를 찾을 수 없습니다: '{selected_tag}'", 404
+
     return render_template("result.html", tag=selected_tag, images=images)
 
 if __name__ == "__main__":
