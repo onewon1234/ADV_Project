@@ -36,8 +36,9 @@
     <div class="grid-container">
         {% for item in recommendations %}
         <div class="grid-item">
-            <img src="{{ item.picture_url }}" alt="추천 숙소 이미지">
-            <p><strong>Price:</strong> {{ item.price }}원</p>
+            <img src="{{ item.picture_url }}" width="200">
+            </a><br>
+            <strong>Price:</strong> {{ item.price }}<br>
             <p><strong>Reviews:</strong> {{ item.number_of_reviews }}</p>
             <p><strong>Rating:</strong> {{ item.review_scores_rating }}</p>
             <p><strong>Hashtags:</strong></p>
