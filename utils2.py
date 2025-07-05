@@ -57,7 +57,7 @@ def recommend_similar_listings(uploaded_image_path, df_tags, hashtags, hashtag_e
 
     return top_tags, top_matches[
         ["id", "picture_url", "price", "number_of_reviews", "review_scores_rating", 
-         "hashtags", "latitude", "longitude"]
+         "hashtags", "latitude", "longitude", "listing_url"]
     ]
 
 # 지도 생성 함수
