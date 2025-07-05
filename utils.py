@@ -24,7 +24,8 @@ def get_top_images_by_tag(selected_tag, top_n=6):
                     "review_scores_rating": row.get("review_scores_rating", "N/A"),
                     "hashtags": hashtags_list,
                     "latitude": row.get("latitude", None),
-                    "longitude": row.get("longitude", None)
+                    "longitude": row.get("longitude", None),
+                    "listing_url": row.get("listing_url", "#")
                 })
     return records[:top_n]
 
