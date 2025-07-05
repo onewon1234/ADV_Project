@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_2841ad17ead7ffc48a1439cfaab87d4f {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_2841ad17ead7ffc48a1439cfaab87d4f" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_2841ad17ead7ffc48a1439cfaab87d4f = L.map(
+                "map_2841ad17ead7ffc48a1439cfaab87d4f",
+                {
+                    center: [35.79757040307598, -111.4393404862223],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 12,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_d85e1170da49892ca22830f8fd1eae60 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_d85e1170da49892ca22830f8fd1eae60.addTo(map_2841ad17ead7ffc48a1439cfaab87d4f);
+        
+    
+            var marker_8088b6d41585ddcfc3751c7a96551260 = L.marker(
+                [37.32278, -121.9473],
+                {
+}
+            ).addTo(map_2841ad17ead7ffc48a1439cfaab87d4f);
+        
+    
+            marker_8088b6d41585ddcfc3751c7a96551260.bindTooltip(
+                `<div>
+                     $452.00원 | 평점: 4.94
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_09be461507337681db4442a313c6214e = L.marker(
+                [34.57649, -118.03734],
+                {
+}
+            ).addTo(map_2841ad17ead7ffc48a1439cfaab87d4f);
+        
+    
+            marker_09be461507337681db4442a313c6214e.bindTooltip(
+                `<div>
+                     $298.00원 | 평점: 4.56
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_6806b1f5aa202aa84ebdbf8179974107 = L.marker(
+                [34.05222, -118.1111873],
+                {
+}
+            ).addTo(map_2841ad17ead7ffc48a1439cfaab87d4f);
+        
+    
+            marker_6806b1f5aa202aa84ebdbf8179974107.bindTooltip(
+                `<div>
+                     $91.00원 | 평점: 4.87
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_1cef17a9808710e967a390b46e1225e8 = L.marker(
+                [34.13623, -118.34331],
+                {
+}
+            ).addTo(map_2841ad17ead7ffc48a1439cfaab87d4f);
+        
+    
+            marker_1cef17a9808710e967a390b46e1225e8.bindTooltip(
+                `<div>
+                     $847.00원 | 평점: 4.67
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_5026c577f61953a97ef5fc79af05a3e6 = L.marker(
+                [40.69228241845586, -73.96155561733387],
+                {
+}
+            ).addTo(map_2841ad17ead7ffc48a1439cfaab87d4f);
+        
+    
+            marker_5026c577f61953a97ef5fc79af05a3e6.bindTooltip(
+                `<div>
+                     $135.00원 | 평점: 5.0
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_2122d4778dca995faa1562d68d9eef60 = L.marker(
+                [34.00542, -118.23535],
+                {
+}
+            ).addTo(map_2841ad17ead7ffc48a1439cfaab87d4f);
+        
+    
+            marker_2122d4778dca995faa1562d68d9eef60.bindTooltip(
+                `<div>
+                     $94.00원 | 평점: 4.5
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+</script>
+</html>

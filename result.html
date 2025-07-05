@@ -1,0 +1,25 @@
+<h2>Top 6 Recommended Listings for "{{ tag }}"</h2>
+
+<!-- 지도 -->
+<div style="margin-bottom: 20px;">
+  <iframe src="{{ url_for('static', filename='map.html') }}" width="100%" height="400px" style="border:none;"></iframe>
+</div>
+
+<!-- 6개 숙소 그리드 정렬 -->
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 10px;">
+  {% for item in recommendations %}
+    <div style="border: 1px solid #ddd; padding: 10px; border-radius: 8px;">
+      <img src="{{ item.picture_url }}" width="100%" style="border-radius: 6px;"><br><br>
+      <strong>Price:</strong> {{ item.price }}<br>
+      <strong>Reviews:</strong> {{ item.number_of_reviews }}<br>
+      <strong>Rating:</strong> {{ item.review_scores_rating }}<br>
+      <strong>Hashtags:</strong>
+      <ul>
+        {% for tag in item.hashtags %}
+          <li>{{ tag }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endfor %}
+</div>
+
