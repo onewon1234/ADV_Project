@@ -1,10 +1,15 @@
 from flask import Flask, render_template, request
+from utils import recommend_similar_listings, create_map
+import os
 import pandas as pd
-from utils import get_top_images_by_tag
+import torch
+from transformers import CLIPProcessor, CLIPModel
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = 'uploads'
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-# 데이터 로딩
+# 🔹 기획전용 데이터
 df_clustered = pd.read_csv("clustered_marketing_texts.csv")
 df_data = pd.read_csv("기획전_최종선택클러스터_숙소.csv")
 
@@ -17,53 +22,41 @@ cluster_title_map = {
     46: "🌊 시선을 빼앗는 뷰맛집, 오션뷰 특가 모음",
     50: "⭐ 믿고 가는 후기 맛집! 신축 감성스테이 추천"
 }
-marketing_map = dict(zip(df_clustered["cluster_id"], df_clustered["marketing_text"]))
 
 def suggest_campaign_title(cluster_id):
     return cluster_title_map.get(cluster_id, f"🏙️ 기획전 #{cluster_id}")
 
-# 해시태그 리스트
+# 🔹 CLIP 모델 준비
+df_tags = pd.read_csv("clip최종df.csv")
 hashtags = [
-    "a cozy bedroom", "a stylish living room", "a modern kitchen", "a clean bathroom",
-    "a balcony with a view", "a relaxing rooftop", "a small studio apartment",
-    "a modern interior", "a minimal design", "a cozy atmosphere", "a luxurious space",
-    "a rustic cabin style", "a romantic room for two", "an industrial-style room",
-    "a vintage-inspired room", "a room by the beach", "a room with a mountain view",
-    "a room with a city view", "a room with a lake view", "a peaceful countryside home",
-    "an urban apartment", "a family-friendly place", "a honeymoon getaway",
-    "a space for solo travel", "a pet-friendly home", "a room for workation",
-    "a house with a BBQ area", "a camping-themed room", "a room with a hot tub",
-    "a cozy fireplace room", "a home theater with projector", "a bunk bed setup",
-    "a room with large windows", "a home with wood floors", "a loft-style apartment",
-    "a bright and airy room", "a room with warm lighting", "a room with high ceilings",
-    "a space filled with natural light", "an open and spacious layout",
-    "a clean and neat interior", "a spacious home", "a white-toned interior",
-    "a room with dark wood", "a pastel-colored space", "an artistic interior",
-    "a Scandinavian-style home", "a Japanese-style room"
+    "Modern", "Nordic", "Natural", "Vintage Retro", "Lovely Romantic",
+    "Industrial", "Unique", "French Provence", "Minimal Simple",
+    "Classic Antique", "Korean Asian"
 ]
 
-# ✅ 메인 페이지: 기획전 리스트 + 해시태그 추천 폼 포함
-@app.route("/")
+device = "cuda" if torch.cuda.is_available() else "cpu"
+model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32").to(device)
+processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
+text_inputs = processor(text=hashtags, return_tensors="pt", padding=True, truncation=True).to(device)
+with torch.no_grad():
+    hashtag_embs = model.get_text_features(**text_inputs)
+    hashtag_embs = hashtag_embs / hashtag_embs.norm(dim=1, keepdim=True)
+
+# ✅ 메인 페이지
+@app.route('/')
 def index():
     valid_ids = set(df_data["cluster_id"].unique())
+    campaign_items = [
+        {"cluster_id": cid, "title": suggest_campaign_title(cid)}
+        for cid in cluster_title_map if cid in valid_ids
+    ]
+    return render_template("index.html", items=campaign_items)
 
-    campaign_items = []
-    for cid in cluster_title_map:
-        if cid not in valid_ids:
-            continue
-        campaign_items.append({
-            "cluster_id": cid,
-            "title": suggest_campaign_title(cid)
-        })
-
-    return render_template("index.html", items=campaign_items, tags=hashtags)
-
-# 클러스터별 상세 보기
+# ✅ 기획전 상세 페이지
 @app.route("/cluster/<int:cluster_id>")
 def show_cluster(cluster_id):
     title = suggest_campaign_title(cluster_id)
     filtered = df_data[df_data["cluster_id"] == cluster_id]
-
     items = [
         {
             "description": row.get("description", ""),
@@ -73,18 +66,22 @@ def show_cluster(cluster_id):
     ]
     return render_template("cluster.html", title=title, items=items)
 
-# 해시태그 이미지 추천
-@app.route("/recommend", methods=["POST"])
+# ✅ 이미지 업로드 기반 추천
+@app.route('/recommend', methods=['POST'])
 def recommend():
-    selected_tag = request.form.get("tag")
-    if not selected_tag:
-        return "❌ 태그가 선택되지 않았습니다.", 400
+    uploaded_file = request.files['image']
+    if uploaded_file.filename == '':
+        return "❗이미지를 업로드해 주세요."
 
-    images = get_top_images_by_tag(selected_tag)
-    if not images:
-        return f"❌ 추천 이미지를 찾을 수 없습니다: '{selected_tag}'", 404
+    image_path = os.path.join(app.config['UPLOAD_FOLDER'], uploaded_file.filename)
+    uploaded_file.save(image_path)
 
-    return render_template("result.html", tag=selected_tag, images=images)
+    top_tags, recommendations = recommend_similar_listings(
+        image_path, df_tags, hashtags, hashtag_embs
+    )
 
-if __name__ == "__main__":
+    create_map(recommendations)  # 지도 생성 (map.html)
+    return render_template("result.html", tags=top_tags, recommendations=recommendations.to_dict(orient='records'))
+
+if __name__ == '__main__':
     app.run(debug=True)

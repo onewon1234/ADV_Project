@@ -4,18 +4,37 @@
   <meta charset="UTF-8">
   <title>Fitbnb 감성 기획전</title>
   <style>
-    body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
-    .container { display: flex; flex-wrap: wrap; justify-content: space-around; padding: 40px; }
-    .box { background: white; border-radius: 10px; padding: 20px; margin: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); width: 45%; }
-
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      padding: 40px;
+    }
+    .box {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 45%;
+    }
     h2 { color: #333; }
     ul { list-style-type: none; padding: 0; }
     li { margin: 8px 0; }
-
-    select, button {
+    a { color: #0077cc; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    input[type="file"], button {
       padding: 10px;
       font-size: 16px;
       margin-top: 10px;
+      width: 100%;
+      box-sizing: border-box;
     }
     button {
       background-color: #0077cc;
@@ -40,18 +59,13 @@
       </ul>
     </div>
 
-    <!-- 오른쪽: 해시태그 기반 추천기 -->
+    <!-- 오른쪽: 이미지 업로드 기반 추천기 -->
     <div class="box">
-      <h2>🏡 해시태그 기반 숙소 이미지 추천기</h2>
-      <form action="/recommend" method="post">
-        <label>해시태그 선택:</label><br><br>
-        <select name="tag">
-            {% for tag in tags %}
-              <option value="{{ tag }}">{{ tag }}</option>
-            {% endfor %}
-        </select>
-        <br><br>
-        <button type="submit">추천 이미지 보기</button>
+      <h2>🖼️ 이미지 업로드 기반 숙소 추천기</h2>
+      <form action="/recommend" method="post" enctype="multipart/form-data">
+        <label>이미지를 업로드해 주세요:</label><br><br>
+        <input type="file" name="image" accept="image/*" required><br><br>
+        <button type="submit">추천 보기</button>
       </form>
     </div>
   </div>
