@@ -9,17 +9,12 @@
 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 10px;">
   {% for item in recommendations %}
     <div style="border: 1px solid #ddd; padding: 10px; border-radius: 8px;">
+      <a href="{{ item.listing_url }}" target="_blank">
       <img src="{{ item.picture_url }}" width="200">
       </a><br>
       <strong>Price:</strong> {{ item.price }}<br>
       <strong>Reviews:</strong> {{ item.number_of_reviews }}<br>
       <strong>Rating:</strong> {{ item.review_scores_rating }}<br>
-      <strong>Hashtags:</strong>
-      <ul>
-        {% for tag in item.hashtags %}
-          <li>{{ tag }}</li>
-        {% endfor %}
-      </ul>
     </div>
   {% endfor %}
 </div>
