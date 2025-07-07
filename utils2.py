@@ -4,6 +4,7 @@ import pandas as pd
 from PIL import Image
 from transformers import CLIPProcessor, CLIPModel
 import folium
+import ast  
 
 # 디바이스 설정
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -38,16 +39,19 @@ def recommend_similar_listings(uploaded_image_path, df_tags, hashtags, hashtag_e
     df_candidates = df_tags.copy()
     scores = []
     hashtags_list = []
-
     for _, row in df_candidates.iterrows():
         row_tags = [row.get(f"tag{i+1}", "") for i in range(5)]
         row_scores = [row.get(f"score{i+1}", 0.0) for i in range(5)]
-        
         matched_scores = [row_scores[i] for i in range(len(row_tags)) if row_tags[i] in top_tags]
-        matched_tags = [tag for tag in row_tags if tag in top_tags]
-        
+
+        raw_hashtags = row.get("hashtags", "[]")
+        try:
+            parsed_hashtags = ast.literal_eval(raw_hashtags)
+        except:
+            parsed_hashtags = []
+
         scores.append(np.mean(matched_scores) if matched_scores else 0)
-        hashtags_list.append(matched_tags)
+        hashtags_list.append(parsed_hashtags) 
 
     df_candidates["match_score"] = scores
     df_candidates["hashtags"] = hashtags_list

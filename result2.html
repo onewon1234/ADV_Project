@@ -36,6 +36,7 @@
     <div class="grid-container">
         {% for item in recommendations %}
         <div class="grid-item">
+            <a href="{{ item.listing_url }}" target="_blank">
             <img src="{{ item.picture_url }}" width="200">
             </a><br>
             <strong>Price:</strong> {{ item.price }}<br>
@@ -44,7 +45,7 @@
             <p><strong>Hashtags:</strong></p>
             <ul style="list-style-type:none; padding:0;">
                 {% for tag in item.hashtags %}
-                    <li>#{{ tag }}</li>
+                    <li>{{ tag }}</li>  {# 여기에서 #은 이미 포함되어 있으니 다시 붙이지 않아도 됨 #}
                 {% endfor %}
             </ul>
         </div>

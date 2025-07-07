@@ -1,6 +1,7 @@
 import pandas as pd
 import folium
 import ast
+import random  # ✅ 추가
 
 def get_top_images_by_tag(selected_tag, top_n=6):
     df = pd.read_csv("data/clip최종df.csv")
@@ -27,7 +28,10 @@ def get_top_images_by_tag(selected_tag, top_n=6):
                     "longitude": row.get("longitude", None),
                     "listing_url": row.get("listing_url", "#")
                 })
-    return records[:top_n]
+
+    random.shuffle(records)  
+    return records[:top_n]   
+
 
 def create_map(recommendations, output_path="static/map.html"):
     # 중심 위치: 첫 번째 숙소로
