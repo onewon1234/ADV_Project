@@ -27,7 +27,7 @@ def suggest_campaign_title(cluster_id):
     return cluster_title_map.get(cluster_id, f"🏙️ 기획전 #{cluster_id}")
 
 # 🔹 CLIP 모델 준비
-df_tags = pd.read_csv("clip최종df.csv")
+df_tags = pd.read_csv(os.path.join(os.path.dirname(__file__), "clip최종df.csv"), encoding="utf-8")
 hashtags = [
     "Modern", "Nordic", "Natural", "Vintage Retro", "Lovely Romantic",
     "Industrial", "Unique", "French Provence", "Minimal Simple",
@@ -46,11 +46,21 @@ with torch.no_grad():
 @app.route('/')
 def index():
     valid_ids = set(df_data["cluster_id"].unique())
+
+    # 기존 감성 기획전 (기존 구조 그대로 유지)
     campaign_items = [
         {"cluster_id": cid, "title": suggest_campaign_title(cid)}
         for cid in cluster_title_map if cid in valid_ids
     ]
+
+    # ✅ 특가 기획전만 추가 (url 필드 포함)
+    campaign_items.append({
+        "title": "💸 부담없이 떠나세요! 5만원 이하의 갓성비 숙소",
+        "url": "/cheap"
+    })
+
     return render_template("index.html", items=campaign_items)
+
 
 # ✅ 기획전 상세 페이지
 @app.route("/cluster/<int:cluster_id>")
@@ -65,6 +75,27 @@ def show_cluster(cluster_id):
         for _, row in filtered.iterrows()
     ]
     return render_template("cluster.html", title=title, items=items)
+
+@app.route("/cheap")
+def cheap_special():
+    # CSV 파일에서 특가 숙소 데이터 불러오기
+    df_cheap = pd.read_csv("airbnb_cheap_under_35.csv")
+
+    # 기획전 제목
+    title = "💸 5만원 이하 갓성비 숙소 모음"
+
+    # template에 넘겨줄 숙소 리스트
+    items = [
+        {
+            "description": row.get("description", ""),
+            "picture_url": row.get("picture_url", "").strip() if row.get("picture_url") else ""
+        }
+        for _, row in df_cheap.iterrows()
+    ]
+
+    # cluster.html 템플릿 재사용
+    return render_template("cluster.html", title=title, items=items)
+
 
 # ✅ 이미지 업로드 기반 추천
 @app.route('/recommend', methods=['POST'])
