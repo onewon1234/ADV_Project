@@ -2,56 +2,106 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>Fitbnb 감성 기획전</title>
+  <title>Fitbnb 통합 추천</title>
   <style>
-    body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
-    .container { display: flex; flex-wrap: wrap; justify-content: space-around; padding: 40px; }
-    .box { background: white; border-radius: 10px; padding: 20px; margin: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); width: 45%; }
-
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px;
+      gap: 40px;
+    }
+    .box {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 600px;
+      margin-bottom: 20px;
+    }
     h2 { color: #333; }
     ul { list-style-type: none; padding: 0; }
     li { margin: 8px 0; }
-
-    select, button {
-      padding: 10px;
-      font-size: 16px;
+    a { color: #0077cc; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    /* 해시태그 추천 스타일 */
+    .tag-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
       margin-top: 10px;
     }
-    button {
-      background-color: #0077cc;
-      color: white;
-      border: none;
+    .tag-button {
+      padding: 10px 20px;
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
+      border-radius: 20px;
       cursor: pointer;
+      font-size: 14px;
     }
-    button:hover {
-      background-color: #005fa3;
+    .tag-button:hover {
+      background-color: #d0d0ff;
+    }
+    form {
+      text-align: center;
+      margin-top: 10px;
     }
   </style>
+  <script>
+    function selectTag(tagName) {
+      document.getElementById("selected_tag").value = tagName;
+      document.getElementById("tagForm").submit();
+    }
+  </script>
 </head>
 <body>
   <div class="container">
-    <!-- 왼쪽: 기획전 리스트 -->
+    <!-- 1. 기획전 리스트 -->
     <div class="box">
       <h2>📢 감성 기획전</h2>
       <ul>
         {% for item in items %}
-          <li><a href="/cluster/{{ item.cluster_id }}">{{ item.title }}</a></li>
+          <li><a href="{{ item.url if item.url else '/cluster/' ~ item.cluster_id }}">{{ item.title }}</a></li>
         {% endfor %}
       </ul>
     </div>
 
-    <!-- 오른쪽: 해시태그 기반 추천기 -->
+    <!-- 2. 해시태그 기반 추천 -->
     <div class="box">
-      <h2>🏡 해시태그 기반 숙소 이미지 추천기</h2>
-      <form action="/recommend" method="post">
-        <label>해시태그 선택:</label><br><br>
-        <select name="tag">
-            {% for tag in tags %}
-              <option value="{{ tag }}">{{ tag }}</option>
-            {% endfor %}
-        </select>
-        <br><br>
-        <button type="submit">추천 이미지 보기</button>
+      <h2>🏡 해시태그 기반 추천기</h2>
+      <form id="tagForm" action="/tag-recommend" method="post">
+        <input type="hidden" name="tag" id="selected_tag">
+        <div class="tag-container">
+          <button type="button" class="tag-button" onclick="selectTag('Modern')">Modern</button>
+          <button type="button" class="tag-button" onclick="selectTag('Nordic')">Nordic</button>
+          <button type="button" class="tag-button" onclick="selectTag('Natural')">Natural</button>
+          <button type="button" class="tag-button" onclick="selectTag('Vintage Retro')">Vintage Retro</button>
+          <button type="button" class="tag-button" onclick="selectTag('Lovely Romantic')">Lovely Romantic</button>
+          <button type="button" class="tag-button" onclick="selectTag('Industrial')">Industrial</button>
+          <button type="button" class="tag-button" onclick="selectTag('Unique')">Unique</button>
+          <button type="button" class="tag-button" onclick="selectTag('French Provence')">French Provence</button>
+          <button type="button" class="tag-button" onclick="selectTag('Minimal Simple')">Minimal Simple</button>
+          <button type="button" class="tag-button" onclick="selectTag('Classic Antique')">Classic Antique</button>
+          <button type="button" class="tag-button" onclick="selectTag('Korean Asian')">Korean Asian</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- 3. 이미지 업로드 기반 추천 -->
+    <div class="box">
+      <h2>🖼️ 이미지 업로드 기반 추천기</h2>
+      <form action="/image-recommend" method="post" enctype="multipart/form-data">
+        <label>이미지를 업로드해 주세요:</label><br><br>
+        <input type="file" name="image" accept="image/*" required><br><br>
+        <button type="submit">추천 보기</button>
       </form>
     </div>
   </div>
