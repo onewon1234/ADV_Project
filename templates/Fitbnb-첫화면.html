@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fitbnb - 취향 기반 에어비앤비 숙소 추천 (Wireframe)</title>
+<style>
+body {
+  font-family: sans-serif;
+  background: #fff;
+  color: #222;
+  margin: 0;
+  padding: 0;
+}
+header, footer {
+  background: #f3f3f3;
+  border-bottom: 1px solid #ddd;
+  padding: 16px 0;
+}
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+nav {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+nav a {
+  color: #222;
+  text-decoration: none;
+  font-weight: 500;
+}
+nav a:hover {
+  text-decoration: underline;
+}
+main {
+  padding: 32px 0;
+}
+section {
+  margin-bottom: 48px;
+}
+.section-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+.section-desc {
+  color: #666;
+  margin-bottom: 24px;
+}
+.image-upload-area {
+  border: 2px dashed #bbb;
+  background: #fafafa;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+input[type="file"] {
+  margin-top: 8px;
+}
+.hashtag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.hashtag-item {
+  border: 1px solid #bbb;
+  background: #f9f9f9;
+  padding: 8px 12px;
+  font-size: 0.95rem;
+  border-radius: 0;
+}
+.campaign-list, .host-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+.campaign-card, .host-card {
+  border: 1px solid #bbb;
+  background: #fafafa;
+  padding: 16px;
+  border-radius: 0;
+  min-height: 120px;
+}
+.campaign-card img, .host-card img {
+  display: none;
+}
+.campaign-card h3, .host-card h3 {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+.campaign-card p, .host-card p {
+  color: #555;
+  font-size: 0.95rem;
+}
+.host-tags {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+.host-tag {
+  font-size: 0.85rem;
+  background: #eee;
+  padding: 2px 6px;
+  border: 1px solid #ccc;
+}
+footer ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+footer li {
+  margin-bottom: 6px;
+}
+.newsletter {
+  display: flex;
+  gap: 4px;
+  margin-top: 8px;
+}
+.newsletter input[type="email"] {
+  flex: 1;
+  padding: 6px;
+  border: 1px solid #bbb;
+}
+.newsletter button {
+  padding: 6px 12px;
+  border: 1px solid #bbb;
+  background: #eee;
+  cursor: pointer;
+}
+@media (max-width: 900px) {
+  .campaign-list, .host-list {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 600px) {
+  .campaign-list, .host-list {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="container">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div style="font-size:2rem;font-weight:bold;">Fitbnb</div>
+      <nav>
+        <a href="#">홈</a>
+        <a href="#">이미지 검색</a>
+        <a href="#">해시태그</a>
+        <a href="#">기획전</a>
+        <a href="#">호스트</a>
+      </nav>
+    </div>
+  </div>
+</header>
+<main class="container">
+  <!-- 이미지 검색 섹션 -->
+  <section>
+    <div class="section-title">취향에 맞는 숙소를 찾아보세요</div>
+    <div class="section-desc">이미지를 업로드하면 AI가 당신의 스타일에 맞는 숙소를 추천해 드립니다</div>
+    <div class="image-upload-area">
+      <div>이미지 업로드</div>
+      <input type="file" accept="image/*">
+      <div style="font-size:0.9rem;color:#888;">JPG, PNG (최대 5MB)</div>
+    </div>
+    <button style="width:100%;padding:12px 0;border:1px solid #bbb;background:#eee;font-size:1rem;">이미지로 숙소 찾기</button>
+  </section>
+  <!-- 해시태그 카테고리 섹션 -->
+  <section>
+    <div class="section-title">인테리어 스타일로 찾기</div>
+    <div class="hashtag-list">
+      <div class="hashtag-item">Nordic</div>
+      <div class="hashtag-item">Natural</div>
+      <div class="hashtag-item">Vintage Retro</div>
+      <div class="hashtag-item">Lovely Romantic</div>
+      <div class="hashtag-item">Industrial</div>
+      <div class="hashtag-item">Unique</div>
+      <div class="hashtag-item">French Provence</div>
+      <div class="hashtag-item">Minimal Simple</div>
+      <div class="hashtag-item">Classic Antique</div>
+      <div class="hashtag-item">Korean</div>
+      <div class="hashtag-item">Asian</div>
+    </div>
+  </section>
+  <!-- 기획전 섹션 -->
+  <section>
+    <div class="section-title">추천 기획전</div>
+    <div class="campaign-list">
+      <div class="campaign-card">
+        <h3>겨울 숙소 특집</h3>
+        <p>따뜻한 분위기의 겨울 휴가를 위한 완벽한 숙소 모음</p>
+      </div>
+      <div class="campaign-card">
+        <h3>도심 속 휴식</h3>
+        <p>바쁜 일상 속 도심에서 찾는 특별한 휴식 공간</p>
+      </div>
+      <div class="campaign-card">
+        <h3>해변 근처 숙소</h3>
+        <p>파도 소리와 함께 잠드는 특별한 해변 숙소</p>
+      </div>
+      <div class="campaign-card">
+        <h3>한옥 스테이</h3>
+        <p>전통과 현대가 어우러진 한옥 숙소 컬렉션</p>
+      </div>
+      <div class="campaign-card">
+        <h3>이색 숙소</h3>
+        <p>트리하우스부터 동굴 숙소까지, 특별한 경험</p>
+      </div>
+      <div class="campaign-card">
+        <h3>반려동물 동반 숙소</h3>
+        <p>반려동물과 함께 즐기는 완벽한 휴가</p>
+      </div>
+    </div>
+  </section>
+  <!-- 호스트 추천 섹션 -->
+  <section>
+    <div class="section-title">인기 호스트</div>
+    <div class="host-list">
+      <div class="host-card">
+        <h3>김민지</h3>
+        <p>서울 강남의 모던한 아파트를 운영하고 있어요. 깔끔하고 편안한 공간을 제공하는 것이 저의 목표입니다.</p>
+        <div class="host-tags">
+          <span class="host-tag">#Minimal</span>
+          <span class="host-tag">#Modern</span>
+          <span class="host-tag">#Urban</span>
+        </div>
+      </div>
+      <div class="host-card">
+        <h3>박준호</h3>
+        <p>제주도의 전통 한옥과 모던함이 조화된 숙소를 운영합니다. 자연과 함께하는 힐링 여행을 원하시는 분들께 추천해요.</p>
+        <div class="host-tags">
+          <span class="host-tag">#Korean</span>
+          <span class="host-tag">#Nature</span>
+          <span class="host-tag">#Healing</span>
+        </div>
+      </div>
+      <div class="host-card">
+        <h3>이수진</h3>
+        <p>부산 해운대 근처의 오션뷰 아파트를 운영합니다. 인테리어 디자이너로 일하며 감각적인 공간을 만들어요.</p>
+        <div class="host-tags">
+          <span class="host-tag">#Ocean</span>
+          <span class="host-tag">#Design</span>
+          <span class="host-tag">#Artistic</span>
+        </div>
+      </div>
+      <div class="host-card">
+        <h3>최우진</h3>
+        <p>강원도 평창의 통나무 캐빈을 운영합니다. 자연 속에서 캠핑과 같은 느낌을 주는 아늑한 공간이에요.</p>
+        <div class="host-tags">
+          <span class="host-tag">#Cabin</span>
+          <span class="host-tag">#Nature</span>
+          <span class="host-tag">#Cozy</span>
+          <span class="host-tag">#Winter</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px;">
+      <div>
+        <div style="font-size:1.2rem;font-weight:bold;">Fitbnb</div>
+        <div style="color:#666;font-size:0.95rem;margin-top:8px;">당신의 취향에 맞는 완벽한 숙소를 찾아드립니다.</div>
+      </div>
+      <div>
+        <div style="font-weight:bold;">서비스 안내</div>
+        <ul>
+          <li>서비스 소개</li>
+          <li>이용 방법</li>
+          <li>자주 묻는 질문</li>
+          <li>피드백</li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-weight:bold;">고객 지원</div>
+        <ul>
+          <li>고객센터</li>
+          <li>1:1 문의</li>
+          <li>이용약관</li>
+          <li>개인정보처리방침</li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-weight:bold;">뉴스레터 구독</div>
+        <div style="color:#666;font-size:0.95rem;margin-bottom:8px;">최신 소식과 특별 기획전 정보를 받아보세요</div>
+        <div class="newsletter">
+          <input type="email" placeholder="이메일 주소">
+          <button>구독하기</button>
+        </div>
+      </div>
+    </div>
+    <div style="border-top:1px solid #ddd;margin-top:24px;padding-top:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
+      <div style="color:#888;font-size:0.9rem;">© 2025 Fitbnb. All rights reserved.</div>
+      <div style="color:#888;font-size:0.9rem;">결제 방법: 카드, 페이팔 등</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html> 

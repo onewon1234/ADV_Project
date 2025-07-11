@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fitbnb - 이미지 검색 결과 (Wireframe)</title>
+<style>
+body {
+  font-family: sans-serif;
+  background: #fff;
+  color: #222;
+  margin: 0;
+  padding: 0;
+}
+header, footer {
+  background: #f3f3f3;
+  border-bottom: 1px solid #ddd;
+  padding: 16px 0;
+}
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+nav {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+nav a {
+  color: #222;
+  text-decoration: none;
+  font-weight: 500;
+}
+nav a.active {
+  text-decoration: underline;
+}
+nav a:hover {
+  text-decoration: underline;
+}
+main {
+  padding: 32px 0;
+}
+section {
+  margin-bottom: 48px;
+}
+.section-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+.section-desc {
+  color: #666;
+  margin-bottom: 24px;
+}
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  border: 1px solid #bbb;
+  background: #eee;
+  color: #222;
+  font-size: 1rem;
+  border-radius: 0;
+  cursor: pointer;
+  text-align: center;
+  margin: 0 4px;
+}
+.btn:active, .btn:focus {
+  outline: 2px solid #888;
+}
+.btn-group {
+  display: flex;
+  gap: 8px;
+}
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.filter-tag {
+  background: #f9f9f9;
+  border: 1px solid #bbb;
+  padding: 4px 10px;
+  font-size: 0.95rem;
+}
+.card-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+.card {
+  border: 1px solid #bbb;
+  background: #fafafa;
+  padding: 16px;
+  border-radius: 0;
+  min-height: 120px;
+}
+.card img {
+  display: none;
+}
+.card-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+.card-desc {
+  color: #555;
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+}
+.card-tags {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.card-tag {
+  font-size: 0.85rem;
+  background: #eee;
+  padding: 2px 6px;
+  border: 1px solid #ccc;
+}
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+input[type="range"] {
+  width: 100%;
+  margin: 8px 0;
+}
+input[type="checkbox"] {
+  margin-right: 6px;
+}
+.filter-modal {
+  display: none;
+  position: fixed;
+  left: 0; top: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.1);
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.filter-modal.active {
+  display: flex;
+}
+.filter-modal-content {
+  background: #fff;
+  border: 1px solid #bbb;
+  padding: 24px;
+  min-width: 320px;
+  max-width: 90vw;
+}
+@media (max-width: 900px) {
+  .card-list {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 600px) {
+  .card-list {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="container">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div style="font-size:2rem;font-weight:bold;">Fitbnb</div>
+      <nav>
+        <a href="#">홈</a>
+        <a href="#" class="active">이미지 검색</a>
+        <a href="#">해시태그</a>
+        <a href="#">기획전</a>
+        <a href="#">호스트</a>
+      </nav>
+    </div>
+  </div>
+</header>
+<main class="container">
+  <!-- 업로드 이미지 및 결과 섹션 -->
+  <section>
+    <div class="section-title">업로드한 이미지와 유사한 스타일</div>
+    <div class="section-desc">북유럽 스타일의 미니멀한 인테리어와 유사한 숙소 24개를 찾았습니다.</div>
+    <div class="filter-bar">
+      <span class="filter-tag">#Minimal</span>
+      <span class="filter-tag">#Nordic</span>
+      <span class="filter-tag">#Modern</span>
+      <span class="filter-tag">#Bright</span>
+      <button class="btn">다시 검색하기</button>
+    </div>
+  </section>
+  <!-- 필터 및 정렬 옵션 -->
+  <section>
+    <div class="btn-group">
+      <button class="btn" id="openFilter">필터</button>
+      <button class="btn">정렬: 추천순</button>
+    </div>
+  </section>
+  <!-- 숙소 카드 리스트 -->
+  <section>
+    <div class="card-list">
+      <div class="card">
+        <div class="card-title">서울 강남 모던 아파트</div>
+        <div class="card-desc">강남역에서 도보 5분 거리</div>
+        <div class="card-tags">
+          <span class="card-tag">#Nordic</span>
+          <span class="card-tag">#Minimal</span>
+          <span class="card-tag">#도심</span>
+        </div>
+        <div class="card-footer">
+          <span>₩120,000 / 박</span>
+          <button class="btn">자세히 보기</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">성수동 복층 로프트</div>
+        <div class="card-desc">서울숲 공원 근처, 한강뷰</div>
+        <div class="card-tags">
+          <span class="card-tag">#Modern</span>
+          <span class="card-tag">#Industrial</span>
+          <span class="card-tag">#로프트</span>
+        </div>
+        <div class="card-footer">
+          <span>₩150,000 / 박</span>
+          <button class="btn">자세히 보기</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">홍대 스튜디오 아파트</div>
+        <div class="card-desc">홍대입구역 3분 거리</div>
+        <div class="card-tags">
+          <span class="card-tag">#Nordic</span>
+          <span class="card-tag">#Cozy</span>
+          <span class="card-tag">#스튜디오</span>
+        </div>
+        <div class="card-footer">
+          <span>₩95,000 / 박</span>
+          <button class="btn">자세히 보기</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">해운대 오션뷰 아파트</div>
+        <div class="card-desc">해운대 해변에서 도보 3분</div>
+        <div class="card-tags">
+          <span class="card-tag">#Nordic</span>
+          <span class="card-tag">#Ocean</span>
+          <span class="card-tag">#오션뷰</span>
+        </div>
+        <div class="card-footer">
+          <span>₩180,000 / 박</span>
+          <button class="btn">자세히 보기</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">평창 숲속 아파트</div>
+        <div class="card-desc">평창 스키장 인근, 산 전망</div>
+        <div class="card-tags">
+          <span class="card-tag">#Nordic</span>
+          <span class="card-tag">#Natural</span>
+          <span class="card-tag">#산장</span>
+        </div>
+        <div class="card-footer">
+          <span>₩140,000 / 박</span>
+          <button class="btn">자세히 보기</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">판교 신축 오피스텔</div>
+        <div class="card-desc">판교역 도보 7분, IT 단지 인근</div>
+        <div class="card-tags">
+          <span class="card-tag">#Modern</span>
+          <span class="card-tag">#Minimal</span>
+          <span class="card-tag">#비즈니스</span>
+        </div>
+        <div class="card-footer">
+          <span>₩110,000 / 박</span>
+          <button class="btn">자세히 보기</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">제주 애월 게스트하우스</div>
+        <div class="card-desc">애월 해안도로, 바다 전망</div>
+        <div class="card-tags">
+          <span class="card-tag">#Nordic</span>
+          <span class="card-tag">#Natural</span>
+          <span class="card-tag">#제주</span>
+        </div>
+        <div class="card-footer">
+          <span>₩130,000 / 박</span>
+          <button class="btn">자세히 보기</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">한강뷰 레지던스</div>
+        <div class="card-desc">여의도 인근, 한강 파노라마 뷰</div>
+        <div class="card-tags">
+          <span class="card-tag">#Modern</span>
+          <span class="card-tag">#Minimal</span>
+          <span class="card-tag">#한강뷰</span>
+        </div>
+        <div class="card-footer">
+          <span>₩160,000 / 박</span>
+          <button class="btn">자세히 보기</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">양평 숲속 펜션</div>
+        <div class="card-desc">양평 남한강 인근, 숲 전망</div>
+        <div class="card-tags">
+          <span class="card-tag">#Nordic</span>
+          <span class="card-tag">#Natural</span>
+          <span class="card-tag">#휴양</span>
+        </div>
+        <div class="card-footer">
+          <span>₩170,000 / 박</span>
+          <button class="btn">자세히 보기</button>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- 더 보기 버튼 -->
+  <section>
+    <div style="text-align:center;margin-top:32px;">
+      <button class="btn">더 보기</button>
+    </div>
+  </section>
+  <!-- 필터 모달 (예시) -->
+  <div class="filter-modal" id="filterModal">
+    <div class="filter-modal-content">
+      <div style="font-weight:bold;margin-bottom:12px;">필터</div>
+      <div style="margin-bottom:12px;">
+        <label>가격 범위</label>
+        <input type="range" min="0" max="500000" value="200000">
+        <div style="font-size:0.95rem;">₩0 ~ ₩200,000+</div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <label><input type="checkbox" checked>집 전체</label>
+        <label><input type="checkbox">개인실</label>
+        <label><input type="checkbox">호텔 객실</label>
+        <label><input type="checkbox">다인실</label>
+      </div>
+      <div style="margin-bottom:12px;">
+        <label><input type="checkbox" checked>무선 인터넷</label>
+        <label><input type="checkbox" checked>주방</label>
+        <label><input type="checkbox">세탁기</label>
+        <label><input type="checkbox">에어컨</label>
+        <label><input type="checkbox">수영장</label>
+        <label><input type="checkbox">무료 주차</label>
+      </div>
+      <div style="margin-bottom:12px;">
+        <label>인테리어 스타일</label>
+        <div class="btn-group" style="margin-top:4px;">
+          <button class="btn">Nordic</button>
+          <button class="btn">Modern</button>
+          <button class="btn">Minimal</button>
+          <button class="btn">Natural</button>
+          <button class="btn">Industrial</button>
+        </div>
+      </div>
+      <div class="btn-group" style="margin-top:16px;">
+        <button class="btn" id="applyFilter">필터 적용하기</button>
+        <button class="btn" id="closeFilter">닫기</button>
+      </div>
+    </div>
+  </div>
+</main>
+<footer>
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px;">
+      <div>
+        <div style="font-size:1.2rem;font-weight:bold;">Fitbnb</div>
+        <div style="color:#666;font-size:0.95rem;margin-top:8px;">당신의 취향에 맞는 완벽한 숙소를 찾아드립니다.</div>
+      </div>
+      <div>
+        <div style="font-weight:bold;">서비스 안내</div>
+        <ul>
+          <li>서비스 소개</li>
+          <li>이용 방법</li>
+          <li>자주 묻는 질문</li>
+          <li>피드백</li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-weight:bold;">고객 지원</div>
+        <ul>
+          <li>고객센터</li>
+          <li>1:1 문의</li>
+          <li>이용약관</li>
+          <li>개인정보처리방침</li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-weight:bold;">뉴스레터 구독</div>
+        <div style="color:#666;font-size:0.95rem;margin-bottom:8px;">최신 소식과 특별 기획전 정보를 받아보세요</div>
+        <div style="display:flex;gap:4px;">
+          <input type="email" placeholder="이메일 주소" style="flex:1;padding:6px;border:1px solid #bbb;">
+          <button class="btn">구독하기</button>
+        </div>
+      </div>
+    </div>
+    <div style="border-top:1px solid #ddd;margin-top:24px;padding-top:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
+      <div style="color:#888;font-size:0.9rem;">© 2025 Fitbnb. All rights reserved.</div>
+      <div style="color:#888;font-size:0.9rem;">결제 방법: 카드, 페이팔 등</div>
+    </div>
+  </div>
+</footer>
+<script>
+// 필터 모달 동작 (와이어프레임용 최소화)
+document.getElementById('openFilter').onclick = function() {
+  document.getElementById('filterModal').classList.add('active');
+};
+document.getElementById('closeFilter').onclick = function() {
+  document.getElementById('filterModal').classList.remove('active');
+};
+document.getElementById('applyFilter').onclick = function() {
+  document.getElementById('filterModal').classList.remove('active');
+};
+</script>
+</body>
+</html> 
