@@ -70,7 +70,15 @@
         {% set image = item.picture_url.strip() if item.picture_url else "" %}
         <img src="{{ image }}" alt="숙소 이미지"
              onerror="this.onerror=null;this.src='https://via.placeholder.com/400x250?text=No+Image';">
-        <p>{{ item.description }}</p>
+        <div style="padding: 12px;">
+          <div style="font-weight: bold; font-size: 18px; margin-bottom: 4px;">{{ item.name }}</div>
+          <div style="font-size: 13px; color: #888; margin-bottom: 4px;">
+            ⭐ {{ item.ratings }} &nbsp;|&nbsp; 💰 {{ item.price }}
+          </div>
+          <div style="font-size: 14px; color: #333; line-height: 1.4; margin-top: 8px;">
+            {{ item.emotional_summary }}
+          </div>
+        </div>
       </div>
     {% endfor %}
   </div>

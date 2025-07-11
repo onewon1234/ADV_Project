@@ -11,60 +11,43 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-# 🔹 기획전용 데이터
-df_clustered = pd.read_csv("clustered_marketing_texts.csv")
-df_data = pd.read_csv("기획전_최종선택클러스터_숙소.csv")
+# 🔹 통합 기획전 데이터
+# 컬럼: cluster_id, marketing_text, emotional_summary, name, ratings, price, picture_url 등
+main_csv = "기획전_emotional_summary_cleaned.csv"
+df = pd.read_csv(main_csv)
 
+# cluster_id와 marketing_text로 기획전 타이틀 매핑
 cluster_title_map = {
-    5:  "🏙️ 도심 한복판, 현지 감성 그대로 머물기",
-    6:  "📍 어디든 가까워요! 입지 끝판왕 숙소 추천",
-    18: "✨ 감성 톡톡! 넓고 럭셔리한 객실에서 호캉스",
-    33: "🌿 가든뷰에서 피톤치드 한가득! 자연 속 힐링",
-    40: "👨‍👩‍👧‍👦 가족 모두를 위한 평화로운 휴식처",
-    46: "🌊 시선을 빼앗는 뷰맛집, 오션뷰 특가 모음",
-    50: "⭐ 믿고 가는 후기 맛집! 신축 감성스테이 추천"
+    row['cluster_id']: row['marketing_text']
+    for _, row in df[['cluster_id', 'marketing_text']].drop_duplicates().iterrows()
 }
 
 def suggest_campaign_title(cluster_id):
     return cluster_title_map.get(cluster_id, f"🏙️ 기획전 #{cluster_id}")
 
-# ✅ 메인 페이지 (기획전)
+# ✅ 메인 페이지 (기획전 리스트)
 @app.route('/')
 def index():
-    valid_ids = set(df_data["cluster_id"].unique())
     campaign_items = [
         {"cluster_id": cid, "title": suggest_campaign_title(cid)}
-        for cid in cluster_title_map if cid in valid_ids
+        for cid in sorted(df['cluster_id'].unique())
     ]
-    campaign_items.append({
-        "title": "💸 부담없이 떠나세요! 5만원 이하의 갓성비 숙소",
-        "url": "/cheap"
-    })
     return render_template("index.html", items=campaign_items)
 
+# ✅ 기획전 상세 페이지
 @app.route("/cluster/<int:cluster_id>")
 def show_cluster(cluster_id):
     title = suggest_campaign_title(cluster_id)
-    filtered = df_data[df_data["cluster_id"] == cluster_id]
+    filtered = df[df["cluster_id"] == cluster_id]
     items = [
         {
-            "description": row.get("description", ""),
+            "name": row.get("name", ""),
+            "ratings": row.get("ratings", ""),
+            "price": row.get("price", ""),
+            "emotional_summary": row.get("emotional_summary", ""),
             "picture_url": row.get("picture_url", "").strip() if row.get("picture_url") else ""
         }
         for _, row in filtered.iterrows()
-    ]
-    return render_template("cluster.html", title=title, items=items)
-
-@app.route("/cheap")
-def cheap_special():
-    df_cheap = pd.read_csv("airbnb_cheap_under_35.csv")
-    title = "💸 5만원 이하 갓성비 숙소 모음"
-    items = [
-        {
-            "description": row.get("description", ""),
-            "picture_url": row.get("picture_url", "").strip() if row.get("picture_url") else ""
-        }
-        for _, row in df_cheap.iterrows()
     ]
     return render_template("cluster.html", title=title, items=items)
 
