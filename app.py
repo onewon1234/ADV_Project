@@ -13,7 +13,7 @@ os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 # 🔹 통합 기획전 데이터
 # 컬럼: cluster_id, marketing_text, emotional_summary, name, ratings, price, picture_url 등
-main_csv = "기획전_emotional_summary_cleaned.csv"
+main_csv = "기획전_emotional_summaries_cleaned.csv"
 df = pd.read_csv(main_csv)
 
 # cluster_id와 marketing_text로 기획전 타이틀 매핑
