@@ -4,7 +4,7 @@ import pandas as pd
 import torch
 from PIL import Image
 from transformers import CLIPProcessor, CLIPModel
-# from utils import get_top_images_by_tag, create_map as create_tag_map
+from utils import get_top_images_by_tag, create_map as create_tag_map
 from utils2 import recommend_similar_listings, create_map as create_image_map
 
 app = Flask(__name__)
@@ -51,23 +51,23 @@ def show_cluster(cluster_id):
     ]
     return render_template("cluster.html", title=title, items=items)
 
-# ✅ 해시태그 기반 추천 (임시 비활성화)
-# hashtags = [
-#     "Modern", "Nordic", "Natural", "Vintage Retro", "Lovely Romantic",
-#     "Industrial", "Unique", "French Provence", "Minimal Simple",
-#     "Classic Antique", "Korean Asian"
-# ]
+# ✅ 해시태그 기반 추천 (app1.py)
+hashtags = [
+    "Modern", "Nordic", "Natural", "Vintage Retro", "Lovely Romantic",
+    "Industrial", "Unique", "French Provence", "Minimal Simple",
+    "Classic Antique", "Korean Asian"
+]
 
-# @app.route('/tag-recommend', methods=['GET', 'POST'])
-# def tag_recommend():
-#     if request.method == 'GET':
-#         return render_template("tag_index.html", hashtags=hashtags)
-#     selected_tag = request.form.get('tag')
-#     if not selected_tag:
-#         return "❗ 해시태그를 선택해 주세요."
-#     recommendations = get_top_images_by_tag(selected_tag, top_n=6)
-#     create_tag_map(recommendations, output_path="static/map.html")
-#     return render_template("result.html", recommendations=recommendations, tag=selected_tag)
+@app.route('/tag-recommend', methods=['GET', 'POST'])
+def tag_recommend():
+    if request.method == 'GET':
+        return render_template("tag_index.html", hashtags=hashtags)
+    selected_tag = request.form.get('tag')
+    if not selected_tag:
+        return "❗ 해시태그를 선택해 주세요."
+    recommendations = get_top_images_by_tag(selected_tag, top_n=6)
+    create_tag_map(recommendations, output_path="static/map.html")
+    return render_template("result.html", recommendations=recommendations, tag=selected_tag)
 
 # ✅ 이미지 업로드 기반 추천 (app2.py)
 df_tags = pd.read_csv("data/clip최종df_이미지검색.csv")
