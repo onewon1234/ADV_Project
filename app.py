@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 import os
 import pandas as pd
 import torch
@@ -6,9 +6,11 @@ from PIL import Image
 from transformers import CLIPProcessor, CLIPModel
 from utils import get_top_images_by_tag, create_map as create_tag_map
 from utils2 import recommend_similar_listings, create_map as create_image_map
+import random
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
+app.secret_key = 'your-secret-key-here'  # ✅ 세션을 위한 시크릿 키 추가
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 # 🔹 통합 기획전 데이터
@@ -40,13 +42,19 @@ def show_cluster(cluster_id):
     title = suggest_campaign_title(cluster_id)
     filtered = df[df["cluster_id"] == cluster_id]
     
-    # ✅ 매물을 랜덤으로 섞기
-    filtered = filtered.sample(frac=1, random_state=None).reset_index(drop=True)
+    # ✅ 세션 기반 랜덤 - 새로고침하거나 다시 들어올 때만 바뀜
+    session_key = f'cluster_{cluster_id}_seed'
+    if session_key not in session:
+        # 새로운 방문이거나 세션이 없으면 새로운 랜덤 시드 생성
+        session[session_key] = random.randint(1, 10000)
+    
+    # 세션에 저장된 시드로 랜덤 섞기 (같은 세션에서는 항상 같은 순서)
+    filtered = filtered.sample(frac=1, random_state=session[session_key]).reset_index(drop=True)
     
     items = [
         {
             "name": row.get("name", ""),
-            "ratings": row.get("review_scores_accuracy", ""),  # ✅ ratings를 review_scores_accuracy로 변경
+            "ratings": row.get("review_scores_rating", ""),  
             "price": row.get("price", ""),
             "emotional_summary": row.get("emotional_summary", ""),
             "picture_url": row.get("picture_url", "").strip() if row.get("picture_url") else ""
