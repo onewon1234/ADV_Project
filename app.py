@@ -56,16 +56,28 @@ def show_cluster(cluster_id):
         # 30개 이하면 전체 사용
         filtered = filtered.reset_index(drop=True)
     
-    items = [
-        {
+    # ✅ 이미지 비율에 따라 분류
+    tall_images = []  # 세로가 긴 이미지들
+    normal_images = []  # 일반 이미지들
+    
+    for _, row in filtered.iterrows():
+        item = {
             "name": row.get("name", ""),
             "ratings": row.get("review_scores_rating", ""),  
             "price": row.get("price", ""),
             "emotional_summary": row.get("emotional_summary", ""),
             "picture_url": row.get("picture_url", "").strip() if row.get("picture_url") else ""
         }
-        for _, row in filtered.iterrows()
-    ]
+        
+        # 이미지 URL이 있으면 tall_images에 추가 (세로가 긴 것으로 가정)
+        if item["picture_url"]:
+            tall_images.append(item)
+        else:
+            normal_images.append(item)
+    
+    # tall_images를 먼저, 그 다음 normal_images 순서로 배치
+    items = tall_images + normal_images
+    
     return render_template("cluster.html", title=title, items=items)
 
 # ✅ 해시태그 기반 추천 (app1.py)

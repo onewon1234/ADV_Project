@@ -15,16 +15,15 @@
       margin-bottom: 30px;
     }
 
-    /* ✅ Masonry Grid View */
-    .masonry-grid {
-      column-count: 3;
-      column-gap: 20px;
+    /* ✅ 일반 그리드로 변경 */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
       padding: 0 20px;
     }
 
     .card {
-      break-inside: avoid;
-      margin-bottom: 20px;
       background-color: white;
       border: 1px solid #ddd;
       border-radius: 8px;
@@ -36,7 +35,7 @@
 
     .card img {
       width: 100%;
-      height: auto;
+      height: 200px; /* ✅ 고정 높이 */
       object-fit: cover;
       background-color: #eee;
     }
@@ -78,14 +77,14 @@
 
     /* 반응형 디자인 */
     @media (max-width: 1200px) {
-      .masonry-grid {
-        column-count: 2;
+      .card-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
     }
 
     @media (max-width: 768px) {
-      .masonry-grid {
-        column-count: 1;
+      .card-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -94,7 +93,7 @@
 
   <h1>{{ title }}</h1>
 
-  <div class="masonry-grid">
+  <div class="card-grid">
     {% for item in items %}
       <div class="card">
         {% set image = item.picture_url.strip() if item.picture_url else "" %}
