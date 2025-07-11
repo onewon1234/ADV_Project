@@ -42,14 +42,19 @@ def show_cluster(cluster_id):
     title = suggest_campaign_title(cluster_id)
     filtered = df[df["cluster_id"] == cluster_id]
     
-    # ✅ 세션 기반 랜덤 - 새로고침하거나 다시 들어올 때만 바뀜
-    session_key = f'cluster_{cluster_id}_seed'
-    if session_key not in session:
-        # 새로운 방문이거나 세션이 없으면 새로운 랜덤 시드 생성
-        session[session_key] = random.randint(1, 10000)
-    
-    # 세션에 저장된 시드로 랜덤 섞기 (같은 세션에서는 항상 같은 순서)
-    filtered = filtered.sample(frac=1, random_state=session[session_key]).reset_index(drop=True)
+    # ✅ 최대 90개로 제한
+    if len(filtered) > 90:
+        # 세션 기반 랜덤 - 새로고침하거나 다시 들어올 때만 바뀜
+        session_key = f'cluster_{cluster_id}_seed'
+        if session_key not in session:
+            # 새로운 방문이거나 세션이 없으면 새로운 랜덤 시드 생성
+            session[session_key] = random.randint(1, 10000)
+        
+        # 세션에 저장된 시드로 랜덤 섞기 후 상위 90개 선택
+        filtered = filtered.sample(frac=1, random_state=session[session_key]).head(90).reset_index(drop=True)
+    else:
+        # 90개 이하면 전체 사용
+        filtered = filtered.reset_index(drop=True)
     
     items = [
         {
