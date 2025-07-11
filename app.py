@@ -39,10 +39,14 @@ def index():
 def show_cluster(cluster_id):
     title = suggest_campaign_title(cluster_id)
     filtered = df[df["cluster_id"] == cluster_id]
+    
+    # ✅ 매물을 랜덤으로 섞기
+    filtered = filtered.sample(frac=1, random_state=None).reset_index(drop=True)
+    
     items = [
         {
             "name": row.get("name", ""),
-            "ratings": row.get("ratings", ""),
+            "ratings": row.get("review_scores_accuracy", ""),  # ✅ ratings를 review_scores_accuracy로 변경
             "price": row.get("price", ""),
             "emotional_summary": row.get("emotional_summary", ""),
             "picture_url": row.get("picture_url", "").strip() if row.get("picture_url") else ""
