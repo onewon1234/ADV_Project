@@ -70,7 +70,7 @@ def tag_recommend():
     return render_template("result.html", recommendations=recommendations, tag=selected_tag)
 
 # ✅ 이미지 업로드 기반 추천 (app2.py)
-df_tags = pd.read_csv("data/clip최종df_이미지검색.csv")
+df_tags = pd.read_csv("clip최종df_이미지검색.csv")
 clip_hashtags = [
     "a family-friendly place", "a honeymoon getaway", "a space for solo travel", "a pet-friendly home",
     "a room for workation", "a house with a BBQ area", "a camping-themed room", "a room with a hot tub",
