@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for
 from utils2 import recommend_similar_listings, create_map
 import os
 import pandas as pd
@@ -7,10 +7,10 @@ from PIL import Image
 from transformers import CLIPProcessor, CLIPModel
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = 'uploads'
+app.config['UPLOAD_FOLDER'] = os.path.join('static', 'uploads')
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-df_tags = pd.read_csv("data/clip최종df_이미지검색.csv")
+df_tags = pd.read_csv("data/clipfinaldf.csv")
 
 hashtags = ["a family-friendly place",
     "a honeymoon getaway",
@@ -70,10 +70,14 @@ def recommend():
 
     create_map(recommendations)  # 🗺 지도 생성 추가
 
+    # 업로드한 이미지의 static 경로 생성
+    user_image_url = url_for('static', filename='uploads/' + uploaded_file.filename)
+
     return render_template(
         "result2.html",
         tags=top_tags,
-        recommendations=recommendations.to_dict(orient='records')
+        recommendations=recommendations.to_dict(orient='records'),
+        user_image_url=user_image_url
     )
 
 if __name__ == '__main__':

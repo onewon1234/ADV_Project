@@ -40,8 +40,9 @@ def recommend_similar_listings(uploaded_image_path, df_tags, hashtags, hashtag_e
     scores = []
     hashtags_list = []
     for _, row in df_candidates.iterrows():
-        row_tags = [row.get(f"tag{i+1}", "") for i in range(5)]
-        row_scores = [row.get(f"score{i+1}", 0.0) for i in range(5)]
+        # tag1, tag7, tag8 사용
+        row_tags = [row.get("tag1", ""), row.get("tag7", ""), row.get("tag8", "")]
+        row_scores = [row.get("score1", 0.0), row.get("score7", 0.0), row.get("score8", 0.0)]
         matched_scores = [row_scores[i] for i in range(len(row_tags)) if row_tags[i] in top_tags]
 
         raw_hashtags = row.get("hashtags", "[]")
@@ -60,20 +61,25 @@ def recommend_similar_listings(uploaded_image_path, df_tags, hashtags, hashtag_e
     top_matches = df_candidates.sort_values(by="match_score", ascending=False).head(top_k)
 
     return top_tags, top_matches[
-        ["id", "picture_url", "price", "number_of_reviews", "review_scores_rating", 
-         "hashtags", "latitude", "longitude", "listing_url"]
+        ["id", "name", "picture_url", "price", "number_of_reviews", "review_scores_rating", 
+         "hashtags", "latitude", "longitude", "listing_url", "tag1", "tag7", "tag8"]
     ]
 
 # 지도 생성 함수
 def create_map(recommendations):
-    center_lat = recommendations["latitude"].mean()
-    center_lon = recommendations["longitude"].mean()
+    # 첫 번째 숙소의 위치를 지도 중심으로 사용
+    if not recommendations.empty:
+        center_lat = recommendations.iloc[0]["latitude"]
+        center_lon = recommendations.iloc[0]["longitude"]
+    else:
+        center_lat = 37.5665  # 서울 기본값
+        center_lon = 126.9780
     m = folium.Map(location=[center_lat, center_lon], zoom_start=12)
 
     for _, row in recommendations.iterrows():
         folium.Marker(
             location=[row["latitude"], row["longitude"]],
-            tooltip=f"{row['price']}원 | 평점: {row['review_scores_rating']}"
+            tooltip=f"{row['name']} | {row['price']}원 | 평점: {row['review_scores_rating']}"
         ).add_to(m)
 
     m.save("static/map.html")
