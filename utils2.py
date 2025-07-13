@@ -9,7 +9,8 @@ import folium
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 # 모델 및 프로세서 불러오기
-model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32").to(device)
+model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32",
+                                  use_safetensors=True).to(device)
 processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
 
 # 해시태그 임베딩 계산 함수
