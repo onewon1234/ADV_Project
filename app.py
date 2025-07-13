@@ -80,7 +80,7 @@ def show_cluster(cluster_id):
     return render_template("cluster.html", title=title, items=items)
 
 # ✅ 해시태그 기반 추천 (app1.py)
-df_tags = pd.read_csv("merged_host_숙소.csv")
+df_tags = pd.read_csv("clipfinaldf.csv")
 
 hashtags = [
     "Modern",
@@ -134,7 +134,7 @@ def tag_recommend():
     return render_template("result.html", recommendations=df_to_records_with_tag_dict(recommendations), tag=selected_tag)
 
 # ✅ 이미지 업로드 기반 추천 (app2.py)
-df_tags = pd.read_csv("merged_host_숙소.csv")
+df_tags = pd.read_csv("clipfinaldf.csv")
 
 clip_hashtags = ["a family-friendly place",
     "a honeymoon getaway",
@@ -207,7 +207,7 @@ import re
 
 @app.route('/host-swiper')
 def host_swiper():
-    df = pd.read_csv('merged_host_숙소.csv')
+    df = pd.read_csv('merged_host_최최최종.csv')
     print(df.columns.tolist())
 
     # 각 cluster_name(호스트 유형)별로 1명씩 랜덤하게 뽑기
@@ -249,7 +249,7 @@ def host_swiper():
 
 @app.route('/refresh')
 def refresh():
-    df = pd.read_csv('merged_host_숙소.csv')
+    df = pd.read_csv('merged_host_최최최종.csv')
     # 각 cluster_name(호스트 유형)별로 1명씩 랜덤하게 뽑기
     grouped_sample = (
         df.groupby('cluster_name', group_keys=False)
