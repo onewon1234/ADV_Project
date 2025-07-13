@@ -80,38 +80,95 @@ def show_cluster(cluster_id):
     return render_template("cluster.html", title=title, items=items)
 
 # ✅ 해시태그 기반 추천 (app1.py)
+df_tags = pd.read_csv("merged_host_숙소.csv")
+
 hashtags = [
-    "Modern", "Nordic", "Natural", "Vintage Retro", "Lovely Romantic",
-    "Industrial", "Unique", "French Provence", "Minimal Simple",
-    "Classic Antique", "Korean Asian"
+    "Modern",
+    "Nordic", 
+    "Natural",
+    "Vintage Retro",
+    "Lovely Romantic",
+    "Industrial",
+    "Unique",
+    "French Provence",
+    "Minimal Simple",
+    "Classic Antique",
+    "Korean Asian"
 ]
+
+def df_to_records_with_tag_dict(df):
+    records = []
+    for _, row in df.iterrows():
+        records.append({
+            "id": row["id"],
+            "name": row.get("name", "N/A"),
+            "picture_url": row["picture_url"],
+            "price": row.get("price", "N/A"),
+            "number_of_reviews": row.get("number_of_reviews", "N/A"),
+            "review_scores_rating": row.get("review_scores_rating", "N/A"),
+            "latitude": row.get("latitude", None),
+            "longitude": row.get("longitude", None),
+            "listing_url": row.get("listing_url", "#"),
+            "tag1": {"tag": row.get("tag1", "N/A")},
+            "tag7": {"tag": row.get("tag7", "N/A")},
+            "tag8": {"tag": row.get("tag8", "N/A")}
+        })
+    return records
 
 @app.route('/tag-recommend', methods=['GET', 'POST'])
 def tag_recommend():
     if request.method == 'GET':
         return render_template("tag_index.html", hashtags=hashtags)
+    
     selected_tag = request.form.get('tag')
     if not selected_tag:
         return "❗ 해시태그를 선택해 주세요."
-    recommendations = get_top_images_by_tag(selected_tag, top_n=6)
+    
+    filtered = df_tags[df_tags['tag7'] == selected_tag].copy()
+    if not filtered.empty:
+        recommendations = filtered.sample(n=min(6, len(filtered)), random_state=None)
+    else:
+        recommendations = filtered.head(0)
+    
     create_tag_map(recommendations, output_path="static/map.html")
-    return render_template("result.html", recommendations=recommendations, tag=selected_tag)
+    return render_template("result.html", recommendations=df_to_records_with_tag_dict(recommendations), tag=selected_tag)
 
 # ✅ 이미지 업로드 기반 추천 (app2.py)
-df_tags = pd.read_csv("clip_final_image_search.csv")
-clip_hashtags = [
-    "a family-friendly place", "a honeymoon getaway", "a space for solo travel", "a pet-friendly home",
-    "a room for workation", "a house with a BBQ area", "a camping-themed room", "a room with a hot tub",
-    "a cozy fireplace room", "a home theater with projector", "a bunk bed setup", "a room with large windows",
-    "a home with wood floors", "a loft-style apartment", "a bright and airy room", "a room with warm lighting",
-    "a room with high ceilings", "a space filled with natural light", "an open and spacious layout",
-    "a clean and neat interior", "a spacious home", "a white-toned interior", "a room with dark wood",
-    "a pastel-colored space", "an artistic interior", "a Scandinavian-style home", "a Japanese-style room"
+df_tags = pd.read_csv("merged_host_숙소.csv")
+
+clip_hashtags = ["a family-friendly place",
+    "a honeymoon getaway",
+    "a space for solo travel",
+    "a pet-friendly home",
+    "a room for workation",
+    "a house with a BBQ area",
+    "a camping-themed room",
+    "a room with a hot tub",
+    "a cozy fireplace room",
+    "a home theater with projector",
+    "a bunk bed setup",
+    "a room with large windows",
+    "a home with wood floors",
+    "a loft-style apartment",
+    "a bright and airy room",
+    "a room with warm lighting",
+    "a room with high ceilings",
+    "a space filled with natural light",
+    "an open and spacious layout",
+    "a clean and neat interior",
+    "a spacious home",
+    "a white-toned interior",
+    "a room with dark wood",
+    "a pastel-colored space",
+    "an artistic interior",
+    "a Scandinavian-style home",
+    "a Japanese-style room"
 ]
+
 device = "cuda" if torch.cuda.is_available() else "cpu"
-model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32",
-                                  use_safetensors=True).to(device)
+model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32").to(device)
 processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
+
 text_inputs = processor(text=clip_hashtags, return_tensors="pt", padding=True, truncation=True).to(device)
 with torch.no_grad():
     hashtag_embs = model.get_text_features(**text_inputs)
@@ -121,20 +178,108 @@ with torch.no_grad():
 def image_recommend():
     if request.method == 'GET':
         return render_template("image_index.html")
+    
     uploaded_file = request.files['image']
     if uploaded_file.filename == '':
         return "❗이미지를 업로드해 주세요."
+
     image_path = os.path.join(app.config['UPLOAD_FOLDER'], uploaded_file.filename)
     uploaded_file.save(image_path)
+
     top_tags, recommendations = recommend_similar_listings(
         image_path, df_tags, clip_hashtags, hashtag_embs
     )
-    create_image_map(recommendations)  # 지도 생성
+
+    create_image_map(recommendations)  # 🗺 지도 생성 추가
+
+    # 업로드한 이미지의 static 경로 생성
+    user_image_url = url_for('static', filename='uploads/' + uploaded_file.filename)
+
     return render_template(
         "result2.html",
         tags=top_tags,
-        recommendations=recommendations.to_dict(orient='records')
+        recommendations=recommendations.to_dict(orient='records'),
+        user_image_url=user_image_url
     )
+
+# ✅ 호스트 스와이퍼 섹션 (app3.py)
+import re
+
+@app.route('/host-swiper')
+def host_swiper():
+    df = pd.read_csv('merged_host_숙소.csv')
+    print(df.columns.tolist())
+
+    # 각 cluster_name(호스트 유형)별로 1명씩 랜덤하게 뽑기
+    grouped_sample = (
+        df.groupby('cluster_name', group_keys=False)
+          .apply(lambda x: x.sample(1))
+    )
+
+    # 유형이 6개 이상인 경우만 6명 선택
+    if len(grouped_sample) > 6:
+        selected_hosts = grouped_sample.sample(n=6)
+    else:
+        selected_hosts = grouped_sample
+
+    # summary 컬럼 가공 함수
+    def clean_summary(text):
+        if not isinstance(text, str):
+            return ''
+        # 첫글자 대문자
+        text = text.strip()
+        if text:
+            text = text[0].upper() + text[1:]
+        # 문장부호(.,?!) 앞 공백 제거
+        text = re.sub(r'\s+([\.,?!])', r'\1', text)
+        # 문장 끝에 문장부호 여러 개면 첫 번째만 남김
+        text = re.sub(r'([\.,?!])([\.,?!]+)$', r'\1', text)
+        # 온점(.) 뒤에 나오는 첫 글자 대문자
+        def capitalize_after_dot(match):
+            return match.group(1) + match.group(2).upper()
+        text = re.sub(r'(\.\s*)([a-zA-Z가-힣])', capitalize_after_dot, text)
+        return text
+
+    # summary 컬럼 가공 적용
+    selected_hosts['summary'] = selected_hosts['summary'].apply(clean_summary)
+
+    # 리스트 형태로 전달
+    hosts = selected_hosts.to_dict(orient='records')
+    return render_template('host_swiper.html', hosts=hosts)
+
+@app.route('/refresh')
+def refresh():
+    df = pd.read_csv('merged_host_숙소.csv')
+    # 각 cluster_name(호스트 유형)별로 1명씩 랜덤하게 뽑기
+    grouped_sample = (
+        df.groupby('cluster_name', group_keys=False)
+          .apply(lambda x: x.sample(1))
+    )
+    if len(grouped_sample) > 6:
+        selected_hosts = grouped_sample.sample(n=6)
+    else:
+        selected_hosts = grouped_sample
+    # summary 컬럼 가공 함수 (중복 정의 방지)
+    def clean_summary(text):
+        if not isinstance(text, str):
+            return ''
+        text = text.strip()
+        if text:
+            text = text[0].upper() + text[1:]
+        text = re.sub(r'\s+([\.,?!])', r'\1', text)
+        text = re.sub(r'([\.,?!])([\.,?!]+)$', r'\1', text)
+        def capitalize_after_dot(match):
+            return match.group(1) + match.group(2).upper()
+        text = re.sub(r'(\.\s*)([a-zA-Z가-힣])', capitalize_after_dot, text)
+        return text
+    selected_hosts['summary'] = selected_hosts['summary'].apply(clean_summary)
+    hosts = selected_hosts.to_dict(orient='records')
+    return jsonify({'hosts': hosts})
+
+@app.route('/host_swiper_partial', methods=['POST'])
+def host_swiper_partial():
+    hosts = request.get_json().get('hosts', [])
+    return render_template('host_swiper.html', hosts=hosts)
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000, debug=True)  # ✅ 디버그 모드 활성화

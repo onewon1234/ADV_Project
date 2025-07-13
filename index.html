@@ -54,6 +54,200 @@
       text-align: center;
       margin-top: 10px;
     }
+    
+    /* 호스트 스와이퍼 스타일 */
+    .swiper {
+      width: 100%;
+      padding: 30px 0 50px 0;
+    }
+    .swiper-slide {
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+    }
+    .host-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+      width: 320px;
+      min-width: 280px;
+      max-width: 340px;
+      display: flex;
+      flex-direction: column;
+      padding: 24px 22px 18px 22px;
+      position: relative;
+      margin: 0 8px;
+    }
+    /* 호스트 유형 */
+    .host-type-row {
+      position: absolute;
+      top: 18px;
+      left: 22px;
+      display: flex;
+      align-items: center;
+      font-size: 0.98em;
+      color: #4a4a4a;
+      font-weight: 500;
+      gap: 6px;
+    }
+    .host-type-icon {
+      font-size: 1.1em;
+      margin-right: 2px;
+    }
+    /* 호스트 사진/이름/응답률 */
+    .host-main-row {
+      display: flex;
+      align-items: center;
+      margin-top: 36px;
+      margin-bottom: 8px;
+    }
+    .host-photo {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2.5px solid #e0e0e0;
+      margin-right: 16px;
+    }
+    .host-info-col {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .host-name-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .host-name {
+      font-size: 1.13em;
+      font-weight: 600;
+      color: #222;
+    }
+    .response-badge, .superhost-badge, .host-years {
+      font-size: 0.82em;
+      font-weight: 600;
+    }
+    .response-badge {
+      background: #e0f7f1;
+      color: #1ca97c;
+      font-size: 0.75em;
+      font-weight: 600;
+      border-radius: 12px;
+      padding: 2px 10px;
+      margin-left: 8px;
+    }
+    .superhost-badge {
+      display: flex;
+      align-items: center;
+      color: #888;
+      font-weight: 500;
+      font-size: 0.82em;
+      background: none;
+      border: none;
+      padding: 0;
+      gap: 4px;
+    }
+    .superhost-badge .medal {
+      font-size: 1.1em;
+      margin-right: 2px;
+    }
+    .host-years {
+      color: #888;
+      font-weight: 500;
+    }
+    /* 소개글 */
+    .host-summary {
+      font-size: 0.99em;
+      color: #444;
+      margin-bottom: 10px;
+      text-align: left;
+      min-height: 48px;
+    }
+    /* 해시태그 */
+    .hashtags {
+      margin-bottom: 10px;
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 4px;
+    }
+    .hashtag {
+      display: inline-block;
+      background: #f0f0f0;
+      color: #666;
+      font-size: 0.82em;
+      border-radius: 7px;
+      padding: 2px 8px;
+      margin: 0;
+      white-space: nowrap;
+    }
+    /* 추천 게스트 */
+    .guest-recommend-box {
+      margin: 14px 0 0 0;
+      padding: 12px 8px 30px 14px;
+      background: #e6e6fa;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-height: 56px;
+      position: relative;
+    }
+    .guest-recommend-title {
+      font-size: 0.93em;
+      font-weight: bold;
+      color: #222;
+      margin-bottom: 6px;
+      margin-left: 2px;
+    }
+    .guest-recommend-names {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+    .guest-recommend-name {
+      background: #a48be0;
+      color: #fff;
+      font-size: 0.82em;
+      border-radius: 7px;
+      padding: 2px 10px;
+      margin: 2px 2px 2px 0;
+      white-space: nowrap;
+    }
+    /* 자세히 보기 */
+    .detail-link {
+      position: absolute;
+      right: 22px;
+      bottom: 10px;
+      color: #e84c60;
+      font-size: 0.82em;
+      font-weight: 500;
+      text-decoration: none;
+      background: none;
+      padding: 0;
+      border: none;
+    }
+    .detail-link:hover {
+      text-decoration: underline;
+    }
+    /* Swiper navigation */
+    .swiper-button-next, .swiper-button-prev {
+      color: #bbb !important;
+      width: 22px !important;
+      height: 22px !important;
+      min-width: 22px !important;
+      min-height: 22px !important;
+      font-size: 18px !important;
+    }
+    .swiper-button-next:after, .swiper-button-prev:after {
+      font-size: 18px !important;
+    }
+    @media (max-width: 1100px) {
+      .host-card {width: 45vw; min-width: 220px;}
+    }
+    @media (max-width: 700px) {
+      .host-card {width: 98vw; min-width: 160px;}
+    }
   </style>
   <script>
     function selectTag(tagName) {
@@ -108,6 +302,66 @@
         <button type="submit">추천 보기</button>
       </form>
     </div>
+
+    <!-- 4. 호스트 스와이퍼 -->
+    <div class="box">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+        <h2 style="margin: 0;">👥 유형별 호스트 추천</h2>
+        <button id="refresh-btn" title="새로고침" style="background:none;border:none;cursor:pointer;padding:0 4px;vertical-align:middle;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.13-3.36L23 10"/><path d="M20.49 15A9 9 0 0 1 5.34 18.36L1 14"/></svg>
+        </button>
+      </div>
+      <div id="host-swiper-wrapper" style="margin-top: 8px;">
+        {% include 'host_swiper.html' %}
+      </div>
+    </div>
   </div>
+
+  <!-- Swiper.js CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script>
+    let swiper;
+    function initSwiper() {
+      if (swiper) swiper.destroy(true, true);
+      swiper = new Swiper('.swiper', {
+        slidesPerView: 4,
+        spaceBetween: 8,
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+        breakpoints: {
+          1100: { slidesPerView: 4 },
+          700: { slidesPerView: 2 },
+          0: { slidesPerView: 1 }
+        }
+      });
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+      initSwiper();
+      // 새로고침 버튼 기능
+      const refreshBtn = document.getElementById('refresh-btn');
+      if (refreshBtn) {
+        refreshBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          fetch('/refresh')
+            .then(res => res.json())
+            .then(data => {
+              fetch('/host_swiper_partial', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({hosts: data.hosts})
+              })
+              .then(res => res.text())
+              .then(html => {
+                document.getElementById('host-swiper-wrapper').innerHTML = html;
+                initSwiper();
+              });
+            });
+        });
+      }
+    });
+  </script>
 </body>
 </html>
