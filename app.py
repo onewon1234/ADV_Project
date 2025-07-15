@@ -117,53 +117,24 @@ with torch.no_grad():
     hashtag_embs = model.get_text_features(**text_inputs)
     hashtag_embs = hashtag_embs / hashtag_embs.norm(dim=1, keepdim=True)
 
-from transformers import CLIPProcessor, CLIPModel
-
-# ✅ Lazy 로딩 변수 (전역으로 선언)
-clip_model = None
-clip_processor = None
-hashtag_embs = None
-
 @app.route('/image-recommend', methods=['GET', 'POST'])
 def image_recommend():
-    global clip_model, clip_processor, hashtag_embs
-
     if request.method == 'GET':
         return render_template("image_index.html")
-
-    # ✅ 최초 요청 시 모델 로드
-    if clip_model is None or clip_processor is None or hashtag_embs is None:
-        import torch
-
-        device = "cuda" if torch.cuda.is_available() else "cpu"
-        clip_model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32",
-                                               use_safetensors=True).to(device)
-        clip_processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
-
-        text_inputs = clip_processor(text=clip_hashtags, return_tensors="pt", padding=True, truncation=True).to(device)
-        with torch.no_grad():
-            hashtag_embs = clip_model.get_text_features(**text_inputs)
-            hashtag_embs = hashtag_embs / hashtag_embs.norm(dim=1, keepdim=True)
-
-    # ✅ 이미지 업로드 처리
     uploaded_file = request.files['image']
     if uploaded_file.filename == '':
         return "❗이미지를 업로드해 주세요."
-
     image_path = os.path.join(app.config['UPLOAD_FOLDER'], uploaded_file.filename)
     uploaded_file.save(image_path)
-
     top_tags, recommendations = recommend_similar_listings(
         image_path, df_tags, clip_hashtags, hashtag_embs
     )
     create_image_map(recommendations)  # 지도 생성
-
     return render_template(
         "result2.html",
         tags=top_tags,
         recommendations=recommendations.to_dict(orient='records')
     )
-
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=8000, debug=True)  # ✅ 디버그 모드 활성화
