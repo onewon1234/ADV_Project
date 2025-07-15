@@ -110,8 +110,8 @@ clip_hashtags = [
 ]
 device = "cuda" if torch.cuda.is_available() else "cpu"
 model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32",
-                                  use_safetensors=True, use_fast=True).to(device)
-processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
+                                  use_safetensors=True).to(device)
+processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32", use_fast=True)
 text_inputs = processor(text=clip_hashtags, return_tensors="pt", padding=True, truncation=True).to(device)
 with torch.no_grad():
     hashtag_embs = model.get_text_features(**text_inputs)
