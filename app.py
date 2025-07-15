@@ -110,7 +110,7 @@ clip_hashtags = [
 ]
 device = "cuda" if torch.cuda.is_available() else "cpu"
 model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32",
-                                  use_safetensors=True).to(device)
+                                  use_safetensors=True, use_fast=True).to(device)
 processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
 text_inputs = processor(text=clip_hashtags, return_tensors="pt", padding=True, truncation=True).to(device)
 with torch.no_grad():
@@ -137,4 +137,4 @@ def image_recommend():
     )
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5000, debug=True)  # ✅ 디버그 모드 활성화
+    app.run(host="0.0.0.0", port=8000, debug=True)  # ✅ 디버그 모드 활성화
