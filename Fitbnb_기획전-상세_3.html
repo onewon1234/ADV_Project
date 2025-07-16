@@ -11,27 +11,27 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
 <script src="https://cdn.tailwindcss.com/3.4.16"></script>
 <script>
-tailwind.config={
-theme:{
-extend:{
-colors:{
-primary:'#FF5A5F',
-secondary:'#00A699'
-},
-borderRadius:{
-'none':'0px',
-'sm':'4px',
-DEFAULT:'8px',
-'md':'12px',
-'lg':'16px',
-'xl':'20px',
-'2xl':'24px',
-'3xl':'32px',
-'full':'9999px',
-'button':'8px'
-}
-}
-}
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        primary: '#FF5A5F',
+        secondary: '#00A699'
+      },
+      borderRadius: {
+        'none': '0px',
+        'sm': '4px',
+        DEFAULT: '8px',
+        'md': '12px',
+        'lg': '16px',
+        'xl': '20px',
+        '2xl': '24px',
+        '3xl': '32px',
+        'full': '9999px',
+        'button': '8px'
+      }
+    }
+  }
 }
 </script>
 <style>
@@ -60,7 +60,7 @@ transform: translateY(-1px);
 <a href="#" class="text-gray-700 hover:text-primary font-medium">홈</a>
 <a href="#" class="text-gray-700 hover:text-primary font-medium">이미지 검색</a>
 <a href="#" class="text-gray-700 hover:text-primary font-medium">해시태그</a>
-<a href="#" class="text-primary font-medium">기획전</a>
+<a href="#" class="text-primary font-bold border-b-2 border-primary pb-0.5">기획전</a>
 <a href="#" class="text-gray-700 hover:text-primary font-medium">호스트</a>
 </nav>
 <div class="flex items-center space-x-4">
@@ -76,18 +76,15 @@ transform: translateY(-1px);
 
 <main class="container mx-auto px-4 py-8">
 <!-- 상단 배너 -->
-<section class="mb-12">
+<section class="exhibition-banner">
 <div class="relative h-80 rounded-2xl overflow-hidden mb-8">
-<img src="https://readdy.ai/api/search-image?query=a%20cozy%20winter%20cabin%20with%20snow%20outside%2C%20warm%20interior%20lighting%2C%20fireplace%2C%20wooden%20furniture%2C%20comfortable%20sofa%2C%20winter%20atmosphere%2C%20mountain%20landscape&width=1200&height=400&seq=1&orientation=landscape" alt="겨울 감성 숙소" class="w-full h-full object-cover">
+<img src="https://i.ibb.co/DPpXYqdw/da87fd4a48e2bb73ade8b238a5b751e4.jpg" alt="겨울 감성 숙소" class="w-full h-full object-cover">
 <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
 <div class="text-center text-white">
 <h1 class="text-4xl md:text-5xl font-bold mb-4">겨울 감성 숙소 기획전</h1>
 <p class="text-xl md:text-2xl">따뜻한 겨울을 위한 감성 숙소를 모았습니다</p>
 </div>
 </div>
-</div>
-<div class="text-center mb-8">
-<p class="text-gray-600 text-lg">겨울 여행을 위한 특별한 숙소를 지금 만나보세요!</p>
 </div>
 </section>
 
@@ -251,6 +248,81 @@ transform: translateY(-1px);
 </div>
 </div>
 </div>
+<!-- 숙소 카드 7 -->
+<div class="property-card bg-white rounded-lg shadow-md overflow-hidden transition-all">
+<div class="relative h-48 overflow-hidden">
+<img src="https://readdy.ai/api/search-image?query=modern%20apartment%20with%20lake%20view%20in%20seattle%2C%20large%20windows%2C%20contemporary%20interior%2C%20mountain%20background&width=600&height=400&seq=8&orientation=landscape" alt="시애틀 레이크뷰 아파트" class="w-full h-full object-cover">
+<div class="absolute top-3 right-3">
+<i class="ri-heart-line text-white text-xl drop-shadow-lg"></i>
+</div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-lg font-bold text-gray-900">시애틀 레이크뷰 아파트</h3>
+<div class="flex items-center">
+<i class="ri-star-fill text-yellow-400 text-sm mr-1"></i>
+<span class="text-sm text-gray-600">4.8 (89)</span>
+</div>
+</div>
+<p class="text-gray-600 text-sm mb-3">워싱턴 호수가 내려다보이는 아름다운 아파트입니다. 넓은 발코니에서 산과 호수의 조화로운 풍경을 감상할 수 있고, 현대적인 시설로 편안한 휴식을 제공합니다.</p>
+<div class="flex justify-between items-center">
+<div class="text-lg font-bold text-gray-900">₩190,000</div>
+<button class="bg-primary text-white px-4 py-2 rounded-button text-sm font-medium hover:bg-opacity-90">
+자세히 보기
+</button>
+</div>
+</div>
+</div>
+<!-- 숙소 카드 8 -->
+<div class="property-card bg-white rounded-lg shadow-md overflow-hidden transition-all">
+<div class="relative h-48 overflow-hidden">
+<img src="https://readdy.ai/api/search-image?query=historic%20house%20in%20boston%2C%20traditional%20architecture%2C%20brick%20exterior%2C%20classic%20interior%2C%20elegant%20furniture&width=600&height=400&seq=9&orientation=landscape" alt="보스턴 히스토릭 하우스" class="w-full h-full object-cover">
+<div class="absolute top-3 right-3">
+<i class="ri-heart-line text-white text-xl drop-shadow-lg"></i>
+</div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-lg font-bold text-gray-900">보스턴 히스토릭 하우스</h3>
+<div class="flex items-center">
+<i class="ri-star-fill text-yellow-400 text-sm mr-1"></i>
+<span class="text-sm text-gray-600">4.7 (67)</span>
+</div>
+</div>
+<p class="text-gray-600 text-sm mb-3">보스턴의 역사가 담긴 전통적인 하우스입니다. 클래식한 건축과 세련된 인테리어가 조화를 이루며, 도시의 문화적 분위기를 느낄 수 있는 특별한 공간입니다.</p>
+<div class="flex justify-between items-center">
+<div class="text-lg font-bold text-gray-900">₩210,000</div>
+<button class="bg-primary text-white px-4 py-2 rounded-button text-sm font-medium hover:bg-opacity-90">
+자세히 보기
+</button>
+</div>
+</div>
+</div>
+<!-- 숙소 카드 9 -->
+<div class="property-card bg-white rounded-lg shadow-md overflow-hidden transition-all">
+<div class="relative h-48 overflow-hidden">
+<img src="https://readdy.ai/api/search-image?query=luxury%20condo%20in%20miami%20beach%2C%20ocean%20view%2C%20modern%20design%2C%20white%20interior%2C%20palm%20trees&width=600&height=400&seq=10&orientation=landscape" alt="마이애미 비치 콘도" class="w-full h-full object-cover">
+<div class="absolute top-3 right-3">
+<i class="ri-heart-line text-white text-xl drop-shadow-lg"></i>
+</div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-lg font-bold text-gray-900">마이애미 비치 콘도</h3>
+<div class="flex items-center">
+<i class="ri-star-fill text-yellow-400 text-sm mr-1"></i>
+<span class="text-sm text-gray-600">4.9 (145)</span>
+</div>
+</div>
+<p class="text-gray-600 text-sm mb-3">마이애미 비치의 화려한 오션뷰 콘도입니다. 흰색 인테리어와 푸른 바다가 어우러진 트로피컬한 분위기로 완벽한 휴가를 즐길 수 있습니다.</p>
+<div class="flex justify-between items-center">
+<div class="text-lg font-bold text-gray-900">₩280,000</div>
+<button class="bg-primary text-white px-4 py-2 rounded-button text-sm font-medium hover:bg-opacity-90">
+자세히 보기
+</button>
+</div>
+</div>
+</div>
 </div>
 
 <!-- 더 보기 버튼 -->
@@ -263,22 +335,22 @@ transform: translateY(-1px);
 </main>
 
 <!-- 푸터 -->
-<footer class="bg-gray-900 text-white py-12">
-<div class="w-full max-w-7xl mx-auto px-6">
-<div class="text-center">
-<div class="font-['Pacifico'] text-2xl text-white mb-4">Fitbnb</div>
-<p class="text-gray-400 mb-8">감성으로 찾는 완벽한 숙소</p>
-<div class="flex justify-center space-x-6">
-<a href="#" class="text-gray-400 hover:text-white transition-colors">서비스 소개</a>
-<a href="#" class="text-gray-400 hover:text-white transition-colors">이용약관</a>
-<a href="#" class="text-gray-400 hover:text-white transition-colors">개인정보처리방침</a>
-<a href="#" class="text-gray-400 hover:text-white transition-colors">고객지원</a>
-</div>
-<div class="mt-8 pt-8 border-t border-gray-800">
-<p class="text-gray-500 text-sm">© 2024 Fitbnb by GO-DIVA. All rights reserved.</p>
-</div>
-</div>
-</div>
+<footer class="bg-gray-900 text-white py-6"> <!-- py-12 → py-6로 세로 여백 축소 -->
+  <div class="w-full max-w-7xl mx-auto px-6">
+    <div class="text-center">
+      <div class="font-['Pacifico'] text-2xl text-white mb-4">Fitbnb</div>
+      <p class="text-gray-400 mb-6">감성으로 찾는 완벽한 숙소</p> <!-- mb-8 → mb-6로 축소 -->
+      <div class="flex justify-center space-x-6">
+        <span class="text-gray-400">서비스 소개</span>
+        <span class="text-gray-400">이용약관</span>
+        <span class="text-gray-400">개인정보처리방침</span>
+        <span class="text-gray-400">고객지원</span>
+      </div>
+      <div class="mt-6 pt-6 border-t border-gray-800"> <!-- mt-8 pt-8 → mt-6 pt-6로 축소 -->
+        <p class="text-gray-500 text-sm">© 2025 Fitbnb by GO-DIVA. All rights reserved.</p>
+      </div>
+    </div>
+  </div>
 </footer>
 
 <script>
@@ -286,8 +358,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // 더보기 기능
     const loadMoreBtn = document.getElementById('load-more-btn');
     const propertyGrid = document.getElementById('property-grid');
-    let currentCount = 6;
-    const maxCount = 30;
+    let currentCount = 9; // 최초 9개 표시
+    const maxCount = 36; // 최대 36개
     
     // 추가 숙소 데이터
     const additionalProperties = [
@@ -341,6 +413,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     ];
     
+    // 최초 9개만 보이도록 카드 9개만 남기고 나머지는 숨김
+    const allCards = Array.from(propertyGrid.children);
+    allCards.forEach((card, idx) => {
+        card.style.display = idx < 9 ? '' : 'none';
+    });
+    
     loadMoreBtn.addEventListener('click', function() {
         if (currentCount >= maxCount) {
             loadMoreBtn.textContent = '모든 숙소를 불러왔습니다';
@@ -349,16 +427,14 @@ document.addEventListener('DOMContentLoaded', function() {
             loadMoreBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
             return;
         }
-        
-        // 6개씩 추가
-        const itemsToAdd = Math.min(6, maxCount - currentCount);
+        // 9개씩 추가
+        const itemsToAdd = Math.min(9, maxCount - currentCount);
         for (let i = 0; i < itemsToAdd; i++) {
-            const property = additionalProperties[currentCount % additionalProperties.length];
+            const property = additionalProperties[(currentCount + i - 9) % additionalProperties.length];
             const propertyCard = createPropertyCard(property);
             propertyGrid.appendChild(propertyCard);
-            currentCount++;
         }
-        
+        currentCount += itemsToAdd;
         if (currentCount >= maxCount) {
             loadMoreBtn.textContent = '모든 숙소를 불러왔습니다';
             loadMoreBtn.disabled = true;
