@@ -34,7 +34,20 @@ def index():
         {"cluster_id": cid, "title": suggest_campaign_title(cid)}
         for cid in sorted(df['cluster_id'].unique())
     ]
-    return render_template("index.html", items=campaign_items)
+    hashtags = [
+        "Modern",
+        "Nordic", 
+        "Natural",
+        "Vintage Retro",
+        "Lovely Romantic",
+        "Industrial",
+        "Unique",
+        "French Provence",
+        "Minimal Simple",
+        "Classic Antique",
+        "Korean Asian"
+    ]
+    return render_template("index.html", items=campaign_items, hashtags=hashtags)
 
 # ✅ 기획전 상세 페이지
 @app.route("/cluster/<int:cluster_id>")

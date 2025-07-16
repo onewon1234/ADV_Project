@@ -126,6 +126,11 @@ def index():
     ]
     return render_template("index.html", items=campaign_items, hosts=hosts, hashtags=hashtags)
 
+# /index.html로 접근해도 index.html이 렌더링되도록 라우트 추가
+@app.route('/index.html')
+def index_html():
+    return render_template("index.html")
+
 # 기획전 상세 페이지
 @app.route('/cluster/<int:cluster_id>')
 def show_cluster(cluster_id):
@@ -260,6 +265,17 @@ def refresh():
 def host_swiper_partial():
     hosts = request.get_json().get('hosts', [])
     return render_template('host_swiper.html', hosts=hosts)
+
+# result2 페이지 라우트 추가 (이미 있으면 생략)
+@app.route('/result2')
+def result2():
+    tags = []
+    return render_template("result2.html", tags=tags)
+
+# result 페이지 라우트 추가 (이미 있으면 생략)
+@app.route('/result')
+def result():
+    return render_template("result.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
