@@ -42,8 +42,7 @@ clip_hashtags = [
 
 # CLIP 모델 준비 (이미지 기반 추천)
 device = "cuda" if torch.cuda.is_available() else "cpu"
-model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32",
-                                 use_safetensors=True).to(device)
+model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32").to(device)
 processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
 text_inputs = processor(text=clip_hashtags, return_tensors="pt", padding=True, truncation=True)
 with torch.no_grad():
@@ -96,7 +95,7 @@ def get_banner_image(cluster_id):
 @app.route('/')
 def index():
     campaign_items = [
-        {"cluster_id": cid, "title": suggest_campaign_title(cid)}
+        {"cluster_id": cid, "title": suggest_campaign_title(cid), "banner_image": get_banner_image(cid)}
         for cid in sorted(df_campaign['cluster_id'].unique())
     ]
     # 호스트 카드용 데이터 미리 뽑기
@@ -109,10 +108,23 @@ def index():
             selected_hosts = grouped_sample.sample(n=6)
         else:
             selected_hosts = grouped_sample
-        hosts = selected_hosts.to_dict(orient='records')
+        hosts = []
+        for _, row in selected_hosts.iterrows():
+            host = row.to_dict()
+            hashtags = host.get('hashtags', '')
+            if isinstance(hashtags, str):
+                hashtags = [tag.strip() for tag in hashtags.split(',') if tag.strip()]
+            elif not isinstance(hashtags, list):
+                hashtags = []
+            host['hashtags'] = hashtags
+            hosts.append(host)
     else:
         hosts = []
-    return render_template("index.html", items=campaign_items, hosts=hosts)
+    hashtags = [
+        "Nordic", "Natural", "Vintage Retro", "Lovely Romantic", "Industrial",
+        "Unique", "French Provence", "Minimal Simple", "Classic Antique", "Korean"
+    ]
+    return render_template("index.html", items=campaign_items, hosts=hosts, hashtags=hashtags)
 
 # 기획전 상세 페이지
 @app.route('/cluster/<int:cluster_id>')
@@ -250,4 +262,4 @@ def host_swiper_partial():
     return render_template('host_swiper.html', hosts=hosts)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000, debug=True)
+    app.run(debug=True)
