@@ -42,7 +42,8 @@ clip_hashtags = [
 
 # CLIP 모델 준비 (이미지 기반 추천)
 device = "cuda" if torch.cuda.is_available() else "cpu"
-model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32").to(device)
+model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32",
+                                 use_safetensors=True).to(device)
 processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
 text_inputs = processor(text=clip_hashtags, return_tensors="pt", padding=True, truncation=True)
 with torch.no_grad():
@@ -262,4 +263,4 @@ def host_swiper_partial():
     return render_template('host_swiper.html', hosts=hosts)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=8000, debug=True)
