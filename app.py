@@ -42,8 +42,7 @@ clip_hashtags = [
 
 # CLIP 모델 준비 (이미지 기반 추천)
 device = "cuda" if torch.cuda.is_available() else "cpu"
-model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32",
-                                 use_safetensors=True).to(device)
+model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32").to(device)
 processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
 text_inputs = processor(text=clip_hashtags, return_tensors="pt", padding=True, truncation=True)
 with torch.no_grad():
@@ -126,6 +125,11 @@ def index():
         "Unique", "French Provence", "Minimal Simple", "Classic Antique", "Korean"
     ]
     return render_template("index.html", items=campaign_items, hosts=hosts, hashtags=hashtags)
+
+# /index.html로 접근해도 index.html이 렌더링되도록 라우트 추가
+@app.route('/index.html')
+def index_html():
+    return render_template("index.html")
 
 # 기획전 상세 페이지
 @app.route('/cluster/<int:cluster_id>')
@@ -262,5 +266,16 @@ def host_swiper_partial():
     hosts = request.get_json().get('hosts', [])
     return render_template('host_swiper.html', hosts=hosts)
 
+# result2 페이지 라우트 추가 (이미 있으면 생략)
+@app.route('/result2')
+def result2():
+    tags = []
+    return render_template("result2.html", tags=tags)
+
+# result 페이지 라우트 추가 (이미 있으면 생략)
+@app.route('/result')
+def result():
+    return render_template("result.html")
+
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000, debug=True)
+    app.run(debug=True)
