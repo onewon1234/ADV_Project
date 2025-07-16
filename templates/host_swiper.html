@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div class="swiper">
     <div class="swiper-wrapper">
         {% for host in hosts %}
@@ -79,3 +80,77 @@
     .swiper-button-next, .swiper-button-prev { display: none; }
 }
 </style> 
+=======
+<div class="swiper" style="padding: 20px 0 40px 0; overflow:hidden;">
+  <div class="w-full overflow-x-auto pb-2">
+    <div class="swiper-wrapper flex flex-row gap-x-6 px-2 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 items-stretch h-full" style="scrollbar-width:thin;">
+      {% for host in hosts %}
+      <div class="swiper-slide flex h-full mx-auto" style="width:340px; min-width:340px; max-width:340px;">
+        <div class="bg-white rounded-2xl shadow-xl p-6 flex flex-col gap-2 h-full w-full min-h-[420px]" style="min-height:420px;">
+          <!-- 유형 -->
+          <div class="flex items-center gap-2 mb-2 text-gray-800 font-bold text-base">
+            {% if '해안' in host.cluster_name %}🌊
+            {% elif '도시' in host.cluster_name %}🏙️
+            {% elif '자연' in host.cluster_name %}🌲
+            {% elif '감성' in host.cluster_name %}✨
+            {% elif '전통' in host.cluster_name %}🏯
+            {% else %}🏠
+            {% endif %}
+            <span>{{ host.cluster_name }}</span>
+          </div>
+          <!-- 프로필/이름/응답률/슈퍼호스트 -->
+          <div class="flex items-center gap-3 mb-2">
+            <img class="w-12 h-12 rounded-full object-cover border-2 border-gray-200" src="{{ host.host_picture_url }}" alt="호스트 사진" onerror="this.src='https://via.placeholder.com/48?text=No+Image'">
+            <div class="flex flex-col flex-1">
+              <div class="flex items-center gap-2 min-w-0">
+                <span class="font-bold text-base text-gray-900 truncate max-w-[120px] sm:max-w-[160px] md:max-w-[180px] lg:max-w-[200px] text-sm sm:text-base">{{ host.host_name }}</span>
+                <span class="ml-1 px-2 py-0.5 rounded-full bg-green-100 text-green-700 text-xs font-semibold" style="background:#e6f7ec; color:#1ca97c;">응답률 {{ host.host_response_rate|int }}%</span>
+              </div>
+              <div class="flex items-center gap-2 text-gray-400 text-xs font-semibold">
+                {% if host.host_is_superhost in ['t', 'T', 'Y', 'y', '1', 1, True] %}
+                  <span>🏅 슈퍼호스트 </span>
+                {% else %}
+                  <span>{{ host.host_years }}</span>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <!-- 소개글 -->
+          <div class="text-gray-800 text-sm mb-3" style="min-height:48px; line-height:1.5;">{{ host.summary }}</div>
+          
+          <!-- 추천 게스트 pill만 -->
+          <div class="bg-purple-100 rounded-xl p-3 mb-4 flex flex-wrap items-center gap-2" style="background:#ede7f6;">
+            <span class="font-bold text-gray-800 text-xs mr-2">이런 게스트에게 추천해요</span>
+            {% if host.name_1 %}<span class="bg-purple-400 text-white rounded-full px-2 py-0.5 text-xs font-semibold" style="background:#a78bfa;">{{ host.name_1 }}</span>{% endif %}
+            {% if host.name_2 %}<span class="bg-purple-400 text-white rounded-full px-2 py-0.5 text-xs font-semibold" style="background:#a78bfa;">{{ host.name_2 }}</span>{% endif %}
+            {% if host.name_3 %}<span class="bg-purple-400 text-white rounded-full px-2 py-0.5 text-xs font-semibold" style="background:#a78bfa;">{{ host.name_3 }}</span>{% endif %}
+          </div>
+          <!-- 프로필보기 버튼 (카드 하단, 흰색 바탕) -->
+          <div class="flex justify-end mt-auto">
+            <a href="{{ host.host_url }}" target="_blank" class="bg-white border border-gray-200 rounded-lg px-4 py-2 text-red-500 font-semibold text-xs shadow-sm hover:bg-gray-50 transition" style="font-weight:600;">프로필보기</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <!-- Swiper navigation 버튼 제거 -->
+</div> 
+<script>
+function unifyHostCardHeights() {
+  const cards = document.querySelectorAll('.swiper-slide > div.bg-white');
+  let maxHeight = 0;
+  cards.forEach(card => {
+    card.style.height = 'auto';
+    if (card.offsetHeight > maxHeight) maxHeight = card.offsetHeight;
+  });
+  cards.forEach(card => {
+    card.style.height = maxHeight + 'px';
+  });
+}
+// 최초 실행 및 AJAX 새로고침 후 실행
+window.addEventListener('DOMContentLoaded', unifyHostCardHeights);
+// Swiper 영역이 동적으로 갱신될 때도 실행 (index.html의 fetch 이후)
+document.addEventListener('host-swiper-updated', unifyHostCardHeights);
+</script> 
+>>>>>>> 예림

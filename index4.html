@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Fitbnb 기획전 배너</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 0; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 40px 0; }
+    .banner-box {
+      width: 100%;
+      margin-bottom: 32px;
+      background: #aaa;
+      border-radius: 32px;
+      overflow: hidden;
+      position: relative;
+    }
+    .banner-box img {
+      width: 100%; height: 320px; object-fit: cover; opacity: 0.5;
+    }
+    .banner-content {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .banner-title {
+      color: #fff; font-size: 3rem; font-weight: 800; margin-bottom: 16px; text-shadow: 0 2px 8px rgba(0,0,0,0.2); text-align: center;
+    }
+    .banner-subtitle {
+      color: #f5f5f5; font-size: 1.5rem; font-weight: 400; text-align: center; max-width: 700px; text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .banner-subtitle .quote { font-size: 2.2rem; vertical-align: middle; }
+    .box { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+    ul { list-style-type: none; padding: 0; }
+    li { margin: 8px 0; }
+    a { color: #0077cc; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- 기획전 배너 -->
+    <div class="banner-box">
+      <img src="{{ items[0].image_url }}" alt="기획전 배너 이미지">
+      <div class="banner-content">
+        <div class="banner-title">{{ items[0].title }}</div>
+        <div class="banner-subtitle">
+          <span class="quote">&#10077;</span>
+          {{ items[0].subtitle }}
+          <span class="quote">&#10078;</span>
+        </div>
+      </div>
+    </div>
+    <!-- 기획전 리스트 -->
+    <div class="box">
+      <h2>📢 감성 기획전</h2>
+      <ul>
+        {% for item in items %}
+          <li>
+            <a href="/cluster/{{ item.cluster_id }}">
+              {{ item.title }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</body>
+</html> 

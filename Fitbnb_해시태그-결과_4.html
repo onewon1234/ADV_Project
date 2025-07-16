@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fitbnb - 해시태그 결과</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>
+tailwind.config={
+  theme:{
+    extend:{
+      colors:{
+        primary:'#FF5A5F',
+        secondary:'#00A699'
+      },
+      borderRadius:{
+        'none':'0px',
+        'sm':'4px',
+        DEFAULT:'8px',
+        'md':'12px',
+        'lg':'16px',
+        'xl':'20px',
+        '2xl':'24px',
+        '3xl':'32px',
+        'full':'9999px',
+        'button':'8px'
+      }
+    }
+  }
+}
+</script>
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+}
+.accommodation-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.accommodation-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+</style>
+</head>
+<body class="bg-white min-h-screen">
+<!-- 상단 네비게이션 바 -->
+<header class="sticky top-0 z-50 bg-white shadow-sm">
+  <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+    <a href="#" class="text-primary text-3xl font-['Pacifico'] tracking-wide">Fitbnb</a>
+    <nav class="hidden md:flex items-center space-x-6">
+      <a href="#" class="text-gray-700 hover:text-primary font-medium">홈</a>
+      <a href="#" class="text-gray-700 hover:text-primary font-medium">이미지 검색</a>
+      <a href="#" class="text-primary font-medium border-b-2 border-primary">해시태그</a>
+      <a href="#" class="text-gray-700 hover:text-primary font-medium">기획전</a>
+      <a href="#" class="text-gray-700 hover:text-primary font-medium">호스트</a>
+    </nav>
+    <div class="flex items-center space-x-4">
+      <button class="hidden md:flex items-center justify-center text-gray-700 hover:text-primary">
+        <i class="ri-user-line text-xl"></i>
+      </button>
+      <button class="md:hidden flex items-center justify-center w-10 h-10 text-gray-700">
+        <i class="ri-menu-line text-2xl"></i>
+      </button>
+    </div>
+  </div>
+</header>
+<main class="container mx-auto px-4 py-8">
+  <!-- 상단 텍스트 및 해시태그 -->
+  <section class="mb-10">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+      <div>
+        <h1 class="text-2xl md:text-3xl font-bold mb-2">#Nordic</h1>
+        <p class="text-gray-600 text-lg mb-4">북유럽 감성의 미니멀하고 따뜻한 인테리어 숙소를 모았습니다.</p>
+        <div class="flex flex-wrap gap-2 mb-2">
+          <button class="bg-primary text-white px-4 py-2 rounded-full font-medium shadow hover:bg-opacity-90">#Nordic</button>
+          <button class="bg-primary bg-opacity-10 text-primary px-4 py-2 rounded-full font-medium hover:bg-primary hover:text-white">#Natural</button>
+          <button class="bg-primary bg-opacity-10 text-primary px-4 py-2 rounded-full font-medium hover:bg-primary hover:text-white">#Vintage</button>
+          <button class="bg-primary bg-opacity-10 text-primary px-4 py-2 rounded-full font-medium hover:bg-primary hover:text-white">#Lovely</button>
+          <button class="bg-primary bg-opacity-10 text-primary px-4 py-2 rounded-full font-medium hover:bg-primary hover:text-white">#Industrial</button>
+          <button class="bg-primary bg-opacity-10 text-primary px-4 py-2 rounded-full font-medium hover:bg-primary hover:text-white">#Unique</button>
+          <button class="bg-primary bg-opacity-10 text-primary px-4 py-2 rounded-full font-medium hover:bg-primary hover:text-white">#French</button>
+          <button class="bg-primary bg-opacity-10 text-primary px-4 py-2 rounded-full font-medium hover:bg-primary hover:text-white">#Minimal</button>
+          <button class="bg-primary bg-opacity-10 text-primary px-4 py-2 rounded-full font-medium hover:bg-primary hover:text-white">#Classic</button>
+          <button class="bg-primary bg-opacity-10 text-primary px-4 py-2 rounded-full font-medium hover:bg-primary hover:text-white">#Korean</button>
+          <button class="bg-primary bg-opacity-10 text-primary px-4 py-2 rounded-full font-medium hover:bg-primary hover:text-white">#Asian</button>
+        </div>
+      </div>
+      <!-- 지도 -->
+      <div class="w-full h-72 lg:h-80 bg-gray-100 rounded-lg relative overflow-hidden">
+        <img src="https://public.readdy.ai/gen_page/map_placeholder_1280x720.png" alt="지도" class="absolute inset-0 w-full h-full object-cover object-center opacity-80">
+        <!-- 마커 6개 예시 -->
+        <button class="absolute left-[20%] top-[30%] w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center shadow-lg hover:bg-opacity-90 transition-all group" title="헬싱키 모던 아파트">
+          <span class="font-medium">₩12</span>
+          <span class="hidden group-hover:block absolute left-12 top-1/2 -translate-y-1/2 bg-white text-gray-900 px-4 py-2 rounded-lg shadow-lg text-xs">헬싱키 모던 아파트</span>
+        </button>
+        <button class="absolute left-[40%] top-[60%] w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center shadow-lg hover:bg-opacity-90 transition-all group" title="오슬로 우드 하우스">
+          <span class="font-medium">₩15</span>
+          <span class="hidden group-hover:block absolute left-12 top-1/2 -translate-y-1/2 bg-white text-gray-900 px-4 py-2 rounded-lg shadow-lg text-xs">오슬로 우드 하우스</span>
+        </button>
+        <button class="absolute left-[60%] top-[40%] w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center shadow-lg hover:bg-opacity-90 transition-all group" title="코펜하겐 디자인 플랫">
+          <span class="font-medium">₩18</span>
+          <span class="hidden group-hover:block absolute left-12 top-1/2 -translate-y-1/2 bg-white text-gray-900 px-4 py-2 rounded-lg shadow-lg text-xs">코펜하겐 디자인 플랫</span>
+        </button>
+        <button class="absolute left-[70%] top-[55%] w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center shadow-lg hover:bg-opacity-90 transition-all group" title="스톡홀름 시티뷰">
+          <span class="font-medium">₩20</span>
+          <span class="hidden group-hover:block absolute left-12 top-1/2 -translate-y-1/2 bg-white text-gray-900 px-4 py-2 rounded-lg shadow-lg text-xs">스톡홀름 시티뷰</span>
+        </button>
+        <button class="absolute left-[55%] top-[70%] w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center shadow-lg hover:bg-opacity-90 transition-all group" title="레이캬비크 코지룸">
+          <span class="font-medium">₩11</span>
+          <span class="hidden group-hover:block absolute left-12 top-1/2 -translate-y-1/2 bg-white text-gray-900 px-4 py-2 rounded-lg shadow-lg text-xs">레이캬비크 코지룸</span>
+        </button>
+        <button class="absolute left-[80%] top-[30%] w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center shadow-lg hover:bg-opacity-90 transition-all group" title="베를린 노르딕 스튜디오">
+          <span class="font-medium">₩13</span>
+          <span class="hidden group-hover:block absolute left-12 top-1/2 -translate-y-1/2 bg-white text-gray-900 px-4 py-2 rounded-lg shadow-lg text-xs">베를린 노르딕 스튜디오</span>
+        </button>
+      </div>
+    </div>
+  </section>
+  <!-- 3x2 숙소 카드 -->
+  <section>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- 카드 1 -->
+      <div class="accommodation-card bg-white rounded-lg overflow-hidden shadow-md">
+        <img src="https://readdy.ai/api/search-image?query=nordic%20apartment%20helsinki&width=600&height=400" alt="헬싱키 모던 아파트" class="w-full h-56 object-cover object-top">
+        <div class="p-5">
+          <div class="flex justify-between items-center mb-2">
+            <h3 class="font-bold text-lg">헬싱키 모던 아파트</h3>
+            <div class="flex items-center">
+              <i class="ri-star-fill text-yellow-500 mr-1"></i>
+              <span class="font-medium">4.8</span>
+              <span class="text-gray-500 text-sm ml-1">(87)</span>
+            </div>
+          </div>
+          <div class="flex justify-between items-center mb-3">
+            <div class="flex gap-2 mt-2">
+              <span class="bg-gray-100 text-primary px-3 py-1 rounded-full text-xs font-medium">#Nordic</span>
+              <span class="bg-gray-100 text-primary px-3 py-1 rounded-full text-xs font-medium">#Minimal</span>
+              <span class="bg-gray-100 text-primary px-3 py-1 rounded-full text-xs font-medium">#Cozy</span>
+            </div>
+          </div>
+          <div class="flex justify-between items-center mt-2">
+            <span class="text-lg font-bold text-gray-900">₩120,000</span>
+            <a href="https://airbnb.com/room/123" target="_blank" class="bg-primary text-white px-4 py-2 rounded-button text-sm font-medium hover:bg-opacity-90">자세히 보기</a>
+          </div>
+        </div>
+      </div>
+      <!-- 카드 2 -->
+      <div class="accommodation-card bg-white rounded-lg overflow-hidden shadow-md">
+        <img src="https://readdy.ai/api/search-image?query=nordic%20wood%20house%20oslo&width=600&height=400" alt="오슬로 우드 하우스" class="w-full h-56 object-cover object-top">
+        <div class="p-5">
+          <div class="flex justify-between items-center mb-2">
+            <h3 class="font-bold text-lg">오슬로 우드 하우스</h3>
+            <div class="flex items-center">
+              <i class="ri-star-fill text-yellow-500 mr-1"></i>
+              <span class="font-medium">4.9</span>
+              <span class="text-gray-500 text-sm ml-1">(65)</span>
+            </div>
+          </div>
+          <div class="flex justify-between items-center mb-3">
+            <div class="flex gap-2 mt-2">
+              <span class="bg-gray-100 text-primary px-3 py-1 rounded-full text-xs font-medium">#Nordic</span>
+              <span class="bg-gray-100 text-primary px-3 py-1 rounded-full text-xs font-medium">#Wood</span>
+              <span class="bg-gray-100 text-primary px-3 py-1 rounded-full text-xs font-medium">#Nature</span>
+            </div>
+          </div>
+          <div class="flex justify-between items-center mt-2">
+            <span class="text-lg font-bold text-gray-900">₩150,000</span>
+            <a href="https://airbnb.com/room/124" target="_blank" class="bg-primary text-white px-4 py-2 rounded-button text-sm font-medium hover:bg-opacity-90">자세히 보기</a>
+          </div>
+        </div>
+      </div>
+      <!-- 카드 3 -->
+      <div class="accommodation-card bg-white rounded-lg overflow-hidden shadow-md">
+        <img src="https://readdy.ai/api/search-image?query=nordic%20design%20flat%20copenhagen&width=600&height=400" alt="코펜하겐 디자인 플랫" class="w-full h-56 object-cover object-top">
+        <div class="p-5">
+          <div class="flex justify-between items-center mb-2">
+            <h3 class="font-bold text-lg">코펜하겐 디자인 플랫</h3>
+            <div class="flex items-center">
+              <i class="ri-star-fill text-yellow-500 mr-1"></i>
+              <span class="font-medium">4.7</span>
+              <span class="text-gray-500 text-sm ml-1">(54)</span>
+            </div>
+          </div>
+          <div class="flex justify-between items-center mb-3">
+            <div class="flex gap-2 mt-2">
+              <span class="bg-gray-100 text-primary px-3 py-1 rounded-full text-xs font-medium">#Nordic</span>
+              <span class="bg-gray-100 text-primary px-3 py-1 rounded-full text-xs font-medium">#Design</span>
+              <span class="bg-gray-100 text-primary px-3 py-1 rounded-full text-xs font-medium">#Flat</span>
+            </div>
+          </div>
+          <div class="flex justify-between items-center mt-2">
+            <span class="text-lg font-bold text-gray-900">₩180,000</span>
+            <a href="https://airbnb.com/room/125" target="_blank" class="bg-primary text-white px-4 py-2 rounded-button text-sm font-medium hover:bg-opacity-90">자세히 보기</a>
+          </div>
+        </div>
+      </div>
+      <!-- 카드 4 -->
+      <div class="accommodation-card bg-white rounded-lg overflow-hidden shadow-md">
+        <img src="https://readdy.ai/api/search-image?query=nordic%20cityview%20stockholm&width=600&height=400" alt="스톡홀름 시티뷰" class="w-full h-56 object-cover object-top">
+        <div class="p-5">
+          <div class="flex justify-between items-center mb-2">
+            <h3 class="font-bold text-lg">스톡홀름 시티뷰</h3>
+            <div class="flex items-center">
+              <i class="ri-star-fill text-yellow-500 mr-1"></i>
+              <span class="font-medium">4.6</span>
+              <span class="text-gray-500 text-sm ml-1">(43)</span>
+            </div>
+          </div>
+          <div class="flex justify-between items-center mb-3">
+            <div class="flex gap-2 mt-2">
+              <span class="bg-gray-100 text-primary px-3 py-1 rounded-full text-xs font-medium">#Nordic</span>
+              <span class="bg-gray-100 text-primary px-3 py-1 rounded-full text-xs font-medium">#City</span>
+              <span class="bg-gray-100 text-primary px-3 py-1 rounded-full text-xs font-medium">#View</span>
+            </div>
+          </div>
+          <div class="flex justify-between items-center mt-2">
+            <span class="text-lg font-bold text-gray-900">₩200,000</span>
+            <a href="https://airbnb.com/room/126" target="_blank" class="bg-primary text-white px-4 py-2 rounded-button text-sm font-medium hover:bg-opacity-90">자세히 보기</a>
+          </div>
+        </div>
+      </div>
+      <!-- 카드 5 -->
+      <div class="accommodation-card bg-white rounded-lg overflow-hidden shadow-md">
+        <img src="https://readdy.ai/api/search-image?query=nordic%20cozyroom%20reykjavik&width=600&height=400" alt="레이캬비크 코지룸" class="w-full h-56 object-cover object-top">
+        <div class="p-5">
+          <div class="flex justify-between items-center mb-2">
+            <h3 class="font-bold text-lg">레이캬비크 코지룸</h3>
+            <div class="flex items-center">
+              <i class="ri-star-fill text-yellow-500 mr-1"></i>
+              <span class="font-medium">4.8</span>
+              <span class="text-gray-500 text-sm ml-1">(39)</span>
+            </div>
+          </div>
+          <div class="flex justify-between items-center mb-3">
+            <div class="flex gap-2 mt-2">
+              <span class="bg-gray-100 text-primary px-3 py-1 rounded-full text-xs font-medium">#Nordic</span>
+              <span class="bg-gray-100 text-primary px-3 py-1 rounded-full text-xs font-medium">#Cozy</span>
+              <span class="bg-gray-100 text-primary px-3 py-1 rounded-full text-xs font-medium">#Room</span>
+            </div>
+          </div>
+          <div class="flex justify-between items-center mt-2">
+            <span class="text-lg font-bold text-gray-900">₩110,000</span>
+            <a href="https://airbnb.com/room/127" target="_blank" class="bg-primary text-white px-4 py-2 rounded-button text-sm font-medium hover:bg-opacity-90">자세히 보기</a>
+          </div>
+        </div>
+      </div>
+      <!-- 카드 6 -->
+      <div class="accommodation-card bg-white rounded-lg overflow-hidden shadow-md">
+        <img src="https://readdy.ai/api/search-image?query=nordic%20studio%20berlin&width=600&height=400" alt="베를린 노르딕 스튜디오" class="w-full h-56 object-cover object-top">
+        <div class="p-5">
+          <div class="flex justify-between items-center mb-2">
+            <h3 class="font-bold text-lg">베를린 노르딕 스튜디오</h3>
+            <div class="flex items-center">
+              <i class="ri-star-fill text-yellow-500 mr-1"></i>
+              <span class="font-medium">4.7</span>
+              <span class="text-gray-500 text-sm ml-1">(51)</span>
+            </div>
+          </div>
+          <div class="flex justify-between items-center mb-3">
+            <div class="flex gap-2 mt-2">
+              <span class="bg-gray-100 text-primary px-3 py-1 rounded-full text-xs font-medium">#Nordic</span>
+              <span class="bg-gray-100 text-primary px-3 py-1 rounded-full text-xs font-medium">#Studio</span>
+              <span class="bg-gray-100 text-primary px-3 py-1 rounded-full text-xs font-medium">#Berlin</span>
+            </div>
+          </div>
+          <div class="flex justify-between items-center mt-2">
+            <span class="text-lg font-bold text-gray-900">₩130,000</span>
+            <a href="https://airbnb.com/room/128" target="_blank" class="bg-primary text-white px-4 py-2 rounded-button text-sm font-medium hover:bg-opacity-90">자세히 보기</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<!-- 푸터 -->
+<footer class="bg-gray-900 text-white py-6"> <!-- py-12 → py-6로 세로 여백 축소 -->
+  <div class="w-full max-w-7xl mx-auto px-6">
+    <div class="text-center">
+      <div class="font-['Pacifico'] text-2xl text-white mb-4">Fitbnb</div>
+      <p class="text-gray-400 mb-6">감성으로 찾는 완벽한 숙소</p> <!-- mb-8 → mb-6로 축소 -->
+      <div class="flex justify-center space-x-6">
+        <span class="text-gray-400">서비스 소개</span>
+        <span class="text-gray-400">이용약관</span>
+        <span class="text-gray-400">개인정보처리방침</span>
+        <span class="text-gray-400">고객지원</span>
+      </div>
+      <div class="mt-6 pt-6 border-t border-gray-800"> <!-- mt-8 pt-8 → mt-6 pt-6로 축소 -->
+        <p class="text-gray-500 text-sm">© 2025 Fitbnb by GO-DIVA. All rights reserved.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

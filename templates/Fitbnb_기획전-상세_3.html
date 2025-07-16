@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fitbnb - 기획전 상세</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        primary: '#FF5A5F',
+        secondary: '#00A699'
+      },
+      borderRadius: {
+        'none': '0px',
+        'sm': '4px',
+        DEFAULT: '8px',
+        'md': '12px',
+        'lg': '16px',
+        'xl': '20px',
+        '2xl': '24px',
+        '3xl': '32px',
+        'full': '9999px',
+        'button': '8px'
+      }
+    }
+  }
+}
+</script>
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+font-family: 'Noto Sans KR', sans-serif;
+}
+.property-card:hover {
+transform: scale(1.02);
+transition: transform 0.3s ease;
+}
+.filter-btn {
+transition: all 0.3s ease;
+}
+.filter-btn:hover {
+transform: translateY(-1px);
+}
+</style>
+</head>
+<body class="bg-white min-h-screen">
+<!-- 상단 네비게이션 바 -->
+<header class="sticky top-0 z-50 bg-white shadow-sm">
+<div class="container mx-auto px-4 py-4 flex items-center justify-between">
+<a href="#" class="text-primary text-3xl font-['Pacifico'] tracking-wide">Fitbnb</a>
+<nav class="hidden md:flex items-center space-x-6">
+<a href="#" class="text-gray-700 hover:text-primary font-medium">홈</a>
+<a href="#" class="text-gray-700 hover:text-primary font-medium">이미지 검색</a>
+<a href="#" class="text-gray-700 hover:text-primary font-medium">해시태그</a>
+<a href="#" class="text-primary font-bold border-b-2 border-primary pb-0.5">기획전</a>
+<a href="#" class="text-gray-700 hover:text-primary font-medium">호스트</a>
+</nav>
+<div class="flex items-center space-x-4">
+<button class="hidden md:flex items-center justify-center text-gray-700 hover:text-primary">
+<i class="ri-user-line text-xl"></i>
+</button>
+<button class="md:hidden flex items-center justify-center w-10 h-10 text-gray-700">
+<i class="ri-menu-line text-2xl"></i>
+</button>
+</div>
+</div>
+</header>
+
+<main class="container mx-auto px-4 py-8">
+<!-- 상단 배너 -->
+<section class="exhibition-banner">
+<div class="relative h-80 rounded-2xl overflow-hidden mb-8">
+<img src="https://i.ibb.co/DPpXYqdw/da87fd4a48e2bb73ade8b238a5b751e4.jpg" alt="겨울 감성 숙소" class="w-full h-full object-cover">
+<div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+<div class="text-center text-white">
+<h1 class="text-4xl md:text-5xl font-bold mb-4">겨울 감성 숙소 기획전</h1>
+<p class="text-xl md:text-2xl">따뜻한 겨울을 위한 감성 숙소를 모았습니다</p>
+</div>
+</div>
+</div>
+</section>
+
+
+
+<!-- 숙소 리스트 -->
+<section class="mb-12">
+<div id="property-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- 숙소 카드 1 -->
+<div class="property-card bg-white rounded-lg shadow-md overflow-hidden transition-all">
+<div class="relative h-48 overflow-hidden">
+<img src="https://readdy.ai/api/search-image?query=modern%20apartment%20in%20downtown%20LA%2C%20city%20view%2C%20large%20windows%2C%20minimalist%20interior%2C%20comfortable%20furniture%2C%20urban%20lifestyle&width=600&height=400&seq=2&orientation=landscape" alt="LA 다운타운 아파트" class="w-full h-full object-cover">
+<div class="absolute top-3 right-3">
+<i class="ri-heart-line text-white text-xl drop-shadow-lg"></i>
+</div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-lg font-bold text-gray-900">LA 다운타운 아파트</h3>
+<div class="flex items-center">
+<i class="ri-star-fill text-yellow-400 text-sm mr-1"></i>
+<span class="text-sm text-gray-600">4.8 (112)</span>
+</div>
+</div>
+<p class="text-gray-600 text-sm mb-3">도심의 편리함과 아늑함을 동시에 느낄 수 있는 모던한 아파트입니다. 넓은 창문을 통해 도시의 아름다운 전경을 감상할 수 있고, 최신 시설과 편안한 인테리어로 완벽한 휴식을 제공합니다.</p>
+<div class="flex justify-between items-center">
+<div class="text-lg font-bold text-gray-900">₩180,000</div>
+<button class="bg-primary text-white px-4 py-2 rounded-button text-sm font-medium hover:bg-opacity-90">
+자세히 보기
+</button>
+</div>
+</div>
+</div>
+
+<!-- 숙소 카드 2 -->
+<div class="property-card bg-white rounded-lg shadow-md overflow-hidden transition-all">
+<div class="relative h-48 overflow-hidden">
+<img src="https://readdy.ai/api/search-image?query=luxury%20house%20near%20central%20park%20new%20york%2C%20elegant%20interior%2C%20park%20view%2C%20high-end%20furniture%2C%20sophisticated%20design&width=600&height=400&seq=3&orientation=landscape" alt="뉴욕 센트럴파크 하우스" class="w-full h-full object-cover">
+<div class="absolute top-3 right-3">
+<i class="ri-heart-line text-white text-xl drop-shadow-lg"></i>
+</div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-lg font-bold text-gray-900">뉴욕 센트럴파크 하우스</h3>
+<div class="flex items-center">
+<i class="ri-star-fill text-yellow-400 text-sm mr-1"></i>
+<span class="text-sm text-gray-600">4.9 (98)</span>
+</div>
+</div>
+<p class="text-gray-600 text-sm mb-3">센트럴파크가 내려다보이는 럭셔리한 하우스입니다. 고급스러운 인테리어와 최상의 서비스로 뉴욕의 정취를 만끽할 수 있는 특별한 공간을 제공합니다.</p>
+<div class="flex justify-between items-center">
+<div class="text-lg font-bold text-gray-900">₩220,000</div>
+<button class="bg-primary text-white px-4 py-2 rounded-button text-sm font-medium hover:bg-opacity-90">
+자세히 보기
+</button>
+</div>
+</div>
+</div>
+
+<!-- 숙소 카드 3 -->
+<div class="property-card bg-white rounded-lg shadow-md overflow-hidden transition-all">
+<div class="relative h-48 overflow-hidden">
+<img src="https://readdy.ai/api/search-image?query=beautiful%20house%20in%20san%20francisco%20with%20bay%20view%2C%20modern%20architecture%2C%20large%20windows%2C%20contemporary%20interior%2C%20golden%20gate%20bridge%20visible&width=600&height=400&seq=4&orientation=landscape" alt="샌프란시스코 뷰 하우스" class="w-full h-full object-cover">
+<div class="absolute top-3 right-3">
+<i class="ri-heart-line text-white text-xl drop-shadow-lg"></i>
+</div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-lg font-bold text-gray-900">샌프란시스코 뷰 하우스</h3>
+<div class="flex items-center">
+<i class="ri-star-fill text-yellow-400 text-sm mr-1"></i>
+<span class="text-sm text-gray-600">4.7 (76)</span>
+</div>
+</div>
+<p class="text-gray-600 text-sm mb-3">골든게이트 브리지가 보이는 특별한 경험을 제공하는 뷰 하우스입니다. 현대적인 건축과 아름다운 베이 뷰가 조화를 이루는 완벽한 휴식 공간입니다.</p>
+<div class="flex justify-between items-center">
+<div class="text-lg font-bold text-gray-900">₩200,000</div>
+<button class="bg-primary text-white px-4 py-2 rounded-button text-sm font-medium hover:bg-opacity-90">
+자세히 보기
+</button>
+</div>
+</div>
+</div>
+
+<!-- 숙소 카드 4 -->
+<div class="property-card bg-white rounded-lg shadow-md overflow-hidden transition-all">
+<div class="relative h-48 overflow-hidden">
+<img src="https://readdy.ai/api/search-image?query=modern%20studio%20apartment%20in%20brooklyn%2C%20industrial%20chic%20design%2C%20exposed%20brick%20walls%2C%20minimalist%20furniture%2C%20urban%20vibe&width=600&height=400&seq=5&orientation=landscape" alt="브루클린 모던 스튜디오" class="w-full h-full object-cover">
+<div class="absolute top-3 right-3">
+<i class="ri-heart-line text-white text-xl drop-shadow-lg"></i>
+</div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-lg font-bold text-gray-900">브루클린 모던 스튜디오</h3>
+<div class="flex items-center">
+<i class="ri-star-fill text-yellow-400 text-sm mr-1"></i>
+<span class="text-sm text-gray-600">4.6 (54)</span>
+</div>
+</div>
+<p class="text-gray-600 text-sm mb-3">인더스트리얼한 감성의 아티스트 공간입니다. 노출된 벽돌과 미니멀한 가구가 어우러진 독특한 분위기로 창의적인 영감을 얻을 수 있는 공간입니다.</p>
+<div class="flex justify-between items-center">
+<div class="text-lg font-bold text-gray-900">₩150,000</div>
+<button class="bg-primary text-white px-4 py-2 rounded-button text-sm font-medium hover:bg-opacity-90">
+자세히 보기
+</button>
+</div>
+</div>
+</div>
+
+<!-- 숙소 카드 5 -->
+<div class="property-card bg-white rounded-lg shadow-md overflow-hidden transition-all">
+<div class="relative h-48 overflow-hidden">
+<img src="https://readdy.ai/api/search-image?query=beachfront%20house%20in%20california%2C%20ocean%20view%2C%20palm%20trees%2C%20modern%20architecture%2C%20outdoor%20deck%2C%20sunset%20lighting&width=600&height=400&seq=6&orientation=landscape" alt="캘리포니아 비치 하우스" class="w-full h-full object-cover">
+<div class="absolute top-3 right-3">
+<i class="ri-heart-line text-white text-xl drop-shadow-lg"></i>
+</div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-lg font-bold text-gray-900">캘리포니아 비치 하우스</h3>
+<div class="flex items-center">
+<i class="ri-star-fill text-yellow-400 text-sm mr-1"></i>
+<span class="text-sm text-gray-600">4.9 (120)</span>
+</div>
+</div>
+<p class="text-gray-600 text-sm mb-3">태평양이 내려다보이는 해변가 별장입니다. 야외 데크에서 일몰을 감상하며 캘리포니아의 따뜻한 햇살과 바다의 푸른 물결을 만끽할 수 있습니다.</p>
+<div class="flex justify-between items-center">
+<div class="text-lg font-bold text-gray-900">₩250,000</div>
+<button class="bg-primary text-white px-4 py-2 rounded-button text-sm font-medium hover:bg-opacity-90">
+자세히 보기
+</button>
+</div>
+</div>
+</div>
+
+<!-- 숙소 카드 6 -->
+<div class="property-card bg-white rounded-lg shadow-md overflow-hidden transition-all">
+<div class="relative h-48 overflow-hidden">
+<img src="https://readdy.ai/api/search-image?query=luxury%20penthouse%20in%20manhattan%2C%20skyline%20view%2C%20high-end%20interior%2C%20floor-to-ceiling%20windows%2C%20modern%20furniture%2C%20sophisticated%20design&width=600&height=400&seq=7&orientation=landscape" alt="맨해튼 펜트하우스" class="w-full h-full object-cover">
+<div class="absolute top-3 right-3">
+<i class="ri-heart-line text-white text-xl drop-shadow-lg"></i>
+</div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-lg font-bold text-gray-900">맨해튼 펜트하우스</h3>
+<div class="flex items-center">
+<i class="ri-star-fill text-yellow-400 text-sm mr-1"></i>
+<span class="text-sm text-gray-600">5.0 (32)</span>
+</div>
+</div>
+<p class="text-gray-600 text-sm mb-3">맨해튼 스카이라인이 펼쳐지는 최고급 펜트하우스입니다. 천장까지 이어지는 대형 창문과 세련된 인테리어로 도시의 화려함을 한눈에 담을 수 있습니다.</p>
+<div class="flex justify-between items-center">
+<div class="text-lg font-bold text-gray-900">₩350,000</div>
+<button class="bg-primary text-white px-4 py-2 rounded-button text-sm font-medium hover:bg-opacity-90">
+자세히 보기
+</button>
+</div>
+</div>
+</div>
+<!-- 숙소 카드 7 -->
+<div class="property-card bg-white rounded-lg shadow-md overflow-hidden transition-all">
+<div class="relative h-48 overflow-hidden">
+<img src="https://readdy.ai/api/search-image?query=modern%20apartment%20with%20lake%20view%20in%20seattle%2C%20large%20windows%2C%20contemporary%20interior%2C%20mountain%20background&width=600&height=400&seq=8&orientation=landscape" alt="시애틀 레이크뷰 아파트" class="w-full h-full object-cover">
+<div class="absolute top-3 right-3">
+<i class="ri-heart-line text-white text-xl drop-shadow-lg"></i>
+</div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-lg font-bold text-gray-900">시애틀 레이크뷰 아파트</h3>
+<div class="flex items-center">
+<i class="ri-star-fill text-yellow-400 text-sm mr-1"></i>
+<span class="text-sm text-gray-600">4.8 (89)</span>
+</div>
+</div>
+<p class="text-gray-600 text-sm mb-3">워싱턴 호수가 내려다보이는 아름다운 아파트입니다. 넓은 발코니에서 산과 호수의 조화로운 풍경을 감상할 수 있고, 현대적인 시설로 편안한 휴식을 제공합니다.</p>
+<div class="flex justify-between items-center">
+<div class="text-lg font-bold text-gray-900">₩190,000</div>
+<button class="bg-primary text-white px-4 py-2 rounded-button text-sm font-medium hover:bg-opacity-90">
+자세히 보기
+</button>
+</div>
+</div>
+</div>
+<!-- 숙소 카드 8 -->
+<div class="property-card bg-white rounded-lg shadow-md overflow-hidden transition-all">
+<div class="relative h-48 overflow-hidden">
+<img src="https://readdy.ai/api/search-image?query=historic%20house%20in%20boston%2C%20traditional%20architecture%2C%20brick%20exterior%2C%20classic%20interior%2C%20elegant%20furniture&width=600&height=400&seq=9&orientation=landscape" alt="보스턴 히스토릭 하우스" class="w-full h-full object-cover">
+<div class="absolute top-3 right-3">
+<i class="ri-heart-line text-white text-xl drop-shadow-lg"></i>
+</div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-lg font-bold text-gray-900">보스턴 히스토릭 하우스</h3>
+<div class="flex items-center">
+<i class="ri-star-fill text-yellow-400 text-sm mr-1"></i>
+<span class="text-sm text-gray-600">4.7 (67)</span>
+</div>
+</div>
+<p class="text-gray-600 text-sm mb-3">보스턴의 역사가 담긴 전통적인 하우스입니다. 클래식한 건축과 세련된 인테리어가 조화를 이루며, 도시의 문화적 분위기를 느낄 수 있는 특별한 공간입니다.</p>
+<div class="flex justify-between items-center">
+<div class="text-lg font-bold text-gray-900">₩210,000</div>
+<button class="bg-primary text-white px-4 py-2 rounded-button text-sm font-medium hover:bg-opacity-90">
+자세히 보기
+</button>
+</div>
+</div>
+</div>
+<!-- 숙소 카드 9 -->
+<div class="property-card bg-white rounded-lg shadow-md overflow-hidden transition-all">
+<div class="relative h-48 overflow-hidden">
+<img src="https://readdy.ai/api/search-image?query=luxury%20condo%20in%20miami%20beach%2C%20ocean%20view%2C%20modern%20design%2C%20white%20interior%2C%20palm%20trees&width=600&height=400&seq=10&orientation=landscape" alt="마이애미 비치 콘도" class="w-full h-full object-cover">
+<div class="absolute top-3 right-3">
+<i class="ri-heart-line text-white text-xl drop-shadow-lg"></i>
+</div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-lg font-bold text-gray-900">마이애미 비치 콘도</h3>
+<div class="flex items-center">
+<i class="ri-star-fill text-yellow-400 text-sm mr-1"></i>
+<span class="text-sm text-gray-600">4.9 (145)</span>
+</div>
+</div>
+<p class="text-gray-600 text-sm mb-3">마이애미 비치의 화려한 오션뷰 콘도입니다. 흰색 인테리어와 푸른 바다가 어우러진 트로피컬한 분위기로 완벽한 휴가를 즐길 수 있습니다.</p>
+<div class="flex justify-between items-center">
+<div class="text-lg font-bold text-gray-900">₩280,000</div>
+<button class="bg-primary text-white px-4 py-2 rounded-button text-sm font-medium hover:bg-opacity-90">
+자세히 보기
+</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- 더 보기 버튼 -->
+<div class="text-center mt-12">
+<button id="load-more-btn" class="bg-primary text-white px-8 py-3 rounded-button font-medium hover:bg-opacity-90 transition-all">
+더 보기
+</button>
+</div>
+</section>
+</main>
+
+<!-- 푸터 -->
+<footer class="bg-gray-900 text-white py-6"> <!-- py-12 → py-6로 세로 여백 축소 -->
+  <div class="w-full max-w-7xl mx-auto px-6">
+    <div class="text-center">
+      <div class="font-['Pacifico'] text-2xl text-white mb-4">Fitbnb</div>
+      <p class="text-gray-400 mb-6">감성으로 찾는 완벽한 숙소</p> <!-- mb-8 → mb-6로 축소 -->
+      <div class="flex justify-center space-x-6">
+        <span class="text-gray-400">서비스 소개</span>
+        <span class="text-gray-400">이용약관</span>
+        <span class="text-gray-400">개인정보처리방침</span>
+        <span class="text-gray-400">고객지원</span>
+      </div>
+      <div class="mt-6 pt-6 border-t border-gray-800"> <!-- mt-8 pt-8 → mt-6 pt-6로 축소 -->
+        <p class="text-gray-500 text-sm">© 2025 Fitbnb by GO-DIVA. All rights reserved.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 더보기 기능
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    const propertyGrid = document.getElementById('property-grid');
+    let currentCount = 9; // 최초 9개 표시
+    const maxCount = 36; // 최대 36개
+    
+    // 추가 숙소 데이터
+    const additionalProperties = [
+        {
+            name: "시애틀 레이크뷰 아파트",
+            image: "https://readdy.ai/api/search-image?query=modern%20apartment%20with%20lake%20view%20in%20seattle%2C%20large%20windows%2C%20contemporary%20interior%2C%20mountain%20background&width=600&height=400&seq=8&orientation=landscape",
+            rating: "4.8",
+            reviews: "89",
+            price: "190,000",
+            description: "워싱턴 호수가 내려다보이는 아름다운 아파트입니다. 넓은 발코니에서 산과 호수의 조화로운 풍경을 감상할 수 있고, 현대적인 시설로 편안한 휴식을 제공합니다."
+        },
+        {
+            name: "보스턴 히스토릭 하우스",
+            image: "https://readdy.ai/api/search-image?query=historic%20house%20in%20boston%2C%20traditional%20architecture%2C%20brick%20exterior%2C%20classic%20interior%2C%20elegant%20furniture&width=600&height=400&seq=9&orientation=landscape",
+            rating: "4.7",
+            reviews: "67",
+            price: "210,000",
+            description: "보스턴의 역사가 담긴 전통적인 하우스입니다. 클래식한 건축과 세련된 인테리어가 조화를 이루며, 도시의 문화적 분위기를 느낄 수 있는 특별한 공간입니다."
+        },
+        {
+            name: "마이애미 비치 콘도",
+            image: "https://readdy.ai/api/search-image?query=luxury%20condo%20in%20miami%20beach%2C%20ocean%20view%2C%20modern%20design%2C%20white%20interior%2C%20palm%20trees&width=600&height=400&seq=10&orientation=landscape",
+            rating: "4.9",
+            reviews: "145",
+            price: "280,000",
+            description: "마이애미 비치의 화려한 오션뷰 콘도입니다. 흰색 인테리어와 푸른 바다가 어우러진 트로피컬한 분위기로 완벽한 휴가를 즐길 수 있습니다."
+        },
+        {
+            name: "시카고 리버뷰 로프트",
+            image: "https://readdy.ai/api/search-image?query=industrial%20loft%20in%20chicago%20with%20river%20view%2C%20exposed%20brick%20and%20beams%2C%20modern%20furniture%2C%20city%20skyline&width=600&height=400&seq=11&orientation=landscape",
+            rating: "4.6",
+            reviews: "78",
+            price: "170,000",
+            description: "시카고 강이 내려다보이는 인더스트리얼 로프트입니다. 노출된 벽돌과 철골 구조가 현대적인 가구와 조화를 이루며 독특한 도시의 분위기를 연출합니다."
+        },
+        {
+            name: "오스틴 힙스터 스튜디오",
+            image: "https://readdy.ai/api/search-image?query=hipster%20studio%20in%20austin%2C%20bohemian%20style%2C%20vintage%20furniture%2C%20plants%2C%20artistic%20vibe&width=600&height=400&seq=12&orientation=landscape",
+            rating: "4.5",
+            reviews: "92",
+            price: "140,000",
+            description: "오스틴의 힙한 분위기가 가득한 보헤미안 스튜디오입니다. 빈티지 가구와 식물들이 어우러진 아티스트틱한 공간으로 창의적인 영감을 얻을 수 있습니다."
+        },
+        {
+            name: "포틀랜드 에코 하우스",
+            image: "https://readdy.ai/api/search-image?query=eco-friendly%20house%20in%20portland%2C%20sustainable%20design%2C%20natural%20materials%2C%20garden%2C%20green%20living&width=600&height=400&seq=13&orientation=landscape",
+            rating: "4.8",
+            reviews: "56",
+            price: "160,000",
+            description: "친환경적인 디자인이 적용된 포틀랜드의 에코 하우스입니다. 자연 친화적인 소재와 지속 가능한 설계로 환경과 조화를 이루는 건강한 생활을 경험할 수 있습니다."
+        }
+    ];
+    
+    // 최초 9개만 보이도록 카드 9개만 남기고 나머지는 숨김
+    const allCards = Array.from(propertyGrid.children);
+    allCards.forEach((card, idx) => {
+        card.style.display = idx < 9 ? '' : 'none';
+    });
+    
+    loadMoreBtn.addEventListener('click', function() {
+        if (currentCount >= maxCount) {
+            loadMoreBtn.textContent = '모든 숙소를 불러왔습니다';
+            loadMoreBtn.disabled = true;
+            loadMoreBtn.classList.remove('bg-primary', 'hover:bg-opacity-90');
+            loadMoreBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+            return;
+        }
+        // 9개씩 추가
+        const itemsToAdd = Math.min(9, maxCount - currentCount);
+        for (let i = 0; i < itemsToAdd; i++) {
+            const property = additionalProperties[(currentCount + i - 9) % additionalProperties.length];
+            const propertyCard = createPropertyCard(property);
+            propertyGrid.appendChild(propertyCard);
+        }
+        currentCount += itemsToAdd;
+        if (currentCount >= maxCount) {
+            loadMoreBtn.textContent = '모든 숙소를 불러왔습니다';
+            loadMoreBtn.disabled = true;
+            loadMoreBtn.classList.remove('bg-primary', 'hover:bg-opacity-90');
+            loadMoreBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+        }
+    });
+    
+    function createPropertyCard(property) {
+        const card = document.createElement('div');
+        card.className = 'property-card bg-white rounded-lg shadow-md overflow-hidden transition-all';
+        card.innerHTML = `
+            <div class="relative h-48 overflow-hidden">
+                <img src="${property.image}" alt="${property.name}" class="w-full h-full object-cover">
+                <div class="absolute top-3 right-3">
+                    <i class="ri-heart-line text-white text-xl drop-shadow-lg"></i>
+                </div>
+            </div>
+            <div class="p-4">
+                <div class="flex justify-between items-start mb-2">
+                    <h3 class="text-lg font-bold text-gray-900">${property.name}</h3>
+                    <div class="flex items-center">
+                        <i class="ri-star-fill text-yellow-400 text-sm mr-1"></i>
+                        <span class="text-sm text-gray-600">${property.rating} (${property.reviews})</span>
+                    </div>
+                </div>
+                <p class="text-gray-600 text-sm mb-3">${property.description}</p>
+                <div class="flex justify-between items-center">
+                    <div class="text-lg font-bold text-gray-900">₩${property.price}</div>
+                    <button class="bg-primary text-white px-4 py-2 rounded-button text-sm font-medium hover:bg-opacity-90">
+                        자세히 보기
+                    </button>
+                </div>
+            </div>
+        `;
+        return card;
+    }
+});
+</script>
+</body>
+</html> 
