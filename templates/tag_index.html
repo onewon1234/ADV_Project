@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>해시태그 기반 추천</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f7f8fa; }
+        .container { max-width: 600px; margin: 40px auto; background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); padding: 40px; }
+        h2 { text-align: center; margin-bottom: 30px; }
+        .tag-list { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+        .tag-btn { background: #e84c60; color: white; border: none; border-radius: 20px; padding: 10px 22px; font-size: 1em; cursor: pointer; transition: background 0.2s; }
+        .tag-btn:hover { background: #b92d43; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>원하는 해시태그를 선택하세요</h2>
+        <form action="/tag-recommend" method="post">
+            <div class="tag-list">
+                {% for tag in hashtags %}
+                    <button class="tag-btn" type="submit" name="tag" value="{{ tag }}">{{ tag }}</button>
+                {% endfor %}
+            </div>
+        </form>
+    </div>
+</body>
+</html> 

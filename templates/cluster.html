@@ -1,118 +1,144 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
   <meta charset="UTF-8">
   <title>{{ title }}</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 40px;
-      background-color: #f8f8f8;
-    }
-
-    h1 {
+    .banner-container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto 40px auto;
       text-align: center;
-      margin-bottom: 30px;
     }
-
-    /* ✅ 일반 그리드로 변경 */
-    .card-grid {
+    .banner-img {
+      width: 100%;
+      max-width: 1200px;
+      height: 320px;
+      object-fit: cover;
+      border-radius: 24px;
+      margin-bottom: 28px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .banner-title {
+      font-size: 2.4rem;
+      font-weight: bold;
+      margin-bottom: 12px;
+      color: #222;
+      letter-spacing: -1px;
+    }
+    .banner-subtitle {
+      font-size: 1.7rem;
+      color: #888;
+      margin-bottom: 32px;
+      line-height: 1.6;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+      word-break: keep-all;
+      font-weight: 400;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .banner-subtitle .quote {
+      font-size: 2.2rem;
+      color: #ccc;
+      vertical-align: middle;
+      font-family: serif;
+    }
+    .listing-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      padding: 0 20px;
+      gap: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
     }
-
-    .card {
-      background-color: white;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .card img {
-      width: 100%;
-      height: 200px; /* ✅ 고정 높이 */
-      object-fit: cover;
-      background-color: #eee;
-    }
-
-    .card-content {
-      padding: 12px;
-    }
-
-    .card-title {
-      font-weight: bold;
-      font-size: 18px;
-      margin-bottom: 4px;
-      color: #333;
-    }
-
-    .card-meta {
-      font-size: 13px;
-      color: #888;
-      margin-bottom: 8px;
-    }
-
-    .card-summary {
-      font-size: 14px;
-      color: #333;
-      line-height: 1.4;
-    }
-
-    .back-link {
-      display: block;
+    .listing-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      padding: 16px;
       text-align: center;
-      margin-top: 30px;
-      font-size: 14px;
-      color: #666;
     }
-
-    .back-link:hover {
-      color: #0077cc;
+    .listing-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 10px;
     }
-
-    /* 반응형 디자인 */
-    @media (max-width: 1200px) {
-      .card-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
+    .more-btn-wrap {
+      text-align: center;
+      margin: 32px 0;
     }
-
-    @media (max-width: 768px) {
-      .card-grid {
-        grid-template-columns: 1fr;
-      }
+    .more-btn {
+      padding: 12px 32px;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      border: none;
+      background: #0077cc;
+      color: #fff;
+      cursor: pointer;
+    }
+    .more-btn:hover {
+      background: #005fa3;
     }
   </style>
 </head>
 <body>
-
-  <h1>{{ title }}</h1>
-
-  <div class="card-grid">
-    {% for item in items %}
-      <div class="card">
-        {% set image = item.picture_url.strip() if item.picture_url else "" %}
-        <img src="{{ image }}" alt="숙소 이미지"
-             onerror="this.onerror=null;this.src='https://via.placeholder.com/400x250?text=No+Image';">
-        <div class="card-content">
-          <div class="card-title">{{ item.name }}</div>
-          <div class="card-meta">
-            ⭐ {{ item.ratings }} &nbsp;|&nbsp; 💵 {{ item.price }}
-          </div>
-          <div class="card-summary">
-            {{ item.emotional_summary }}
-          </div>
-        </div>
+  <!-- 배너 -->
+  <div class="banner-container">
+    <img class="banner-img" src="{{ banner_image }}" alt="기획전 배너">
+    <div class="banner-title">{{ marketing_text }}</div>
+    <div class="banner-subtitle">
+      <span class="quote">&#10077;</span>
+      {{ subtitle }}
+      <span class="quote">&#10078;</span>
+    </div>
+  </div>
+  <!-- 매물 리스트 -->
+  <div id="listing-grid" class="listing-grid">
+    {% for item in items[:9] %}
+      <div class="listing-card">
+        <img src="{{ item.picture_url }}" alt="사진">
+        <div style="font-weight:600; margin-bottom:4px;">{{ item.name }}</div>
+        <div style="color:#888; margin-bottom:4px;">{{ item.price }}</div>
+        <div style="font-size:0.95em; color:#555;">{{ item.emotional_summary }}</div>
       </div>
     {% endfor %}
   </div>
-
-  <a href="/" class="back-link">← 기획전 목록으로 돌아가기</a>
-
+  {% if items|length > 9 %}
+    <div class="more-btn-wrap">
+      <button id="load-more-btn" class="more-btn">더보기</button>
+    </div>
+  {% endif %}
+  <script>
+    const allItems = {{ items|tojson | safe }};
+    let shown = 9;
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    if (loadMoreBtn) {
+      loadMoreBtn.addEventListener('click', function() {
+        const grid = document.getElementById('listing-grid');
+        for(let i=shown; i<shown+9 && i<allItems.length; i++) {
+          const item = allItems[i];
+          const div = document.createElement('div');
+          div.className = 'listing-card';
+          div.innerHTML = `
+            <img src="${item.picture_url}" alt="사진">
+            <div style="font-weight:600; margin-bottom:4px;">${item.name}</div>
+            <div style="color:#888; margin-bottom:4px;">${item.price}</div>
+            <div style="font-size:0.95em; color:#555;">${item.emotional_summary}</div>
+          `;
+          grid.appendChild(div);
+        }
+        shown += 9;
+        if(shown >= allItems.length) this.style.display = 'none';
+      });
+    }
+  </script>
 </body>
-</html>
+</html> 
