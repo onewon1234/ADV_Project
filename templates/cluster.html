@@ -3,119 +3,127 @@
 <head>
   <meta charset="UTF-8">
   <title>{{ title }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+  <script>
+    tailwind.config={
+      theme:{
+        extend:{
+          colors:{
+            primary:'#FF5A5F',
+            secondary:'#00A699'
+          },
+          borderRadius:{
+            'none':'0px',
+            'sm':'4px',
+            DEFAULT:'8px',
+            'md':'12px',
+            'lg':'16px',
+            'xl':'20px',
+            '2xl':'24px',
+            '3xl':'32px',
+            'full':'9999px',
+            'button':'8px'
+          }
+        }
+      }
+    }
+    </script>
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
   <style>
-    .banner-container {
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto 40px auto;
-      text-align: center;
-    }
-    .banner-img {
-      width: 100%;
-      max-width: 1200px;
-      height: 320px;
-      object-fit: cover;
-      border-radius: 24px;
-      margin-bottom: 28px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .banner-title {
-      font-size: 2.4rem;
-      font-weight: bold;
-      margin-bottom: 12px;
-      color: #222;
-      letter-spacing: -1px;
-    }
-    .banner-subtitle {
-      font-size: 1.7rem;
-      color: #888;
-      margin-bottom: 32px;
-      line-height: 1.6;
-      max-width: 900px;
-      margin-left: auto;
-      margin-right: auto;
-      word-break: keep-all;
-      font-weight: 400;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-    }
-    .banner-subtitle .quote {
-      font-size: 2.2rem;
-      color: #ccc;
-      vertical-align: middle;
-      font-family: serif;
-    }
-    .listing-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    .listing-card {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-      padding: 16px;
-      text-align: center;
-    }
-    .listing-card img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      border-radius: 8px;
-      margin-bottom: 10px;
-    }
-    .more-btn-wrap {
-      text-align: center;
-      margin: 32px 0;
-    }
-    .more-btn {
-      padding: 12px 32px;
-      font-size: 1.1rem;
-      border-radius: 8px;
-      border: none;
-      background: #0077cc;
-      color: #fff;
-      cursor: pointer;
-    }
-    .more-btn:hover {
-      background: #005fa3;
-    }
+    body { font-family: 'Noto Sans KR', sans-serif; }
   </style>
 </head>
-<body>
-  <!-- 배너 -->
-  <div class="banner-container">
-    <img class="banner-img" src="{{ banner_image }}" alt="기획전 배너">
-    <div class="banner-title">{{ marketing_text }}</div>
-    <div class="banner-subtitle">
-      <span class="quote">&#10077;</span>
-      {{ subtitle }}
-      <span class="quote">&#10078;</span>
-    </div>
-  </div>
-  <!-- 매물 리스트 -->
-  <div id="listing-grid" class="listing-grid">
-    {% for item in items[:9] %}
-      <div class="listing-card">
-        <img src="{{ item.picture_url }}" alt="사진">
-        <div style="font-weight:600; margin-bottom:4px;">{{ item.name }}</div>
-        <div style="color:#888; margin-bottom:4px;">{{ item.price }}</div>
-        <div style="font-size:0.95em; color:#555;">{{ item.emotional_summary }}</div>
+<body class="bg-white min-h-screen">
+  <!-- 상단 네비게이션 바 -->
+  <header class="sticky top-0 z-50 bg-white shadow-sm">
+    <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="#" class="text-[#FF5A5F] text-3xl font-['Pacifico'] tracking-wide">Fitbnb</a>
+      <nav class="hidden md:flex items-center space-x-6">
+        <a href="/" class="text-gray-700 hover:text-primary font-medium">홈</a>
+        <a href="/#image-search" class="text-gray-400 hover:text-primary font-medium">이미지 검색</a>
+        <a href="/#hashtag" id="nav-hashtag" class="text-gray-400 hover:text-primary font-medium">해시태그</a>
+        <a href="#" class="text-[#FF5A5F] font-medium border-b-2 border-[#FF5A5F]">기획전</a>
+      </nav>
+      <div class="flex items-center space-x-4">
+        <button class="hidden md:flex items-center justify-center text-gray-700 hover:text-primary">
+          <i class="ri-user-line text-xl"></i>
+        </button>
+        <button class="md:hidden flex items-center justify-center w-10 h-10 text-gray-700">
+          <i class="ri-menu-line text-2xl"></i>
+        </button>
       </div>
-    {% endfor %}
-  </div>
-  {% if items|length > 9 %}
-    <div class="more-btn-wrap">
-      <button id="load-more-btn" class="more-btn">더보기</button>
     </div>
-  {% endif %}
+  </header>
+
+  <!-- 상단 배너 -->
+  <section class="container mx-auto px-4 py-8">
+    <div class="relative h-[420px] rounded-2xl overflow-hidden mb-8">
+      <img src="{{ banner_image }}" alt="기획전 배너" class="w-full h-full object-cover">
+      <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+      <div class="absolute inset-0 flex items-center justify-center">
+        <div class="text-center text-white max-w-2xl">
+          <h1 class="text-4xl md:text-5xl font-bold mb-2">부담없이 떠나세요!</h1>
+          <h1 class="flex items-center justify-center text-4xl md:text-5xl font-bold mb-6">
+            <span class="text-5xl md:text-6xl mr-3">💸</span>
+            5만원 이하의 갓성비 숙소
+          </h1>
+          <p class="text-3xl md:text-4xl flex items-center justify-center gap-2">
+            <span class="text-3xl text-gray-200">&#10077;</span>
+            {{ subtitle }}
+            <span class="text-3xl text-gray-200">&#10078;</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 매물 리스트 -->
+  <main class="container mx-auto px-4 pb-8">
+    <section>
+      <div id="listing-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for item in items[:9] %}
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col min-h-[420px] p-0 m-0 relative">
+          <a href="{{ item.listing_url }}" target="_blank">
+            <img src="{{ item.picture_url }}" alt="{{ item.name }}" class="w-full h-56 object-cover object-top">
+          </a>
+          <div class="p-7 flex flex-col flex-1">
+            <div class="flex justify-between items-center mb-3">
+              <h3 class="text-lg font-extrabold text-gray-900">{{ item.name }}</h3>
+              <div class="flex items-center text-xl font-bold">
+                <i class="ri-star-fill text-yellow-400 mr-1"></i>
+                <span>{{ item.rating|default('4.91') }}</span>
+                <span class="ml-1 text-gray-400 font-normal">({{ item.review_count|default('11') }})</span>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <p class="text-gray-600 text-base mb-0 leading-relaxed">{{ item.emotional_summary }}</p>
+            </div>
+            <div class="flex justify-between items-end mt-auto">
+              <div class="text-base font-extrabold text-gray-900">{{ item.price }}</div>
+              <a href="{{ item.listing_url }}" target="_blank" rel="noopener noreferrer">
+                <button class="bg-[#FF5A5F] text-white px-7 py-2 rounded-lg text-base font-bold shadow hover:bg-opacity-90 transition">
+                  자세히 보기
+                </button>
+              </a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% if items|length > 9 %}
+      <div class="flex justify-center mt-8">
+        <button id="load-more-btn" class="bg-primary text-white px-6 py-3 rounded-lg text-base font-semibold shadow hover:bg-opacity-90 transition">
+          더보기
+        </button>
+      </div>
+      {% endif %}
+    </section>
+  </main>
   <script>
     const allItems = {{ items|tojson | safe }};
     let shown = 9;
@@ -126,12 +134,24 @@
         for(let i=shown; i<shown+9 && i<allItems.length; i++) {
           const item = allItems[i];
           const div = document.createElement('div');
-          div.className = 'listing-card';
+          div.className = 'property-card bg-white rounded-lg shadow-md overflow-hidden transition-all hover:scale-105';
           div.innerHTML = `
-            <img src="${item.picture_url}" alt="사진">
-            <div style="font-weight:600; margin-bottom:4px;">${item.name}</div>
-            <div style="color:#888; margin-bottom:4px;">${item.price}</div>
-            <div style="font-size:0.95em; color:#555;">${item.emotional_summary}</div>
+            <div class=\"relative h-48 overflow-hidden\">
+              <img src=\"${item.picture_url}\" alt=\"숙소 이미지\" class=\"w-full h-full object-cover\">
+              <div class=\"absolute top-3 right-3\">
+                <i class=\"ri-heart-line text-white text-xl drop-shadow-lg\"></i>
+              </div>
+            </div>
+            <div class=\"p-4\">
+              <div class=\"flex justify-between items-start mb-2\">
+                <h3 class=\"text-lg font-bold text-gray-900\">${item.name}</h3>
+              </div>
+              <p class=\"text-gray-600 text-sm mb-3\">${item.emotional_summary}</p>
+              <div class=\"flex justify-between items-center\">
+                <div class=\"text-lg font-bold text-gray-900\">${item.price}</div>
+                <button class=\"bg-primary text-white px-4 py-2 rounded-button text-sm font-medium hover:bg-opacity-90\">자세히 보기</button>
+              </div>
+            </div>
           `;
           grid.appendChild(div);
         }
@@ -141,4 +161,23 @@
     }
   </script>
 </body>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const hashtagNav = document.getElementById("nav-hashtag");
+  if (hashtagNav) {
+    hashtagNav.addEventListener("click", function(e) {
+      e.preventDefault();
+      const hashtagSection = document.getElementById("hashtag");
+      if (hashtagSection) {
+        const rect = hashtagSection.getBoundingClientRect();
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const offset = rect.top + scrollTop - (window.innerHeight / 2) + (rect.height / 2);
+        window.scrollTo({ top: offset, behavior: "smooth" });
+      } else {
+        window.location.href = "/#hashtag";
+      }
+    });
+  }
+});
+</script>
 </html> 

@@ -1,367 +1,322 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>Fitbnb 통합 추천</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 0;
-    }
-    .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 40px;
-      gap: 40px;
-    }
-    .box {
-      background: white;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      width: 90%;
-      max-width: 600px;
-      margin-bottom: 20px;
-    }
-    h2 { color: #333; }
-    ul { list-style-type: none; padding: 0; }
-    li { margin: 8px 0; }
-    a { color: #0077cc; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    /* 해시태그 추천 스타일 */
-    .tag-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
-      margin-top: 10px;
-    }
-    .tag-button {
-      padding: 10px 20px;
-      background-color: #f0f0f0;
-      border: 1px solid #ccc;
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: 14px;
-    }
-    .tag-button:hover {
-      background-color: #d0d0ff;
-    }
-    form {
-      text-align: center;
-      margin-top: 10px;
-    }
-    
-    /* 호스트 스와이퍼 스타일 */
-    .swiper {
-      width: 100%;
-      padding: 30px 0 50px 0;
-    }
-    .swiper-slide {
-      display: flex;
-      justify-content: center;
-      align-items: stretch;
-    }
-    .host-card {
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.07);
-      width: 320px;
-      min-width: 280px;
-      max-width: 340px;
-      display: flex;
-      flex-direction: column;
-      padding: 24px 22px 18px 22px;
-      position: relative;
-      margin: 0 8px;
-    }
-    /* 호스트 유형 */
-    .host-type-row {
-      position: absolute;
-      top: 18px;
-      left: 22px;
-      display: flex;
-      align-items: center;
-      font-size: 0.98em;
-      color: #4a4a4a;
-      font-weight: 500;
-      gap: 6px;
-    }
-    .host-type-icon {
-      font-size: 1.1em;
-      margin-right: 2px;
-    }
-    /* 호스트 사진/이름/응답률 */
-    .host-main-row {
-      display: flex;
-      align-items: center;
-      margin-top: 36px;
-      margin-bottom: 8px;
-    }
-    .host-photo {
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2.5px solid #e0e0e0;
-      margin-right: 16px;
-    }
-    .host-info-col {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
-    .host-name-row {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-    }
-    .host-name {
-      font-size: 1.13em;
-      font-weight: 600;
-      color: #222;
-    }
-    .response-badge, .superhost-badge, .host-years {
-      font-size: 0.82em;
-      font-weight: 600;
-    }
-    .response-badge {
-      background: #e0f7f1;
-      color: #1ca97c;
-      font-size: 0.75em;
-      font-weight: 600;
-      border-radius: 12px;
-      padding: 2px 10px;
-      margin-left: 8px;
-    }
-    .superhost-badge {
-      display: flex;
-      align-items: center;
-      color: #888;
-      font-weight: 500;
-      font-size: 0.82em;
-      background: none;
-      border: none;
-      padding: 0;
-      gap: 4px;
-    }
-    .superhost-badge .medal {
-      font-size: 1.1em;
-      margin-right: 2px;
-    }
-    .host-years {
-      color: #888;
-      font-weight: 500;
-    }
-    /* 소개글 */
-    .host-summary {
-      font-size: 0.99em;
-      color: #444;
-      margin-bottom: 10px;
-      text-align: left;
-      min-height: 48px;
-    }
-    /* 해시태그 */
-    .hashtags {
-      margin-bottom: 10px;
-      display: flex;
-      flex-wrap: nowrap;
-      gap: 4px;
-    }
-    .hashtag {
-      display: inline-block;
-      background: #f0f0f0;
-      color: #666;
-      font-size: 0.82em;
-      border-radius: 7px;
-      padding: 2px 8px;
-      margin: 0;
-      white-space: nowrap;
-    }
-    /* 추천 게스트 */
-    .guest-recommend-box {
-      margin: 14px 0 0 0;
-      padding: 12px 8px 30px 14px;
-      background: #e6e6fa;
-      border-radius: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      min-height: 56px;
-      position: relative;
-    }
-    .guest-recommend-title {
-      font-size: 0.93em;
-      font-weight: bold;
-      color: #222;
-      margin-bottom: 6px;
-      margin-left: 2px;
-    }
-    .guest-recommend-names {
-      display: flex;
-      gap: 4px;
-      flex-wrap: wrap;
-    }
-    .guest-recommend-name {
-      background: #a48be0;
-      color: #fff;
-      font-size: 0.82em;
-      border-radius: 7px;
-      padding: 2px 10px;
-      margin: 2px 2px 2px 0;
-      white-space: nowrap;
-    }
-    /* 자세히 보기 */
-    .detail-link {
-      position: absolute;
-      right: 22px;
-      bottom: 10px;
-      color: #e84c60;
-      font-size: 0.82em;
-      font-weight: 500;
-      text-decoration: none;
-      background: none;
-      padding: 0;
-      border: none;
-    }
-    .detail-link:hover {
-      text-decoration: underline;
-    }
-    /* Swiper navigation */
-    .swiper-button-next, .swiper-button-prev {
-      color: #bbb !important;
-      width: 22px !important;
-      height: 22px !important;
-      min-width: 22px !important;
-      min-height: 22px !important;
-      font-size: 18px !important;
-    }
-    .swiper-button-next:after, .swiper-button-prev:after {
-      font-size: 18px !important;
-    }
-    @media (max-width: 1100px) {
-      .host-card {width: 45vw; min-width: 220px;}
-    }
-    @media (max-width: 700px) {
-      .host-card {width: 98vw; min-width: 160px;}
-    }
-  </style>
-  <script>
-    function selectTag(tagName) {
-      document.getElementById("selected_tag").value = tagName;
-      document.getElementById("tagForm").submit();
-    }
-  </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fitbnb - 취향 기반 에어비앤비 숙소 추천</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>
+tailwind.config={
+theme:{
+extend:{
+colors:{
+primary:'#FF5A5F',
+secondary:'#00A699'
+},
+borderRadius:{
+'none':'0px',
+'sm':'4px',
+DEFAULT:'8px',
+'md':'12px',
+'lg':'16px',
+'xl':'20px',
+'2xl':'24px',
+'3xl':'32px',
+'full':'9999px',
+'button':'8px'
+}
+}
+}
+</script>
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+font-family: 'Noto Sans KR', sans-serif;
+}
+.image-upload-area {
+border: 2px dashed #e5e7eb;
+transition: all 0.3s ease;
+}
+.image-upload-area:hover {
+border-color: #FF5A5F;
+}
+.hashtag-item:hover {
+transform: scale(1.05);
+transition: transform 0.3s ease;
+}
+.campaign-card:hover {
+transform: scale(1.03);
+transition: transform 0.3s ease;
+}
+.host-card:hover {
+box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+transform: translateY(-5px);
+transition: all 0.3s ease;
+}
+input[type="file"] {
+display: none;
+}
+.thumbnail-preview {
+display: none;
+position: absolute;
+bottom: 20px;
+left: 20px;
+width: 100px;
+height: 100px;
+object-fit: cover;
+border-radius: 8px;
+box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+</style>
 </head>
-<body>
-  <div class="container">
-    <!-- 1. 기획전 리스트 -->
-    <div class="box">
-      <h2>📢 감성 기획전</h2>
-      <ul>
-        {% for item in items %}
-          <li>
-            <a href="/cluster/{{ item.cluster_id }}">
-              {{ item.title }}
-            </a>
-          </li>
-        {% endfor %}
-      </ul>
+<body class="bg-white min-h-screen">
+<!-- 상단 네비게이션 바 -->
+<header class="sticky top-0 z-50 bg-white shadow-sm">
+<div class="container mx-auto px-4 py-4 flex items-center justify-between">
+<a href="#" class="text-primary text-3xl font-['Pacifico'] tracking-wide">Fitbnb</a>
+<nav class="hidden md:flex items-center space-x-6">
+<a href="#" class="text-gray-700 hover:text-primary font-medium" onclick="window.location.reload(); return false;">홈</a>
+<a href="#" class="text-gray-400 hover:text-primary font-medium">이미지 검색</a>
+<a href="#" class="text-gray-400 hover:text-primary font-medium">해시태그</a>
+<a href="#" class="text-gray-400 hover:text-primary font-medium">기획전</a>
+</nav>
+<div class="flex items-center space-x-4">
+<button class="hidden md:flex items-center justify-center text-gray-700 hover:text-primary">
+<i class="ri-user-line text-xl"></i>
+</button>
+<button class="md:hidden flex items-center justify-center w-10 h-10 text-gray-700">
+<i class="ri-menu-line text-2xl"></i>
+</button>
+</div>
+</div>
+</header>
+<main class="container mx-auto px-4 py-8">
+<!-- 이미지 검색 섹션 -->
+<section class="mb-16 relative overflow-hidden min-h-[420px]">
+  <img src="/static/image/your-image.jpeg" alt="배경 이미지" class="absolute inset-0 w-full h-full object-cover object-center scale-105" style="z-index:0; min-height:420px;">
+  <div class="absolute inset-0 bg-black bg-opacity-30" style="z-index:1;"></div>
+  <div class="relative z-10">
+    <div class="text-center mb-8 pt-16 pb-10">
+      <h1 class="text-4xl md:text-5xl font-bold mb-3 text-white">취향에 맞는 숙소를 찾아보세요</h1>
+      <p class="text-2xl md:text-3xl text-white">이미지를 업로드하면 AI가 당신의 스타일에 맞는 숙소를 추천해 드립니다</p>
     </div>
-
-    <!-- 2. 해시태그 기반 추천 -->
-    <div class="box">
-      <h2>🏡 해시태그 기반 추천기</h2>
-      <form id="tagForm" action="/tag-recommend" method="post">
-        <input type="hidden" name="tag" id="selected_tag">
-        <div class="tag-container">
-          <button type="button" class="tag-button" onclick="selectTag('Modern')">Modern</button>
-          <button type="button" class="tag-button" onclick="selectTag('Nordic')">Nordic</button>
-          <button type="button" class="tag-button" onclick="selectTag('Natural')">Natural</button>
-          <button type="button" class="tag-button" onclick="selectTag('Vintage Retro')">Vintage Retro</button>
-          <button type="button" class="tag-button" onclick="selectTag('Lovely Romantic')">Lovely Romantic</button>
-          <button type="button" class="tag-button" onclick="selectTag('Industrial')">Industrial</button>
-          <button type="button" class="tag-button" onclick="selectTag('Unique')">Unique</button>
-          <button type="button" class="tag-button" onclick="selectTag('French Provence')">French Provence</button>
-          <button type="button" class="tag-button" onclick="selectTag('Minimal Simple')">Minimal Simple</button>
-          <button type="button" class="tag-button" onclick="selectTag('Classic Antique')">Classic Antique</button>
-          <button type="button" class="tag-button" onclick="selectTag('Korean Asian')">Korean Asian</button>
-        </div>
-      </form>
-    </div>
-
-    <!-- 3. 이미지 업로드 기반 추천 -->
-    <div class="box">
-      <h2>🖼️ 이미지 업로드 기반 추천기</h2>
-      <form action="/image-recommend" method="post" enctype="multipart/form-data">
-        <label>이미지를 업로드해 주세요:</label><br><br>
-        <input type="file" name="image" accept="image/*" required><br><br>
-        <button type="submit">추천 보기</button>
-      </form>
-    </div>
-
-    <!-- 4. 호스트 스와이퍼 -->
-    <div class="box">
-      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
-        <h2 style="margin: 0;">👥 유형별 호스트 추천</h2>
-        <button id="refresh-btn" title="새로고침" style="background:none;border:none;cursor:pointer;padding:0 4px;vertical-align:middle;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.13-3.36L23 10"/><path d="M20.49 15A9 9 0 0 1 5.34 18.36L1 14"/></svg>
+    <div class="relative mx-auto max-w-3xl pb-12">
+      <form action="/image-recommend" method="post" enctype="multipart/form-data" class="flex flex-col items-center">
+        <label for="imageUpload" id="imageUploadArea" class="image-upload-area relative flex flex-col items-center justify-center h-64 rounded-2xl bg-gray-50 cursor-pointer w-full border-2 border-dashed border-primary pointer-events-auto" style="border-color:#FF5A5F;">
+          <div class="w-20 h-20 flex items-center justify-center bg-gray-100 rounded-full mb-6">
+            <i class="ri-image-add-line text-5xl text-gray-300"></i>
+          </div>
+          <p class="text-gray-500 mb-2 text-xl font-medium">이미지를 드래그하거나 클릭하여 업로드하세요</p>
+          <p class="text-gray-400 text-base mb-2">JPG, PNG 파일 (최대 5MB)</p>
+          <input type="file" id="imageUpload" name="image" accept="image/*" required style="display:none;">
+          <img id="thumbnailPreview" class="thumbnail-preview" src="" alt="이미지 미리보기">
+        </label>
+        <button type="submit"
+          class="mt-10 py-4 px-12 bg-primary text-white text-lg rounded-xl font-bold hover:bg-primary/90 transition block mx-auto"
+          style="font-size:1.25rem; font-weight:700; border-radius:1rem; background:#FF5A5F; margin-top:2.5rem;">
+          이미지로 숙소 찾기
         </button>
-      </div>
-      <div id="host-swiper-wrapper" style="margin-top: 8px;">
-        {% include 'host_swiper.html' %}
-      </div>
+      </form>
     </div>
   </div>
-
-  <!-- Swiper.js CDN -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-  <script>
-    let swiper;
-    function initSwiper() {
-      if (swiper) swiper.destroy(true, true);
-      swiper = new Swiper('.swiper', {
+</section>
+<!-- 해시태그 카테고리 섹션 -->
+<section class="mb-16">
+  <h2 class="text-2xl font-bold mb-6">해쉬태그로 숙소 찾기</h2>
+  <form id="tagForm" action="/tag-recommend" method="post">
+    {% set tag_icons = {'Nordic':'ri-home-smile-line','Natural':'ri-plant-line','Vintage Retro':'ri-record-player-line','Lovely Romantic':'ri-heart-line','Industrial':'ri-building-line','Unique':'ri-lightbulb-line','French Provence':'ri-flower-line','Minimal Simple':'ri-layout-line','Classic Antique':'ri-ancient-gate-line','Korean':'ri-door-open-line','Asian':'ri-home-smile-line'} %}
+    <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-11 gap-4">
+      {% for tag in hashtags %}
+      <button type="submit" name="tag" value="{{ tag }}" class="hashtag-item flex flex-col items-center transition-all bg-transparent border-none cursor-pointer p-0" style="box-shadow:none;width:auto;">
+        <div class="w-16 h-16 flex items-center justify-center bg-gray-100 rounded-full mb-2">
+          <i class="{{ tag_icons.get(tag, 'ri-hashtag') }} text-2xl text-gray-700"></i>
+        </div>
+        <span class="text-sm text-center">{{ tag }}</span>
+      </button>
+      {% endfor %}
+    </div>
+  </form>
+</section>
+<!-- 3. 기획전 리스트 (동적) -->
+<section class="mb-16">
+<div class="text-center mb-8">
+<h1 class="text-3xl md:text-4xl font-bold mb-3">감성 기획전</h1>
+<p class="text-gray-600 text-lg">다양한 테마의 기획전을 만나보세요</p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  {% for item in items %}
+  <a href="/cluster/{{ item.cluster_id }}" class="campaign-card block rounded-lg overflow-hidden shadow-md transition-all">
+    <div class="relative h-64 w-full rounded-2xl overflow-hidden">
+      <img src="{{ item.banner_image or '/static/image/입지.png' }}" onerror="this.src='/static/image/입지.png'" alt="{{ item.title }}" class="w-full h-full object-cover object-center rounded-2xl">
+    </div>
+    <div class="p-4">
+      <h3 class="text-lg font-bold mb-1">{{ item.title }}</h3>
+      <p class="text-gray-600 text-sm">{{ item.description }}</p>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+</section>
+<!-- 4. 호스트 추천 (동적) -->
+<section class="mb-16">
+  <div id="host-recommend-box" class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 min-h-[480px] mx-auto" style="overflow:visible;">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-2xl font-bold">유형별 호스트 추천</h2>
+      <button id="refresh-hosts-btn" class="ml-4 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg border border-gray-200 shadow-sm hover:bg-gray-200 transition text-sm font-semibold flex items-center"><i class="ri-refresh-line mr-1"></i>새로고침</button>
+    </div>
+    <div id="host-swiper-area" class="pb-6">
+      {% include 'host_swiper.html' %}
+    </div>
+  </div>
+</section>
+</main>
+<!-- 푸터 -->
+<section class="py-16 bg-gray-50">
+<div class="w-full max-w-7xl mx-auto px-6">
+<div class="text-center">
+<h2 class="text-3xl font-bold text-gray-900 mb-8">팀 GO-DIVA</h2>
+<p class="text-lg text-gray-600 mb-12">감성 기반 숙소 추천 서비스를 만든 팀을 소개합니다</p>
+<div class="flex justify-center items-center gap-12">
+  <div class="text-center">
+    <img src="/static/image/예림.png" alt="신예림" class="w-20 h-20 rounded-full object-cover mx-auto mb-3">
+    <h3 class="font-semibold text-gray-900">신예림</h3>
+    <p class="text-sm text-gray-600">중앙대학교<br>응용통계학과</p>
+  </div>
+  <div class="text-center">
+    <img src="/static/image/지윤.png" alt="송지윤" class="w-20 h-20 rounded-full object-cover mx-auto mb-3">
+    <h3 class="font-semibold text-gray-900">송지윤</h3>
+    <p class="text-sm text-gray-600">세종대학교<br>경영학부<br>비즈니스에널리틱스 융합전공</p>
+  </div>
+  <div class="text-center">
+    <img src="/static/image/지예.png" alt="함지예" class="w-20 h-20 rounded-full object-cover mx-auto mb-3">
+    <h3 class="font-semibold text-gray-900">함지예</h3>
+    <p class="text-sm text-gray-600">인천대학교<br>소비자학과<br>컴퓨터공학과</p>
+  </div>
+  <div class="text-center">
+    <img src="/static/image/혜원.png" alt="이혜원" class="w-20 h-20 rounded-full object-cover mx-auto mb-3">
+    <h3 class="font-semibold text-gray-900">이혜원</h3>
+    <p class="text-sm text-gray-600">중앙대학교<br>응용통계학과</p>
+  </div>
+</div>
+</div>
+</div>
+</section>
+<footer class="bg-gray-900 text-white py-4">
+<div class="w-full max-w-7xl mx-auto px-6">
+<div class="text-center">
+<div class="font-['Pacifico'] text-2xl text-white mb-4">Fitbnb</div>
+<p class="text-gray-400 mb-8">감성으로 찾는 완벽한 숙소</p>
+<div class="flex justify-center space-x-6">
+  <span class="text-gray-400">서비스 소개</span>
+  <span class="text-gray-400">이용약관</span>
+  <span class="text-gray-400">개인정보처리방침</span>
+  <span class="text-gray-400">고객지원</span>
+</div>
+<div class="mt-8 pt-8 border-t border-gray-800">
+<p class="text-gray-500 text-sm">© 2025 Fitbnb by GO-DIVA. All rights reserved.</p>
+</div>
+</div>
+</div>
+</footer>
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+let swiper;
+function initSwiper() {
+    if (swiper) swiper.destroy(true, true);
+    swiper = new Swiper('.swiper', {
         slidesPerView: 4,
-        spaceBetween: 8,
+        spaceBetween: 24,
         navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
         },
         breakpoints: {
-          1100: { slidesPerView: 4 },
-          700: { slidesPerView: 2 },
-          0: { slidesPerView: 1 }
+            1200: { slidesPerView: 4, spaceBetween: 24 },
+            900: { slidesPerView: 3, spaceBetween: 16 },
+            600: { slidesPerView: 2, spaceBetween: 12 },
+            0: { slidesPerView: 1, spaceBetween: 8 }
         }
-      });
-    }
-    document.addEventListener('DOMContentLoaded', function() {
-      initSwiper();
-      // 새로고침 버튼 기능
-      const refreshBtn = document.getElementById('refresh-btn');
-      if (refreshBtn) {
-        refreshBtn.addEventListener('click', function(e) {
-          e.preventDefault();
-          fetch('/refresh')
-            .then(res => res.json())
-            .then(data => {
-              fetch('/host_swiper_partial', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({hosts: data.hosts})
-              })
-              .then(res => res.text())
-              .then(html => {
-                document.getElementById('host-swiper-wrapper').innerHTML = html;
-                initSwiper();
-              });
-            });
-        });
-      }
     });
-  </script>
+}
+</script>
+<script id="imageUploadScript">
+document.addEventListener('DOMContentLoaded', function() {
+    // Swiper 초기화
+    initSwiper();
+    
+    const imageUploadArea = document.getElementById('imageUploadArea');
+    const imageUpload = document.getElementById('imageUpload');
+    const thumbnailPreview = document.getElementById('thumbnailPreview');
+    // 드래그 앤 드롭 이벤트
+    imageUploadArea.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        imageUploadArea.classList.add('border-primary');
+    });
+    imageUploadArea.addEventListener('dragleave', function() {
+        imageUploadArea.classList.remove('border-primary');
+    });
+    imageUploadArea.addEventListener('drop', function(e) {
+        e.preventDefault();
+        imageUploadArea.classList.remove('border-primary');
+        if (e.dataTransfer.files.length) {
+            handleFiles(e.dataTransfer.files);
+        }
+    });
+    // 파일 선택 이벤트
+    imageUpload.addEventListener('change', function() {
+        if (this.files.length) {
+            handleFiles(this.files);
+        }
+    });
+    // 파일 처리 함수
+    function handleFiles(files) {
+        const file = files[0];
+        if (file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                thumbnailPreview.src = e.target.result;
+                thumbnailPreview.style.display = 'block';
+                // 업로드 영역 텍스트 변경
+                const uploadText = imageUploadArea.querySelector('p:first-of-type');
+                if (uploadText) {
+                    uploadText.textContent = '이미지가 업로드되었습니다';
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const refreshBtn = document.getElementById('refresh-hosts-btn');
+  const hostSwiperArea = document.getElementById('host-swiper-area');
+  if (refreshBtn && hostSwiperArea) {
+    refreshBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      refreshBtn.disabled = true;
+      refreshBtn.innerHTML = '<i class="ri-refresh-line mr-1 animate-spin"></i>새로고침';
+      fetch('/host-swiper')
+        .then(res => res.text())
+        .then(html => {
+          hostSwiperArea.innerHTML = html;
+          refreshBtn.disabled = false;
+          refreshBtn.innerHTML = '<i class="ri-refresh-line mr-1"></i>새로고침';
+          document.dispatchEvent(new Event('host-swiper-updated'));
+        })
+        .catch(() => {
+          refreshBtn.disabled = false;
+          refreshBtn.innerHTML = '<i class="ri-refresh-line mr-1"></i>새로고침';
+        });
+    });
+  }
+});
+</script>
 </body>
 </html>
