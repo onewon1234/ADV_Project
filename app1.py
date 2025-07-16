@@ -95,7 +95,7 @@ def get_banner_image(cluster_id):
 @app.route('/')
 def index():
     campaign_items = [
-        {"cluster_id": cid, "title": suggest_campaign_title(cid)}
+        {"cluster_id": cid, "title": suggest_campaign_title(cid), "banner_image": get_banner_image(cid)}
         for cid in sorted(df_campaign['cluster_id'].unique())
     ]
     # 호스트 카드용 데이터 미리 뽑기
@@ -108,10 +108,23 @@ def index():
             selected_hosts = grouped_sample.sample(n=6)
         else:
             selected_hosts = grouped_sample
-        hosts = selected_hosts.to_dict(orient='records')
+        hosts = []
+        for _, row in selected_hosts.iterrows():
+            host = row.to_dict()
+            hashtags = host.get('hashtags', '')
+            if isinstance(hashtags, str):
+                hashtags = [tag.strip() for tag in hashtags.split(',') if tag.strip()]
+            elif not isinstance(hashtags, list):
+                hashtags = []
+            host['hashtags'] = hashtags
+            hosts.append(host)
     else:
         hosts = []
-    return render_template("index.html", items=campaign_items, hosts=hosts)
+    hashtags = [
+        "Nordic", "Natural", "Vintage Retro", "Lovely Romantic", "Industrial",
+        "Unique", "French Provence", "Minimal Simple", "Classic Antique", "Korean"
+    ]
+    return render_template("index.html", items=campaign_items, hosts=hosts, hashtags=hashtags)
 
 # 기획전 상세 페이지
 @app.route('/cluster/<int:cluster_id>')
