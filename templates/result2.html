@@ -1,82 +1,160 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>추천 결과</title>
-    <style>
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            padding: 20px;
-        }
-        .grid-item {
-            border: 1px solid #ccc;
-            padding: 10px;
-            text-align: center;
-            border-radius: 8px;
-        }
-        .grid-item img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            border-radius: 6px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fitbnb - 이미지 검색 결과</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>
+tailwind.config={
+  theme:{
+    extend:{
+      colors:{
+        primary:'#FF5A5F',
+        secondary:'#00A699'
+      },
+      borderRadius:{
+        'none':'0px',
+        'sm':'4px',
+        DEFAULT:'8px',
+        'md':'12px',
+        'lg':'16px',
+        'xl':'20px',
+        '2xl':'24px',
+        '3xl':'32px',
+        'full':'9999px',
+        'button':'8px'
+      }
+    }
+  }
+}
+</script>
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+}
+.accommodation-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.accommodation-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+</style>
 </head>
-<body>
-    <a href="{{ url_for('index') }}" style="display:inline-block; margin-bottom:18px; background:#e84c60; color:white; padding:8px 22px; border-radius:20px; text-decoration:none; font-weight:600;">처음으로</a>
-    <h2 style="text-align:center;">Top 6 Recommended Listings for "{{ tags[0] }}"</h2>
-
-    <!-- 상단 2단: 왼쪽(업로드 이미지+해시태그), 오른쪽(지도) -->
-    <div style="display: flex; justify-content: center; align-items: flex-start; gap: 32px; margin: 20px auto 32px auto; width: 90%;">
-        <!-- 왼쪽: 업로드 이미지와 해시태그 -->
-        <div style="flex: 0 0 320px; background: #fafbfc; border-radius: 12px; box-shadow:0 1px 6px #0001; padding: 18px 18px 12px 18px; text-align:center;">
-            <div style="font-weight:600; margin-bottom:10px; font-size:1.05em;">내가 업로드한 이미지</div>
-            <img src="{{ user_image_url }}" alt="업로드 이미지" style="width: 100%; max-width: 260px; border-radius: 8px; margin-bottom: 14px; border:1px solid #eee;">
-            <div style="font-weight:600; margin-bottom:7px; font-size:1.02em;">이미지 해시태그</div>
-            <div style="display:flex; flex-wrap:wrap; gap:7px; justify-content:center;">
-                {% for tag in tags %}
-                    <span style="background:#e3f2fd; color:#00796b; border-radius:12px; padding:4px 13px; font-size:0.97em; font-weight:500;">{{ tag }}</span>
-                {% endfor %}
-            </div>
-        </div>
-        <!-- 오른쪽: 지도 -->
-        <div style="flex: 1 1 400px; min-width:320px;">
-            <iframe src="{{ url_for('static', filename='map.html') }}" width="100%" height="400px" style="border:none; border-radius:10px;"></iframe>
-        </div>
+<body class="bg-white min-h-screen">
+<!-- 상단 네비게이션 바 -->
+<header class="sticky top-0 z-50 bg-white shadow-sm">
+  <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+    <a href="{{ url_for('index') }}" class="text-primary text-3xl font-['Pacifico'] tracking-wide">Fitbnb</a>
+    <nav class="hidden md:flex items-center space-x-6">
+      <a href="{{ url_for('index') }}" class="text-gray-700 hover:text-primary font-medium">홈</a>
+      <a href="#" class="text-primary font-medium border-b-2 border-primary">이미지 검색</a>
+      <a href="#" class="text-gray-700 hover:text-primary font-medium">해시태그</a>
+      <a href="#" class="text-gray-700 hover:text-primary font-medium">기획전</a>
+      <a href="#" class="text-gray-700 hover:text-primary font-medium">호스트</a>
+    </nav>
+    <div class="flex items-center space-x-4">
+      <button class="hidden md:flex items-center justify-center text-gray-700 hover:text-primary">
+        <i class="ri-user-line text-xl"></i>
+      </button>
+      <button class="md:hidden flex items-center justify-center w-10 h-10 text-gray-700">
+        <i class="ri-menu-line text-2xl"></i>
+      </button>
     </div>
-
-    {% if recommendations %}
-    <div class="grid-container">
-        {% for item in recommendations %}
-        <div class="grid-item">
-            <a href="{{ item.listing_url }}" target="_blank">
-                <img src="{{ item.picture_url }}" width="200">
-            </a>
-            <div style="margin-top:10px; text-align:left;">
-                <div style="font-weight:bold; font-size:1.1em; margin-bottom:4px;">{{ item.name }}</div>
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
-                    <span style="color:#FFD600; font-size:1em;">★</span>
-                    <span style="color:#222; font-size:0.98em;">{{ item.review_scores_rating }}</span>
-                    <span style="color:#888; font-size:0.95em;">({{ item.number_of_reviews }})</span>
-                    <span style="color:#2ecc71; font-weight:bold; margin-left:auto; font-size:1em;">{{ item.price }}</span>
-                </div>
-                <div style="margin-top:8px; display:flex; gap:6px; flex-wrap:wrap;">
-                    {% if item.tag1 %}<span style="background:#e0f7fa; color:#00796b; border-radius:12px; padding:3px 10px; font-size:0.93em;">{{ item.tag1 }}</span>{% endif %}
-                    {% if item.tag7 %}<span style="background:#ffe0b2; color:#e65100; border-radius:12px; padding:3px 10px; font-size:0.93em;">{{ item.tag7 }}</span>{% endif %}
-                    {% if item.tag8 %}<span style="background:#f8bbd0; color:#ad1457; border-radius:12px; padding:3px 10px; font-size:0.93em;">{{ item.tag8 }}</span>{% endif %}
-                </div>
-                <div style="display:flex; justify-content:flex-end; align-items:end; margin-top:18px;">
-                    <a href="{{ item.listing_url }}" target="_blank" style="color:#1976d2; font-size:0.88em; text-decoration:underline; font-weight:400; background:none; padding:0; border-radius:0;">자세히 보기</a>
-                </div>
-            </div>
+  </div>
+</header>
+<main class="container mx-auto px-4 py-8">
+  <!-- 상단 텍스트 및 해시태그 -->
+  <section class="mb-10">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+      <div>
+        <div id="left-container" class="flex flex-col items-center mb-6">
+          <img src="{{ user_image_url }}" alt="업로드 이미지" class="w-64 max-w-full rounded-lg border border-gray-200 mb-4">
         </div>
-        {% endfor %}
+        <h1 class="text-2xl md:text-3xl font-bold mb-2">업로드한 이미지와 유사한 스타일</h1>
+        <p class="text-gray-600 text-lg mb-4">당신의 취향과 어울리는 숙소를 소개해드려요</p>
+        <div class="flex flex-wrap gap-2 mb-2">
+          {% for tag in tags %}
+            <span class="bg-primary bg-opacity-10 text-primary text-base px-4 py-2 rounded-full">#{{ tag }}</span>
+          {% endfor %}
+        </div>
+      </div>
+      <!-- 지도 -->
+      <div id="map-container" class="w-full bg-gray-100 rounded-lg relative overflow-hidden" style="min-height:400px;">
+        <iframe id="map-iframe" src="{{ url_for('static', filename='map.html') }}" width="100%" height="100%" style="border:none; border-radius:10px; min-width:100%; position:absolute; inset:0;"></iframe>
+      </div>
     </div>
-    {% else %}
-    <p style="text-align:center; color:red;">추천된 숙소가 없습니다. 태그를 다시 선택해 주세요.</p>
-    {% endif %}
+  </section>
+  <!-- 추천 숙소 카드 -->
+  {% if recommendations %}
+  <section>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {% for item in recommendations %}
+      <div class="accommodation-card bg-white rounded-lg overflow-hidden shadow-md flex flex-col relative">
+        <a href="{{ item.listing_url }}" target="_blank">
+          <img src="{{ item.picture_url }}" alt="{{ item.name }}" class="w-full h-56 object-cover object-top">
+        </a>
+        <div class="p-5 flex flex-col flex-1">
+          <div class="flex justify-between items-center mb-2">
+            <h3 class="font-bold text-lg">{{ item.name }}</h3>
+            <div class="flex items-center">
+              <i class="ri-star-fill text-yellow-500 mr-1"></i>
+              <span class="font-medium">{{ item.review_scores_rating }}</span>
+              <span class="text-gray-500 text-sm ml-1">({{ item.number_of_reviews }})</span>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2 mb-3">
+            {% if item.tag1 %}<span class="bg-gray-100 text-primary px-3 py-1 rounded-full text-xs font-medium">#{{ item.tag1 }}</span>{% endif %}
+            {% if item.tag7 %}<span class="bg-gray-100 text-primary px-3 py-1 rounded-full text-xs font-medium">#{{ item.tag7 }}</span>{% endif %}
+            {% if item.tag8 %}<span class="bg-gray-100 text-primary px-3 py-1 rounded-full text-xs font-medium">#{{ item.tag8 }}</span>{% endif %}
+          </div>
+          <span class="text-lg font-bold text-gray-900 mb-2">{{ item.price }}</span>
+          <a href="{{ item.listing_url }}" target="_blank" class="bg-primary text-white px-4 py-2 rounded-button text-sm font-medium hover:bg-opacity-90 absolute right-5 bottom-5">자세히 보기</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% else %}
+  <p class="text-center text-red-500">추천된 숙소가 없습니다. 태그를 다시 선택해 주세요.</p>
+  {% endif %}
+</main>
+<footer class="bg-gray-900 text-white py-6 mt-12">
+  <div class="w-full max-w-7xl mx-auto px-6">
+    <div class="text-center">
+      <div class="font-['Pacifico'] text-2xl text-white mb-4">Fitbnb</div>
+      <p class="text-gray-400 mb-6">감성으로 찾는 완벽한 숙소</p>
+      <div class="flex justify-center space-x-6">
+        <span class="text-gray-400">서비스 소개</span>
+        <span class="text-gray-400">이용약관</span>
+        <span class="text-gray-400">개인정보처리방침</span>
+        <span class="text-gray-400">고객지원</span>
+      </div>
+      <div class="mt-6 pt-6 border-t border-gray-800">
+        <p class="text-gray-500 text-sm">© 2025 Fitbnb by GO-DIVA. All rights reserved.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+<script>
+// 왼쪽 컨테이너 높이에 맞춰 지도 높이 동기화
+function syncMapHeight() {
+  const left = document.getElementById('left-container');
+  const map = document.getElementById('map-container');
+  if (left && map) {
+    map.style.height = left.offsetHeight + 'px';
+  }
+}
+window.addEventListener('DOMContentLoaded', syncMapHeight);
+window.addEventListener('resize', syncMapHeight);
+</script>
 </body>
 </html>
 
