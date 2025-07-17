@@ -15,7 +15,9 @@ os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 # 데이터 로딩
 main_csv = "기획전_emotional_summaries_cleaned.csv"
 df_campaign = pd.read_csv(main_csv)
-df_tags = pd.read_csv("clipfinaldf.csv")
+# 필요한 컬럼만 남기기
+# df_tags = pd.read_csv("clipfinaldf.csv")
+df_tags = pd.read_csv("clipfinaldf.csv", usecols=["id", "name", "picture_url", "price", "number_of_reviews", "review_scores_rating", "latitude", "longitude", "listing_url", "tag1", "tag7", "tag8"])
 try:
     df_hosts = pd.read_csv('merged_host_최최최종.csv')
 except:
@@ -42,16 +44,25 @@ clip_hashtags = [
 
 # CLIP 모델 준비 (이미지 기반 추천)
 device = "cuda" if torch.cuda.is_available() else "cpu"
-model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32",
-                                 use_safetensors=True).to(device)
-processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
-text_inputs = processor(text=clip_hashtags, return_tensors="pt", padding=True, truncation=True)
-with torch.no_grad():
-    hashtag_embs = model.get_text_features(
-        input_ids=text_inputs["input_ids"].to(device),
-        attention_mask=text_inputs["attention_mask"].to(device)
-    )
-    hashtag_embs = hashtag_embs / hashtag_embs.norm(dim=1, keepdim=True)
+model = None  # 모델을 처음에는 None으로 설정
+processor = None
+hashtag_embs = None
+
+def load_model():
+    global model, processor, hashtag_embs
+    if model is None or processor is None or hashtag_embs is None:
+        from transformers import CLIPProcessor, CLIPModel
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32", use_safetensors=True).to(device)
+        processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
+        text_inputs = processor(text=clip_hashtags, return_tensors="pt", padding=True, truncation=True)
+        with torch.no_grad():
+            hashtag_embs_ = model.get_text_features(
+                input_ids=text_inputs["input_ids"].to(device),
+                attention_mask=text_inputs["attention_mask"].to(device)
+            )
+            hashtag_embs_ = hashtag_embs_ / hashtag_embs_.norm(dim=1, keepdim=True)
+        hashtag_embs = hashtag_embs_
 
 def df_to_records_with_tag_dict(df):
     records = []
@@ -175,7 +186,8 @@ def tag_recommend():
         selected_tag = request.args.get('selected_tag')
     if not selected_tag:
         return "❗ 해시태그를 선택해 주세요."
-    filtered = df_tags[df_tags['tag7'] == selected_tag].copy()
+    # 기존: filtered = df_tags[df_tags['tag7'] == selected_tag].copy()
+    filtered = df_tags[df_tags['tag7'] == selected_tag]
     if not filtered.empty:
         recommendations = filtered.sample(n=min(6, len(filtered)), random_state=None)
     else:
@@ -193,6 +205,7 @@ def image_recommend():
         return "❗이미지를 업로드해 주세요."
     image_path = os.path.join(app.config['UPLOAD_FOLDER'], uploaded_file.filename)
     uploaded_file.save(image_path)
+    load_model()  # 모델이 없으면 이 시점에 로딩
     top_tags, recommendations = recommend_similar_listings(
         image_path, df_tags, clip_hashtags, hashtag_embs
     )
