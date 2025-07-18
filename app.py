@@ -133,10 +133,23 @@ def index():
     else:
         hosts = []
     hashtags = [
-        "Nordic", "Natural", "Vintage Retro", "Lovely Romantic", "Industrial",
-        "Unique", "French Provence", "Minimal Simple", "Classic Antique", "Korean"
+        "Modern","Nordic", "Natural", "Vintage Retro", "Lovely Romantic", "Industrial",
+        "Unique", "French Provence", "Minimal Simple", "Classic Antique", "Korean Asian"
     ]
-    return render_template("index.html", items=campaign_items, hosts=hosts, hashtags=hashtags)
+    tag_icons = {
+        'Modern': 'ri-building-4-line',
+        'Nordic': 'ri-home-smile-line',
+        'Natural': 'ri-plant-line',
+        'Vintage Retro': 'ri-record-player-line',
+        'Lovely Romantic': 'ri-heart-line',
+        'Industrial': 'ri-building-line',
+        'Unique': 'ri-lightbulb-line',
+        'French Provence': 'ri-flower-line',
+        'Minimal Simple': 'ri-layout-line',
+        'Classic Antique': 'ri-ancient-gate-line',
+        'Korean Asian': 'ri-ancient-gate-line'
+    }
+    return render_template("index.html", items=campaign_items, hosts=hosts, hashtags=hashtags, tag_icons=tag_icons)
 
 # /index.html로 접근해도 index.html이 렌더링되도록 라우트 추가
 @app.route('/index.html')
@@ -167,7 +180,9 @@ def show_cluster(cluster_id):
     for _, row in filtered.iterrows():
         items.append({
             "name": row.get("name", ""),
-            "ratings": row.get("review_scores_rating", ""),  
+            "ratings": row.get("review_scores_rating", ""),
+            "review_scores_rating": row.get("review_scores_rating", ""),
+            "number_of_reviews": row.get("number_of_reviews", ""),
             "price": row.get("price", ""),
             "emotional_summary": row.get("emotional_summary", ""),
             "picture_url": row.get("picture_url", "").strip() if row.get("picture_url") else "",

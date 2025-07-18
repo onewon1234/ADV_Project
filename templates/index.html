@@ -130,7 +130,6 @@ box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 <section class="mb-16">
   <h2 class="text-2xl font-bold mb-6">해쉬태그로 숙소 찾기</h2>
   <form id="tagForm" action="/tag-recommend" method="post">
-    {% set tag_icons = {'Nordic':'ri-home-smile-line','Natural':'ri-plant-line','Vintage Retro':'ri-record-player-line','Lovely Romantic':'ri-heart-line','Industrial':'ri-building-line','Unique':'ri-lightbulb-line','French Provence':'ri-flower-line','Minimal Simple':'ri-layout-line','Classic Antique':'ri-ancient-gate-line','Korean':'ri-door-open-line','Asian':'ri-home-smile-line'} %}
     <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-11 gap-4">
       {% for tag in hashtags %}
       <button type="submit" name="tag" value="{{ tag }}" class="hashtag-item flex flex-col items-center transition-all bg-transparent border-none cursor-pointer p-0" style="box-shadow:none;width:auto;">
