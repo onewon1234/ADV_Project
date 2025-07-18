@@ -31,5 +31,5 @@ ENV PORT=8080
 # transformers의 advisory warning 비활성화
 ENV TRANSFORMERS_NO_ADVISORY_WARNINGS=1
 
-# Gunicorn 실행
-CMD ["gunicorn", "-b", "0.0.0.0:8080", "app:app"]
+# Gunicorn 실행 (worker 1개, timeout 120초로 안정성 보완)
+CMD ["gunicorn", "-w", "1", "-t", "120", "-b", "0.0.0.0:8080", "app:app"]
