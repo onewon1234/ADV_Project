@@ -1,7 +1,7 @@
-# Python 기반 이미지 선택 (PyTorch + transformers 지원)
+# syntax=docker/dockerfile:1
 FROM python:3.10-slim
 
-# 시스템 패키지 설치 (pandas, Pillow, torch 등 필수 의존성)
+# 필수 라이브러리 설치 (예: PIL, Torch, Transformers, etc.)
 RUN apt-get update && apt-get install -y \
     git \
     gcc \
@@ -12,10 +12,10 @@ RUN apt-get update && apt-get install -y \
 # 작업 디렉토리 설정
 WORKDIR /app
 
-# 로컬 모든 파일 복사 (app.py, utils2.py, templates/, static/, csv 등)
+# 프로젝트 파일 복사
 COPY . .
 
-# Python 패키지 설치
+# 필수 Python 패키지 설치
 RUN pip install --no-cache-dir \
     flask \
     gunicorn \
@@ -25,6 +25,8 @@ RUN pip install --no-cache-dir \
     pillow \
     transformers
 
-# Gunicorn으로 실행 (Fly.io는 포트 8080으로 들어오므로 매핑 필요)
+# Fly.io는 8080 포트로 요청을 받으므로 ENV로 지정
 ENV PORT 8080
+
+# Gunicorn 실행
 CMD ["gunicorn", "-b", "0.0.0.0:8080", "app:app"]
