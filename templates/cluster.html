@@ -67,15 +67,11 @@
       <div class="absolute inset-0 bg-black bg-opacity-50"></div>
       <div class="absolute inset-0 flex items-center justify-center">
         <div class="text-center text-white max-w-2xl">
-          <h1 class="text-4xl md:text-5xl font-bold mb-2">부담없이 떠나세요!</h1>
-          <h1 class="flex items-center justify-center text-4xl md:text-5xl font-bold mb-6">
-            <span class="text-5xl md:text-6xl mr-3">💸</span>
-            5만원 이하의 갓성비 숙소
-          </h1>
-          <p class="text-3xl md:text-4xl flex items-center justify-center gap-2">
-            <span class="text-3xl text-gray-200">&#10077;</span>
+          <h1 class="text-4xl md:text-5xl font-bold mb-2">{{ title }}</h1>
+          <p class="text-2xl md:text-3xl flex items-center justify-center gap-2 mt-6">
+            <span class="text-2xl text-gray-200">&#10077;</span>
             {{ subtitle }}
-            <span class="text-3xl text-gray-200">&#10078;</span>
+            <span class="text-2xl text-gray-200">&#10078;</span>
           </p>
         </div>
       </div>
@@ -94,7 +90,7 @@
           <div class="p-7 flex flex-col flex-1">
             <div class="flex justify-between items-center mb-3">
               <h3 class="text-lg font-extrabold text-gray-900">{{ item.name }}</h3>
-              <div class="flex items-center text-xl font-bold">
+              <div class="flex items-center text-sm font-bold">
                 <i class="ri-star-fill text-yellow-400 mr-1"></i>
                 <span>{{ item.rating|default('4.91') }}</span>
                 <span class="ml-1 text-gray-400 font-normal">({{ item.review_count|default('11') }})</span>
@@ -104,7 +100,7 @@
               <p class="text-gray-600 text-base mb-0 leading-relaxed">{{ item.emotional_summary }}</p>
             </div>
             <div class="flex justify-between items-end mt-auto">
-              <div class="text-base font-extrabold text-gray-900">{{ item.price }}</div>
+              <div class="text-base font-extrabold text-gray-900">$ {{ item.price }}</div>
               <a href="{{ item.listing_url }}" target="_blank" rel="noopener noreferrer">
                 <button class="bg-[#FF5A5F] text-white px-7 py-2 rounded-lg text-base font-bold shadow hover:bg-opacity-90 transition">
                   자세히 보기
@@ -115,9 +111,9 @@
         </div>
         {% endfor %}
       </div>
-      {% if items|length > 9 %}
-      <div class="flex justify-center mt-8">
-        <button id="load-more-btn" class="bg-primary text-white px-6 py-3 rounded-lg text-base font-semibold shadow hover:bg-opacity-90 transition">
+      {% if items|length > 0 %}
+      <div class="flex justify-center mt-8" id="load-more-btn-wrapper">
+        <button id="load-more-btn" style="background:#FF5A5F;" class="text-white px-6 py-3 rounded-lg text-base font-semibold shadow hover:bg-opacity-90 transition">
           더보기
         </button>
       </div>
@@ -128,6 +124,7 @@
     const allItems = {{ items|tojson | safe }};
     let shown = 9;
     const loadMoreBtn = document.getElementById('load-more-btn');
+    const loadMoreBtnWrapper = document.getElementById('load-more-btn-wrapper');
     if (loadMoreBtn) {
       loadMoreBtn.addEventListener('click', function() {
         const grid = document.getElementById('listing-grid');
@@ -136,28 +133,34 @@
           const div = document.createElement('div');
           div.className = 'property-card bg-white rounded-lg shadow-md overflow-hidden transition-all hover:scale-105';
           div.innerHTML = `
-            <div class=\"relative h-48 overflow-hidden\">
-              <img src=\"${item.picture_url}\" alt=\"숙소 이미지\" class=\"w-full h-full object-cover\">
-              <div class=\"absolute top-3 right-3\">
-                <i class=\"ri-heart-line text-white text-xl drop-shadow-lg\"></i>
+            <div class="relative h-48 overflow-hidden">
+              <img src="${item.picture_url}" alt="${item.name}" class="w-full h-56 object-cover object-top">
+              <div class="absolute top-3 right-3">
+                <i class="ri-heart-line text-white text-xl drop-shadow-lg"></i>
               </div>
             </div>
-            <div class=\"p-4\">
-              <div class=\"flex justify-between items-start mb-2\">
-                <h3 class=\"text-lg font-bold text-gray-900\">${item.name}</h3>
+            <div class="p-4">
+              <div class="flex justify-between items-start mb-2">
+                <h3 class="text-lg font-bold text-gray-900">${item.name}</h3>
               </div>
-              <p class=\"text-gray-600 text-sm mb-3\">${item.emotional_summary}</p>
-              <div class=\"flex justify-between items-center\">
-                <div class=\"text-lg font-bold text-gray-900\">${item.price}</div>
-                <button class=\"bg-primary text-white px-4 py-2 rounded-button text-sm font-medium hover:bg-opacity-90\">자세히 보기</button>
+              <p class="text-gray-600 text-sm mb-3">${item.emotional_summary}</p>
+              <div class="flex justify-between items-center">
+                <div class="text-lg font-bold text-gray-900">$${item.price}</div>
+                <button class="bg-primary text-white px-4 py-2 rounded-button text-sm font-medium hover:bg-opacity-90">자세히 보기</button>
               </div>
             </div>
           `;
           grid.appendChild(div);
         }
         shown += 9;
-        if(shown >= allItems.length) this.style.display = 'none';
+        if(shown >= allItems.length || shown >= 36) {
+          loadMoreBtnWrapper.style.display = 'none';
+        }
       });
+      // 최초 렌더링 시 이미 36개 이하라면 버튼 숨김
+      if (shown >= allItems.length || shown >= 36) {
+        loadMoreBtnWrapper.style.display = 'none';
+      }
     }
   </script>
 </body>
