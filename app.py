@@ -178,14 +178,23 @@ def show_cluster(cluster_id):
         filtered = filtered.reset_index(drop=True)
     items = []
     for _, row in filtered.iterrows():
+        picture_url = row.get("picture_url", "")
+        if not picture_url or not picture_url.strip():
+            continue  # 이미지 없는 매물은 건너뜀
+
+        name = row.get("name", "")
+        summary = row.get("emotional_summary", "")
+
+        # 영어(알파벳, 숫자, 기호, 공백)만 허용 (한글, 한자, 기타 언어 포함시 제외)
+        if not re.match(r'^[\x00-\x7F\s.,!?\'\"-]+$', name) or not re.match(r'^[\x00-\x7F\s.,!?\'\"-]+$', summary):
+            continue  # 영어가 아닌 매물은 건너뜀
+
         items.append({
-            "name": row.get("name", ""),
+            "name": name,
             "ratings": row.get("review_scores_rating", ""),
-            "review_scores_rating": row.get("review_scores_rating", ""),
-            "number_of_reviews": row.get("number_of_reviews", ""),
             "price": row.get("price", ""),
-            "emotional_summary": row.get("emotional_summary", ""),
-            "picture_url": row.get("picture_url", "").strip() if row.get("picture_url") else "",
+            "emotional_summary": summary,
+            "picture_url": picture_url.strip(),
             "listing_url": row.get("listing_url", "#")
         })
     marketing_text = title
