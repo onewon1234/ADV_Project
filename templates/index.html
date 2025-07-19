@@ -32,7 +32,6 @@ DEFAULT:'8px',
 }
 }
 }
-}
 </script>
 <style>
 :where([class^="ri-"])::before { content: "\f3c2"; }
@@ -282,10 +281,17 @@ document.addEventListener('DOMContentLoaded', function() {
             reader.onload = function(e) {
                 thumbnailPreview.src = e.target.result;
                 thumbnailPreview.style.display = 'block';
-                // 업로드 영역 텍스트 변경
+                
+                // 업로드 영역의 아이콘과 텍스트 변경
+                const iconElement = imageUploadArea.querySelector('i');
                 const uploadText = imageUploadArea.querySelector('p:first-of-type');
+                
+                if (iconElement) {
+                    iconElement.className = 'ri-check-line text-5xl text-green-500';
+                }
                 if (uploadText) {
-                    uploadText.textContent = '이미지가 업로드되었습니다';
+                    uploadText.textContent = '이미지가 성공적으로 업로드되었습니다!';
+                    uploadText.className = 'text-green-600 mb-2 text-xl font-medium';
                 }
             };
             reader.readAsDataURL(file);
